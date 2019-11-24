@@ -23,12 +23,4 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-static GLfloat WHITE[] = {1, 1, 1};
-static GLfloat RED[] = {1, 0, 0};
-static GLfloat GREEN[] = {0, 1, 0};
-static GLfloat MAGENTA[] = {1, 0, 1};
-
-const double timestep = 0.00005;
-
-
 #endif /* Header_h */

@@ -9,25 +9,34 @@
 #include "Header.h"
 #include <GLUT/GLUT.h>
 #include <GLFW/glfw3.h>
-
+#include "globalVars.h"
 using namespace std;
-double t = 0;
+
 vector<mass> masses;
 vector<spring> springs;
 vector<force> forces;
+double t = 0;
+double w = 10;
+double c = 0;
+
+const double damping = 0.99;
+const double friction_mu_s=1;// friction coefficient rubber-concrete
+const double friction_mu_k=0.8;// friction coefficient rubber-concrete
+const double k_vertices_soft=2000;// spring constant of the edges
+const double kc = 200000;
+const double g[3] = {0,-9.81,0};
 
 int width = 700;
 int height = 700;
-    
-void simulate(bool multicore = false) {
-    int maxSteps =  1;
+
+void simulate(bool multicore = false, int maxSteps = 1) {
     
     while (maxSteps > 0) {
          forces.clear();
          // get the forces
         // this can become parallel later
         for (vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
-            forces.push_back(force(&(*item)));
+            forces.push_back(force(&(*item),true));
         }
         int i = 0;
         // this can also become parallel later
@@ -35,11 +44,11 @@ void simulate(bool multicore = false) {
             item->updateDerivitives(forces[i]);
             i++;
         }
-       
         t = t+=timestep;
         maxSteps--;
+    }
     return;
-}}
+}
 
 // Checkerboard Class
 class Checkerboard {
@@ -162,13 +171,6 @@ void render() {
                   0.0, 1.0, 0.0);*/
     checkerboard.draw();
     for (vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
-        if (item == --masses.end()) {
-            glPushMatrix();
-              glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, WHITE);
-              glTranslated(item->p[0], item->p[1], item->p[2]);
-              drawSphere(.02,10,10);
-              glPopMatrix();
-        }
         item->draw();
     }
     for (vector<spring>::iterator item = springs.begin(); item != springs.end(); item++) {
@@ -181,15 +183,16 @@ int main(int argc, char **argv) {
     // set global vars
     // initialize mass and array
     double weight = 0.1; //kg
-    double k = 10000; //Nmss
+    double k = 20000; //Nmss
     //int steps = 500000;
     masses = generateMasses(weight);
     springs = generateSprings(k,masses,springs);
     linkMassSpring(masses,springs);
     
-    for (mass& m : masses) {
+  /*  for (mass& m : masses) {
         m.moveMass(0, 0.5, 0);
     }
+   */
     
     glfwInit();
     GLFWwindow* window; // (In the accompanying source code, this variable is global for simplicity)
@@ -210,13 +213,13 @@ int main(int argc, char **argv) {
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     init_gl();
     /* Loop until the user closes the window */
-       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
+       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 1)
        {
            /* Render here */
            render();
            /* Swap front and back buffers */
            glfwSwapBuffers(window);
-           simulate();
+           simulate(false,10);
            /* Poll for and process events */
            glfwPollEvents();
           // glfwGetWindowSize(window, &width, &height);

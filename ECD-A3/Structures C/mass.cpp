@@ -12,6 +12,7 @@
 #include <iostream>
 #include <GLUT/GLUT.h>
 #include <cmath>
+#include "globalVars.h"
 
 mass& mass::operator=(const mass& right) {
     if (this != &right) {
@@ -44,10 +45,12 @@ mass::mass(const mass& rhs) {
     }
 }
 
-void mass::updateDerivitives(const force& f) {
+void mass::updateDerivitives(const force& f,const bool damping) {
+    double d = 1;
+    if (damping) { double d = damping; }
     for (int i = 0; i < 3; i++) {
         a[i] = f.f[i]/m;
-        v[i] += a[i]*timestep;
+        v[i] += (a[i]*timestep)*d;
         p[i] += v[i]*timestep;
     }
 }

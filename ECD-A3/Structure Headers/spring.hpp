@@ -14,7 +14,7 @@
 struct mass;
 
 struct spring {
-    spring(double stiffness, mass* mA, mass* mB) : k(stiffness), m1(mA), m2(mB) {
+    spring(double stiffness, mass* mA, mass* mB, double b_init = .1, double c_init = 0) : k(stiffness), m1(mA), m2(mB), b(b_init), c(c_init) {
         orinLen = length();
     }
     spring (const spring& rhs);
@@ -22,15 +22,19 @@ struct spring {
     
     friend std::ostream& operator<<(std::ostream& os, const spring& dt);
     
-    double calcCurrentSpringForce();
+    double calcCurrentSpringForce(const bool pulse = false);
     const double length() const;
     const void display();
     void draw();
+    const double pulseLength();
     
     double k;
     double orinLen;
+    double b;
+    double c;
     mass* m1;
     mass* m2;
+
 };
 
 #endif /* spring_hpp */

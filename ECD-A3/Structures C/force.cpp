@@ -29,7 +29,7 @@ force::force(const force& rhs) {
     }
 }
 
-void force::addSpringForce(bool print) {
+void force::addSpringForce(bool pulse) {
     for (std::vector<spring*>::iterator iter = body->s.begin(); iter != body->s.end(); iter++) {
         double di[3];
         spring* s = *iter;
@@ -44,11 +44,10 @@ void force::addSpringForce(bool print) {
             }
         }
         double totalD = sqrt(pow(di[0],2)+pow(di[1],2)+pow(di[2],2));
-        double springF = s->calcCurrentSpringForce();
+        double springF = s->calcCurrentSpringForce(pulse);
         for (int i = 0; i < 3; i++) {
             f[i] += springF*di[i]/totalD;
         }
-        if (print) { std::cout << f[0] << " " << f[1] << " " << f[2] << std::endl;}
     }
     return;
 }
@@ -61,7 +60,9 @@ void force::addGravity() {
 
 void force::addResultantForce() {
     if (body->p[1] < 0) {
+        // for bouncing on the ground
         f[1] -= kc*(body->p[1]);
+        // for friction
     }
     return;
 }

@@ -10,16 +10,14 @@
 #define force_hpp
 
 #include "mass.hpp"
-
-const double g[3] = {0,-9.81,0};
-const double kc = 1000000;
+#include "globalVars.h"
 
 struct force {
-    force(mass* b) : body(b) {
+    force(mass* b, const bool pulse = false) : body(b) {
         f[0] = 0; f[1] = 0; f[2] = 0;
         this->addGravity();
         this->addResultantForce();
-        this->addSpringForce();
+        this->addSpringForce(pulse);
     }
     
     force (const force& rhs);

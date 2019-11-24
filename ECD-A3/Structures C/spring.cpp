@@ -11,6 +11,8 @@
 #include "mass.hpp"
 #include <iostream>
 #include <GLUT/GLUT.h>
+#include "globalVars.h"
+
 /*Each spring object has the following properties: k(spring constraint, [N/m]), L0(original rest length, [meters]), and the indices of the two masses it connects: m1, m2
  */
 
@@ -26,8 +28,18 @@ const double spring::length() const {
 }
 
 // will return negative if compression.
-double spring::calcCurrentSpringForce() {
-   return k*(length()-orinLen);
+double spring::calcCurrentSpringForce(const bool pulse) {
+    if(pulse) {
+       // std::cout << "Pulsing: " << pulseLength() << std::endl;
+        return k*(length()-pulseLength());
+    }
+    return k*(length()-orinLen);
+}
+    
+const double spring::pulseLength() {
+    double theReturn = orinLen+(b*sin(w*t+c))/2;
+  //  std::cout << theReturn << std::endl;
+    return theReturn;
 }
 
 spring& spring::operator=(const spring& right) {
@@ -36,6 +48,8 @@ spring& spring::operator=(const spring& right) {
         orinLen = right.orinLen;
         m1 = right.m1;
         m2 = right.m2;
+        b = right.b;
+        c = right.c;
     }
     return *this;
 }
@@ -45,6 +59,8 @@ spring::spring(const spring& rhs) {
     orinLen = rhs.orinLen;
     m1 = rhs.m1;
     m2 = rhs.m2;
+    b = rhs.b;
+    c = rhs.c;
 }
 
 std::ostream& operator<<(std::ostream& os, const spring& item) {
