@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		428CCE80238B2CA300B05BC6 /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = 428CCE7F238B2CA300B05BC6 /* test.c */; };
 		C62A302B2388A85F0040ED09 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6B77CC9237CA42700539C41 /* OpenGL.framework */; };
 		C62A302C2388A8630040ED09 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6A8B2352380AB800079A4BB /* GLUT.framework */; };
 		C62A302F2388A8EC0040ED09 /* shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C62A302E2388A8EC0040ED09 /* shader.cpp */; };
@@ -31,6 +32,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		428CCE7F238B2CA300B05BC6 /* test.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test.c; sourceTree = "<group>"; };
 		C62A301123872E930040ED09 /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
 		C62A301523873FC00040ED09 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		C62A301F2388A1760040ED09 /* libsfml-system.2.5.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-system.2.5.1.dylib"; path = "SFML/lib/libsfml-system.2.5.1.dylib"; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				C6564FEC2374C340008C7281 /* Structures C */,
 				C6564FEB2374C32D008C7281 /* Structure Headers */,
 				C6564FCB23737B43008C7281 /* main.cpp */,
+				428CCE7F238B2CA300B05BC6 /* test.c */,
 				C62A302E2388A8EC0040ED09 /* shader.cpp */,
 				C62A302D2388A8EC0040ED09 /* shader.hpp */,
 				C62A301123872E930040ED09 /* Header.h */,
@@ -213,6 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C62A302F2388A8EC0040ED09 /* shader.cpp in Sources */,
+				428CCE80238B2CA300B05BC6 /* test.c in Sources */,
 				C6564FE72374C2DB008C7281 /* force.cpp in Sources */,
 				C6564FEA2374C2E9008C7281 /* mass.cpp in Sources */,
 				C6564FE4237488AB008C7281 /* spring.cpp in Sources */,
