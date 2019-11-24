@@ -25,6 +25,7 @@ struct force {
     
     void addSpringForce(bool print = false);
     void addGravity();
+    void addFrictionForce();
     void addResultantForce();
     
     mass* body;

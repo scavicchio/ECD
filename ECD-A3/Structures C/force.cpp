@@ -27,6 +27,7 @@ force::force(const force& rhs) {
     for (int i = 0; i < 3; i++) {
         f[i] = rhs.f[i];
     }
+    return;
 }
 
 void force::addSpringForce(bool pulse) {
@@ -56,13 +57,32 @@ void force::addGravity() {
     for (int i = 0; i < 3; i++) {
         f[i] += (body->m)*g[i];
     }
+    return;
+}
+
+void force::addFrictionForce() {
+    if (body->p[1] < 0) {
+   // horizontal force on mass
+    double fH = sqrt(pow(f[0],2)+pow(f[2],2));
+   // normal force on mass (with friciton factor
+    double fN = f[1]+(body->m*g[1])*friction_mu_s;
+    // do comparisons
+    if (fH < fN) {
+        f[0] = 0;
+        f[2] = 0;
+        }
+    else {
+        f[0] -= fN*friction_mu_s;
+        f[2] -= fN*friction_mu_s;
+        }
+    }
+    return;
 }
 
 void force::addResultantForce() {
     if (body->p[1] < 0) {
         // for bouncing on the ground
         f[1] -= kc*(body->p[1]);
-        // for friction
     }
     return;
 }
