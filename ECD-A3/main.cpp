@@ -18,7 +18,7 @@ vector<force> forces;
 double t = 0;
 double c = 0;
 
-const double timestep = 0.0001;
+const double timestep = 0.00005;
 const double f = 1;
 double w = 2*3.14*f/2;
 
@@ -214,6 +214,7 @@ int main(int argc, char **argv) {
     springs = generateSprings(k,masses,springs);
     linkMassSpring(masses,springs);
     
+    bool debug = true;
   /*  for (mass& m : masses) {
         m.moveMass(0, 0.5, 0);
     }
@@ -250,22 +251,27 @@ int main(int argc, char **argv) {
            render();
            /* Swap front and back buffers */
            glfwSwapBuffers(window);
+           time = glfwGetTime();
+           lastTime = time;
+           deltaTime = time - lastTime;
            
            while (deltaTime <= frameTime) {
                simulate(false,1,true);
+               if (debug) { break; }
                time = glfwGetTime();
                deltaTime = time - lastTime;
            }
-           deltaTime = time - lastTime;
-           lastTime = glfwGetTime();
+         
            /* Poll for and process events */
            glfwPollEvents();
           // glfwGetWindowSize(window, &width, &height);
           // reshape(width, height);
-           cout << "Current Sim Time: " << t << endl;
-           vector<double> center = centerOfMass(masses);
-           cout << "Center of Mass: " << center[0] << " " << center[1] << " " << center[2] << endl;
-           cout << "===================" << endl;
+           if (debug) {
+               cout << "Current Sim Time: " << t << endl;
+               vector<double> center = centerOfMass(masses);
+               cout << "Center of Mass: " << center[0] << " " << center[1] << " " << center[2] << endl;
+               cout << "===================" << endl;
+           }
        }
     //
     glfwTerminate();

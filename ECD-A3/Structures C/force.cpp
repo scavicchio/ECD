@@ -61,19 +61,25 @@ void force::addGravity() {
 }
 
 void force::addFrictionForce() {
-    if (body->p[1] < 0) {
+    // normal force on mass (with friciton factor
+    double fN = f[1];
    // horizontal force on mass
-    double fH = sqrt(pow(f[0],2)+pow(f[2],2));
-   // normal force on mass (with friciton factor
-    double fN = f[1]+(body->m*g[1])*friction_mu_s;
-    // do comparisons
-    if (fH < fN) {
-        f[0] = 0;
-        f[2] = 0;
+    if (fN < 0) {
+        double fH = sqrt(pow(f[0],2)+pow(f[2],2));
+        double frictionForce = fN*friction_mu_s;
+        
+        double fAdjX = sqrt(pow(fH,2)-pow(f[2],2))*frictionForce;
+        double fAdjY = sqrt(pow(fH,2)-pow(f[2],1))*frictionForce;
+        if (fH > frictionForce) {
+            f[0] = 0;
+            f[2] = 0;
         }
-    else {
-        f[0] -= fN*friction_mu_s;
-        f[2] -= fN*friction_mu_s;
+        else {
+            if (f[0] < 0) { f[0] -= fAdjX; }
+            else { f[0] += fAdjX; }
+        
+            if (f[2] < 0) { f[2] -= fAdjY; }
+            else { f[2] += fAdjY; }
         }
     }
     return;
