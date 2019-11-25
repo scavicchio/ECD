@@ -18,7 +18,7 @@ vector<force> forces;
 double t = 0;
 double c = 0;
 
-const double timestep = 0.00005;
+const double timestep = 0.0005;
 const double f = 1;
 double w = 2*3.14*f/2;
 
@@ -245,7 +245,7 @@ int main(int argc, char **argv) {
     double deltaTime = time - lastTime;
     
     /* Loop until the user closes the window */
-       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 100)
+       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 10)
        {
            /* Render here */
            render();
