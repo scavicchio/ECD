@@ -10,6 +10,7 @@
 #include <GLUT/GLUT.h>
 #include <GLFW/glfw3.h>
 #include "globalVars.h"
+
 using namespace std;
 
 vector<mass> masses;
@@ -67,57 +68,6 @@ vector<double> centerOfMass(vector<mass>& masses) {
     return theReturn;
 }
 
-// Checkerboard Class
-class Checkerboard {
-  int displayListId;
-  int width;
-  int depth;
-public:
-  Checkerboard(int width, int depth): width(width), depth(depth) {}
-  double centerx() {return width / 2;}
-  double centerz() {return depth / 2;}
-  void create() {
-    displayListId = glGenLists(1);
-    glNewList(displayListId, GL_COMPILE) ;
-    GLfloat lightPosition[] = {4, 3, 7, 1} ;
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition) ;
-    glBegin(GL_QUADS) ;
-    glNormal3d(0, 1, 0) ;
-    for (int x = 0; x < width - 0.5; x++) {
-      for (int z = 0; z < depth - 0.5; z++) {
-        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE,
-                     (x + z) % 2 == 0 ? GREEN : WHITE);
-        glVertex3d(x, 0, z);
-        glVertex3d(x-1, 0, z);
-        glVertex3d(x-1, 0, z-1);
-        glVertex3d(x, 0, z-1);
-      }
-    }
-    glEnd();
-    glEndList();
-  }
-  void draw() {
-    glCallList(displayListId);
-  }
-};
-
-// Camera Class
-class Camera {
-  double theta;      // determines the x and z positions
-  double y;          // the current y position
-  double dTheta;     // increment in theta for swinging the camera around
-  double dy;         // increment in y for moving the camera up/down
-public:
-  Camera(): theta(0.5), y(1), dTheta(0.04), dy(0.2) {}
-  double getX() {return 2 * cos(theta);}
-  double getY() {return y;}
-  double getZ() {return 4 * sin(theta);}
-  void moveRight() {theta += dTheta;}
-  void moveLeft() {theta -= dTheta;}
-  void moveUp() {y += dy;}
-  void moveDown() {if (y > dy) y -= dy;}
-};
-
 Checkerboard checkerboard(2,2);
 Camera camera;
 
@@ -133,60 +83,19 @@ void init_gl() {
   checkerboard.create();
 }
 
-void special(int key, int, int) {
-  switch (key) {
-    case GLUT_KEY_LEFT: camera.moveLeft(); break;
-    case GLUT_KEY_RIGHT: camera.moveRight(); break;
-    case GLUT_KEY_UP: camera.moveUp(); break;
-    case GLUT_KEY_DOWN: camera.moveDown(); break;
-  }
-  glutPostRedisplay();
-}
-
-void reshape(GLint w, GLint h) {
-
-    // Prevent a divide by zero, when window is too short
-    // (you cant make a window of zero width).
-    if (h == 0)
-        h = 1;
-    float ratio =  w * 1.0 / h;
-    // Use the Projection Matrix
-    glMatrixMode(GL_PROJECTION);
-    // Reset Matrix
-    glLoadIdentity();
-    // Set the viewport to be the entire window
-    glViewport(0, 0, w, h);
-    // Set the correct perspective.
-    gluPerspective(45.0f, ratio, 0.1f, 100.0f);
-    // Get Back to the Modelview
-    glMatrixMode(GL_MODELVIEW);
-}
-
 void render() {
-  /*
-    // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-    glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float)height, 0.1f, 100.0f);
-    // Camera matrix
-    glm::mat4 View = glm::lookAt(
-        glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
-        glm::vec3(0,0,0), // and looks at the origin
-        glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-        );
-    // Model matrix : an identity matrix (model will be at the origin)
-    glm::mat4 Model = glm::mat4(1.0f);
-    // Our ModelViewProjection : multiplication of our 3 matrices
-    glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
-    */
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
-    
-      //  gluLookAt(camera.getX(), camera.getY(), camera.getZ(),
-        //          checkerboard.centerx(), 0.0, checkerboard.centerz(),
-          //        0.0, 1.0, 0.0);
-  /*      gluLookAt (camera.getX(), camera.getY(), camera.getZ(),
-                   0.0, 0.0, 0.0,
-                  0.0, 1.0, 0.0);*/
     checkerboard.draw();
+    
+    // camera transforms
+    glOrtho(-10.0f,10.0f,-10.0f,10.0f,-10.0f,10.0f);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRotatef(-25.0f,1.0f,0.0f,0.0f);
+    glRotatef(-45.0f,0.0f,1.0f,0.0f);
+    glRotatef(camera.getY(),0.0f,1.0f,0.0f);
+    glRotatef(camera.getZ(),0.0f,0.0f,1.0f);
+
     for (vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
         item->draw();
     }
@@ -196,6 +105,13 @@ void render() {
     glFlush();
 };
 
+void processInput(GLFWwindow *window) {
+    if (glfwGetKey(window,GLFW_KEY_W)) { camera.moveUp(); }
+    else if (glfwGetKey(window,GLFW_KEY_A)) { camera.moveLeft(); }
+    else if (glfwGetKey(window,GLFW_KEY_S)) { camera.moveDown(); }
+    else if (glfwGetKey(window,GLFW_KEY_D)) { camera.moveRight(); }
+    return;
+}
 
 int main(int argc, char **argv) {
     // set global vars
@@ -247,6 +163,7 @@ int main(int argc, char **argv) {
     /* Loop until the user closes the window */
        while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 10)
        {
+           processInput(window);
            /* Render here */
            render();
            /* Swap front and back buffers */

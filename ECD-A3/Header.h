@@ -22,5 +22,7 @@
 #include <GLFW/glfw3.h>
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "checkerboard.hpp"
+#include "camera.hpp"
 
 #endif /* Header_h */
