@@ -109,6 +109,7 @@ void mass::linkSpring(spring* aSpring) {
     return;
 }
 */
+
 force mass::calcForce(bool print) {
     force theReturn(this);
     theReturn.addSpringForce(print);

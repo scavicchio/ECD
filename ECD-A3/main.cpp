@@ -53,6 +53,20 @@ void simulate(bool multicore = false, int maxSteps = 1, bool pulse = false) {
     return;
 }
 
+vector<double> centerOfMass(vector<mass>& masses) {
+    vector<double> topHalf = {0,0,0};
+    double bottomHalf;
+    vector<double> theReturn = {0,0,0};
+    for (mass& item : masses) {
+        topHalf[0] += item.m*item.p[0];
+        topHalf[1] += item.m*item.p[1];
+        topHalf[2] += item.m*item.p[2];
+        bottomHalf += item.m;
+    }
+    for (int i = 0; i < 3; i++) { theReturn[i] = topHalf[i]/bottomHalf; }
+    return theReturn;
+}
+
 // Checkerboard Class
 class Checkerboard {
   int displayListId;
@@ -230,7 +244,7 @@ int main(int argc, char **argv) {
     double deltaTime = time - lastTime;
     
     /* Loop until the user closes the window */
-       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 10)
+       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 100)
        {
            /* Render here */
            render();
@@ -242,13 +256,16 @@ int main(int argc, char **argv) {
                time = glfwGetTime();
                deltaTime = time - lastTime;
            }
-           
            deltaTime = time - lastTime;
            lastTime = glfwGetTime();
            /* Poll for and process events */
            glfwPollEvents();
           // glfwGetWindowSize(window, &width, &height);
           // reshape(width, height);
+           cout << "Current Sim Time: " << t << endl;
+           vector<double> center = centerOfMass(masses);
+           cout << "Center of Mass: " << center[0] << " " << center[1] << " " << center[2] << endl;
+           cout << "===================" << endl;
        }
     //
     glfwTerminate();
