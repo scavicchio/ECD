@@ -16,10 +16,11 @@ vector<mass> masses;
 vector<spring> springs;
 vector<force> forces;
 double t = 0;
-double w = 10;
 double c = 0;
 
-const double timestep = 0.00001;
+const double timestep = 0.0001;
+const double f = 1;
+double w = 2*3.14*f/2;
 
 const double damping = 0.7;
 const double friction_mu_s=1;// friction coefficient rubber-concrete
@@ -181,17 +182,19 @@ void render() {
     glFlush();
 };
 
+
 int main(int argc, char **argv) {
     // set global vars
     // initialize mass and array
     double weight = 0.1; //kg
     double k = 100000; //Nmss
-    int fps = 24;
+    int fps = 60;
     double oneSecondOfSim = 1;
     oneSecondOfSim = 1/timestep;
     double simSteps = 1;
     simSteps = oneSecondOfSim/fps;
-    
+    double frameTime = 1;
+    frameTime /= fps;
     //int steps = 500000;
     masses = generateMasses(weight);
     springs = generateSprings(k,masses,springs);
@@ -220,14 +223,28 @@ int main(int argc, char **argv) {
     // Ensure we can capture the escape key being pressed below
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     init_gl();
+    
+    // for framerate limiting
+    double time = glfwGetTime();
+    double lastTime = time;
+    double deltaTime = time - lastTime;
+    
     /* Loop until the user closes the window */
-       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 100)
+       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 10)
        {
            /* Render here */
            render();
            /* Swap front and back buffers */
            glfwSwapBuffers(window);
-           simulate(false,100,true);
+           
+           while (deltaTime <= frameTime) {
+               simulate(false,1,true);
+               time = glfwGetTime();
+               deltaTime = time - lastTime;
+           }
+           
+           deltaTime = time - lastTime;
+           lastTime = glfwGetTime();
            /* Poll for and process events */
            glfwPollEvents();
           // glfwGetWindowSize(window, &width, &height);

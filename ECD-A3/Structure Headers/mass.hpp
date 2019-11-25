@@ -35,6 +35,7 @@ struct mass {
     //void linkSpring(spring* aSpring);
     force calcForce(bool print = false);
     void draw();
+    double centerOfMass();
     
     double m;
     double p[3];
