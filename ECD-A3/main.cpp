@@ -19,7 +19,7 @@ double t = 0;
 double c = 0;
 
 const double timestep = 0.0005;
-const double f = 1;
+const double f = 1; // frequemcy of length function in per/second
 double w = 2*3.14*f/2;
 
 const double damping = 0.7;
