@@ -14,8 +14,9 @@
 struct mass;
 
 struct spring {
-    spring(double stiffness, mass* mA, mass* mB, double b_init = .1, double c_init = 0) : k(stiffness), m1(mA), m2(mB), b(b_init), c(c_init) {
+    spring(double stiffness, mass* mA, mass* mB, double c_init = 0) : k(stiffness), m1(mA), m2(mB), c(c_init) {
         orinLen = length();
+        b = orinLen;
     }
     spring (const spring& rhs);
     spring& operator=(const spring& right);

@@ -37,7 +37,7 @@ double spring::calcCurrentSpringForce(const bool pulse) {
 }
     
 const double spring::pulseLength() {
-    double theReturn = orinLen+(b*sin(w*t+c))/2;
+    double theReturn = orinLen+abs((b*sin(w*t+c)))/2;
   //  std::cout << theReturn << std::endl;
     return theReturn;
 }

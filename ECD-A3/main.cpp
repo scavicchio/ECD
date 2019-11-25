@@ -19,7 +19,9 @@ double t = 0;
 double w = 10;
 double c = 0;
 
-const double damping = 0.99;
+const double timestep = 0.00001;
+
+const double damping = 0.7;
 const double friction_mu_s=1;// friction coefficient rubber-concrete
 const double friction_mu_k=0.8;// friction coefficient rubber-concrete
 const double k_vertices_soft=2000;// spring constant of the edges
@@ -29,14 +31,14 @@ const double g[3] = {0,-9.81,0};
 int width = 700;
 int height = 700;
 
-void simulate(bool multicore = false, int maxSteps = 1) {
+void simulate(bool multicore = false, int maxSteps = 1, bool pulse = false) {
     
     while (maxSteps > 0) {
          forces.clear();
          // get the forces
         // this can become parallel later
         for (vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
-            forces.push_back(force(&(*item),true));
+            forces.push_back(force(&(*item),pulse));
         }
         int i = 0;
         // this can also become parallel later
@@ -183,7 +185,13 @@ int main(int argc, char **argv) {
     // set global vars
     // initialize mass and array
     double weight = 0.1; //kg
-    double k = 20000; //Nmss
+    double k = 100000; //Nmss
+    int fps = 24;
+    double oneSecondOfSim = 1;
+    oneSecondOfSim = 1/timestep;
+    double simSteps = 1;
+    simSteps = oneSecondOfSim/fps;
+    
     //int steps = 500000;
     masses = generateMasses(weight);
     springs = generateSprings(k,masses,springs);
@@ -213,13 +221,13 @@ int main(int argc, char **argv) {
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     init_gl();
     /* Loop until the user closes the window */
-       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 1)
+       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 100)
        {
            /* Render here */
            render();
            /* Swap front and back buffers */
            glfwSwapBuffers(window);
-           simulate(false,10);
+           simulate(false,100,true);
            /* Poll for and process events */
            glfwPollEvents();
           // glfwGetWindowSize(window, &width, &height);
