@@ -17,7 +17,11 @@
 
 class robot() {
     //default will create a simple cube
-    robot();
+    robot() : robotTime(t) {
+        masses = generateMasses(defaultMassWeight);
+        springs = generateSprings(masses,springs);
+        linkMassSpring(masses,springs);
+    }
     // given objects
     robot(std::vector<mass>& m, std::vector<spring&> s);
     // copy
@@ -47,6 +51,7 @@ class robot() {
     // these should probably change to linked lists?
     vector<mass> masses;
     vector<spring> springs;
+    double robotTime;
 }
 
 
