@@ -24,8 +24,22 @@ void robot::simulate(bool multicore = false, int maxSteps = 1, bool pulse = fals
             item->updateDerivitives(forces[i]);
             i++;
         }
-        t = t+=timestep;
+        robotTime = robotTime+=timestep;
         maxSteps--;
     }
     return;
+}
+
+vector<double> robot::centerOfMass() {
+    vector<double> topHalf = {0,0,0};
+    double bottomHalf;
+    vector<double> theReturn = {0,0,0};
+    for (mass& item : masses) {
+        topHalf[0] += item.m*item.p[0];
+        topHalf[1] += item.m*item.p[1];
+        topHalf[2] += item.m*item.p[2];
+        bottomHalf += item.m;
+    }
+    for (int i = 0; i < 3; i++) { theReturn[i] = topHalf[i]/bottomHalf; }
+    return theReturn;
 }
