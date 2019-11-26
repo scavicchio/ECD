@@ -23,7 +23,11 @@ class robot() {
         linkMassSpring(masses,springs);
     }
     // given objects
-    robot(std::vector<mass>& m, std::vector<spring&> s);
+    robot(std::vector<mass>& m, std::vector<spring&> s) : robotTime(t) {
+        masses = generateMasses(defaultMassWeight);
+        springs = generateSprings(m,s);
+        linkMassSpring(m,s);
+    }
     // copy
     robot (const spring& rhs);
     //assignment
