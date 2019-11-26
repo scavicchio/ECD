@@ -9,7 +9,7 @@
 #include "robot.hpp"
 #include <vector>
 
-void robot::simulate(bool multicore = false, int maxSteps = 1, bool pulse = false) {
+void robot::simulate(bool multicore, int maxSteps, bool pulse) {
     std::vector<force> forces;
     
     while (maxSteps > 0) {
