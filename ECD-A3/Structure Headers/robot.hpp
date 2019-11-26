@@ -13,21 +13,17 @@
 #include "mass.hpp"
 #include "force.hpp"
 #include "spring.hpp"
-#include "init.hpp"
+#include "globalVars.h"
 
-class robot() {
+struct robot {
     //default will create a simple cube
     robot() : robotTime(t) {
-        masses = generateMasses(defaultMassWeight);
-        springs = generateSprings(masses,springs);
-        linkMassSpring(masses,springs);
+        masses = generateMasses();
+        springs = generateSprings();
+        linkMassSpring();
     }
     // given objects
-    robot(std::vector<mass>& m, std::vector<spring&> s) : robotTime(t) {
-        masses = generateMasses(defaultMassWeight);
-        springs = generateSprings(m,s);
-        linkMassSpring(m,s);
-    }
+    // --------
     // copy
     robot (const spring& rhs);
     //assignment
@@ -35,29 +31,34 @@ class robot() {
     
     // member functions
     void simulate(bool multicore = false, int maxSteps = 1, bool pulse = false);
-    vector<double> centerOfMass();
+    std::vector<double> centerOfMass();
     
+    std::vector<mass> generateMasses(double weight = defaultMassWeight);
+    std::vector<spring> generateSprings(double stiffness = k);
+    void linkMassSpring();
+
     // function to randomize the spring values?
     void randomizeSprings();
     // function to add a mass somewhere? do we want that?
-    void addRandomMass();
+   /* void addRandomMass();
     // remove a random mass
     void removeRandomMass();
     // remove random spring
     void removeRandomSpring();
     // add random spring (this might not always add a spring if there is already one between the two random masses)
     // dont want to force it to try too long so instead will do nothing
-    void addRandomSpring();
+    void addRandomSpring();*/
     
-    
+    void draw();
+    double generateRandom(const double range_start, const double range_end);
+
+    void reset();
     
     // member variables
     // these should probably change to linked lists?
-    vector<mass> masses;
-    vector<spring> springs;
+    std::vector<mass> masses;
+    std::vector<spring> springs;
     double robotTime;
-}
-
-
+};
 
 #endif /* robot_hpp */

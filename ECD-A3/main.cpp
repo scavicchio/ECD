@@ -29,44 +29,11 @@ const double friction_mu_k=0.8;// friction coefficient rubber-concrete
 const double k_vertices_soft=2000;// spring constant of the edges
 const double kc = 200000;
 const double g[3] = {0,-9.81,0};
+double k = 10000; //Nmss
+const double defaultMassWeight = 0.1;
 
 int width = 700;
 int height = 700;
-
-void simulate(bool multicore = false, int maxSteps = 1, bool pulse = false) {
-    
-    while (maxSteps > 0) {
-         forces.clear();
-         // get the forces
-        // this can become parallel later
-        for (vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
-            forces.push_back(force(&(*item),pulse));
-        }
-        int i = 0;
-        // this can also become parallel later
-        for (vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
-            item->updateDerivitives(forces[i]);
-            i++;
-        }
-        t = t+=timestep;
-        maxSteps--;
-    }
-    return;
-}
-
-vector<double> centerOfMass(vector<mass>& masses) {
-    vector<double> topHalf = {0,0,0};
-    double bottomHalf;
-    vector<double> theReturn = {0,0,0};
-    for (mass& item : masses) {
-        topHalf[0] += item.m*item.p[0];
-        topHalf[1] += item.m*item.p[1];
-        topHalf[2] += item.m*item.p[2];
-        bottomHalf += item.m;
-    }
-    for (int i = 0; i < 3; i++) { theReturn[i] = topHalf[i]/bottomHalf; }
-    return theReturn;
-}
 
 Checkerboard checkerboard(2,2);
 Camera camera;
@@ -83,7 +50,7 @@ void init_gl() {
   checkerboard.create();
 }
 
-void render() {
+void render(robot& theRobot) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     checkerboard.draw();
     
@@ -96,12 +63,8 @@ void render() {
     glRotatef(camera.getY(),0.0f,1.0f,0.0f);
     glRotatef(camera.getZ(),0.0f,0.0f,1.0f);
 
-    for (vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
-        item->draw();
-    }
-    for (vector<spring>::iterator item = springs.begin(); item != springs.end(); item++) {
-        item->draw();
-    }
+    theRobot.draw();
+    
     glFlush();
 };
 
@@ -117,7 +80,6 @@ int main(int argc, char **argv) {
     // set global vars
     // initialize mass and array
     double weight = 0.1; //kg
-    double k = 10000; //Nmss
     int fps = 60;
     double oneSecondOfSim = 1;
     oneSecondOfSim = 1/timestep;
@@ -126,12 +88,10 @@ int main(int argc, char **argv) {
     double frameTime = 1;
     frameTime /= fps;
     //int steps = 500000;
-    masses = generateMasses(weight);
-    springs = generateSprings(k,masses,springs);
-    linkMassSpring(masses,springs);
+    robot theRobot;
     
-    bool debug = true;
-    for (mass& m : masses) {
+    bool debug = false;
+    for (mass& m : theRobot.masses) {
         m.moveMass(0,0,0);
     }
    
@@ -160,12 +120,13 @@ int main(int argc, char **argv) {
     double lastTime = time;
     double deltaTime = time - lastTime;
     
+    for (int i = 0; i < 10; i++) {
     /* Loop until the user closes the window */
        while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 10)
        {
            processInput(window);
            /* Render here */
-           render();
+           render(theRobot);
            /* Swap front and back buffers */
            glfwSwapBuffers(window);
            time = glfwGetTime();
@@ -173,7 +134,8 @@ int main(int argc, char **argv) {
            deltaTime = time - lastTime;
            
            while (deltaTime <= frameTime) {
-               simulate(false,1,true);
+               theRobot.simulate(false,1,true);
+               t += timestep;
                if (debug) { break; }
                time = glfwGetTime();
                deltaTime = time - lastTime;
@@ -185,12 +147,17 @@ int main(int argc, char **argv) {
           // reshape(width, height);
            if (debug) {
                cout << "Current Sim Time: " << t << endl;
-               vector<double> center = centerOfMass(masses);
+               vector<double> center = theRobot.centerOfMass();
                cout << "Center of Mass: " << center[0] << " " << center[1] << " " << center[2] << endl;
                cout << "===================" << endl;
            }
        }
+        theRobot.reset();
+        theRobot.randomizeSprings();
+        t = 0;
+        cout << i << endl;
     //
+    }
     glfwTerminate();
     
     return 0;

@@ -70,7 +70,7 @@ void force::addFrictionForce() {
     // normal force on mass (with friciton factor
     double fN = f[1];
    // horizontal force on mass
-    
+    double fH = 0;
     if (fH < 0) {
         double fH = sqrt(pow(f[0],2)+pow(f[2],2));
         

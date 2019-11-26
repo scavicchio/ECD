@@ -26,7 +26,7 @@ extern const double friction_mu_k; // friction coefficient rubber-concrete
 extern const double k_vertices_soft; // spring constant of the edges
 extern const double kc;
 extern const double g[3];
-
-extern const double defaultMassWeight = 0.1; 
+extern double k;
+extern const double defaultMassWeight; 
 
 #endif /* globalVars_h */

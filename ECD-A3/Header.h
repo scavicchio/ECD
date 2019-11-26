@@ -24,5 +24,5 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "checkerboard.hpp"
 #include "camera.hpp"
-
+#include "robot.hpp"
 #endif /* Header_h */
