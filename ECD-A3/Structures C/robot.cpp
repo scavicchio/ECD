@@ -7,7 +7,6 @@
 //
 
 #include "robot.hpp"
-#include <vector>
 
 void robot::simulate(bool multicore, int maxSteps, bool pulse) {
     std::vector<force> forces;
