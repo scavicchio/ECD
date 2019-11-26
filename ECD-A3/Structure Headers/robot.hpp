@@ -29,6 +29,20 @@ class robot() {
     void simulate(bool multicore = false, int maxSteps = 1, bool pulse = false);
     vector<double> centerOfMass();
     
+    // function to randomize the spring values?
+    void randomizeSprings();
+    // function to add a mass somewhere? do we want that?
+    void addRandomMass();
+    // remove a random mass
+    void removeRandomMass();
+    // remove random spring
+    void removeRandomSpring();
+    // add random spring (this might not always add a spring if there is already one between the two random masses)
+    // dont want to force it to try too long so instead will do nothing
+    void addRandomSpring();
+    
+    
+    
     // member variables
     // these should probably change to linked lists?
     vector<mass> masses;
