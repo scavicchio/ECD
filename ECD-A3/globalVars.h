@@ -27,4 +27,6 @@ extern const double k_vertices_soft; // spring constant of the edges
 extern const double kc;
 extern const double g[3];
 
+extern const double defaultMassWeight = 0.1; 
+
 #endif /* globalVars_h */
