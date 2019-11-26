@@ -10,6 +10,7 @@
 		C62A302B2388A85F0040ED09 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6B77CC9237CA42700539C41 /* OpenGL.framework */; };
 		C62A302C2388A8630040ED09 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6A8B2352380AB800079A4BB /* GLUT.framework */; };
 		C62A30312388AA650040ED09 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C62A30302388AA650040ED09 /* libglfw.3.3.dylib */; };
+		C62A7714238DA21C001C65EA /* robot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C62A7712238DA21C001C65EA /* robot.cpp */; };
 		C6564FCC23737B43008C7281 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6564FCB23737B43008C7281 /* main.cpp */; };
 		C6564FE4237488AB008C7281 /* spring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6564FE2237488AB008C7281 /* spring.cpp */; };
 		C6564FE72374C2DB008C7281 /* force.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6564FE52374C2DB008C7281 /* force.cpp */; };
@@ -40,6 +41,8 @@
 		C62A30222388A1760040ED09 /* libsfml-network.2.5.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-network.2.5.1.dylib"; path = "SFML/lib/libsfml-network.2.5.1.dylib"; sourceTree = "<group>"; };
 		C62A30232388A1760040ED09 /* libsfml-graphics.2.5.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-graphics.2.5.1.dylib"; path = "SFML/lib/libsfml-graphics.2.5.1.dylib"; sourceTree = "<group>"; };
 		C62A30302388AA650040ED09 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../../usr/local/Cellar/glfw/3.3/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
+		C62A7712238DA21C001C65EA /* robot.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = robot.cpp; sourceTree = "<group>"; };
+		C62A7713238DA21C001C65EA /* robot.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = robot.hpp; sourceTree = "<group>"; };
 		C64982822383317B00FFEAB6 /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglfw3.a; path = ../../../../../usr/local/lib/libglfw3.a; sourceTree = "<group>"; };
 		C6564FC823737B43008C7281 /* ECD-A3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "ECD-A3"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6564FCB23737B43008C7281 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -136,6 +139,7 @@
 				C6564FE92374C2E9008C7281 /* mass.hpp */,
 				C6564FE62374C2DB008C7281 /* force.hpp */,
 				C6564FE3237488AB008C7281 /* spring.hpp */,
+				C62A7713238DA21C001C65EA /* robot.hpp */,
 			);
 			path = "Structure Headers";
 			sourceTree = "<group>";
@@ -143,6 +147,7 @@
 		C6564FEC2374C340008C7281 /* Structures C */ = {
 			isa = PBXGroup;
 			children = (
+				C62A7712238DA21C001C65EA /* robot.cpp */,
 				C6564FE52374C2DB008C7281 /* force.cpp */,
 				C6564FE82374C2E9008C7281 /* mass.cpp */,
 				C6564FE2237488AB008C7281 /* spring.cpp */,
@@ -227,6 +232,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C62A7714238DA21C001C65EA /* robot.cpp in Sources */,
 				C6685C1A238C97BD00AB53BF /* camera.cpp in Sources */,
 				C6564FE72374C2DB008C7281 /* force.cpp in Sources */,
 				C6564FEA2374C2E9008C7281 /* mass.cpp in Sources */,

@@ -17,7 +17,7 @@ struct force {
         f[0] = 0; f[1] = 0; f[2] = 0;
         this->addGravity();
         this->addSpringForce(pulse);
-       // this->addFrictionForce();
+        this->addFrictionForce();
         this->addResultantForce();
     }
     

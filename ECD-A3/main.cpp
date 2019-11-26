@@ -19,7 +19,7 @@ vector<force> forces;
 double t = 0;
 double c = 0;
 
-const double timestep = 0.0005;
+const double timestep = 0.00001;
 const double f = 1; // frequemcy of length function in per/second
 double w = 2*3.14*f/2;
 
@@ -117,7 +117,7 @@ int main(int argc, char **argv) {
     // set global vars
     // initialize mass and array
     double weight = 0.1; //kg
-    double k = 100000; //Nmss
+    double k = 10000; //Nmss
     int fps = 60;
     double oneSecondOfSim = 1;
     oneSecondOfSim = 1/timestep;
@@ -131,10 +131,10 @@ int main(int argc, char **argv) {
     linkMassSpring(masses,springs);
     
     bool debug = true;
-  /*  for (mass& m : masses) {
-        m.moveMass(0, 0.5, 0);
+    for (mass& m : masses) {
+        m.moveMass(0,0,0);
     }
-   */
+   
     
     glfwInit();
     GLFWwindow* window; // (In the accompanying source code, this variable is global for simplicity)

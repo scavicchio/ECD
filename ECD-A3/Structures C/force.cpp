@@ -61,27 +61,36 @@ void force::addGravity() {
 }
 
 void force::addFrictionForce() {
+    
+    if (body->p[1] <= 0) {
+        
+        double fN = f[1];
+        
+    }
     // normal force on mass (with friciton factor
     double fN = f[1];
    // horizontal force on mass
-    if (fN < 0) {
+    
+    if (fH < 0) {
         double fH = sqrt(pow(f[0],2)+pow(f[2],2));
+        
+        if (fH != 0) {
+         // for break
+            std::cout << "hi" << std::endl;
+        }
+  
         double frictionForce = fN*friction_mu_s;
         
-        double fAdjX = sqrt(pow(fH,2)-pow(f[2],2))*frictionForce;
-        double fAdjY = sqrt(pow(fH,2)-pow(f[2],1))*frictionForce;
-        if (fH > frictionForce) {
-            f[0] = 0;
-            f[2] = 0;
-        }
-        else {
-            if (f[0] < 0) { f[0] -= fAdjX; }
-            else { f[0] += fAdjX; }
+        double fAdjX = abs(sqrt(pow(fH,2)-pow(f[2],2))*frictionForce);
+        double fAdjZ = abs(sqrt(pow(fH,2)-pow(f[2],2))*frictionForce);
         
-            if (f[2] < 0) { f[2] -= fAdjY; }
-            else { f[2] += fAdjY; }
-        }
+        if (f[0] < 0) { f[0] += fAdjX; }
+        else { f[0] -= fAdjX; }
+        
+        if (f[2] < 0) { f[2] += fAdjZ; }
+        else { f[2] -= fAdjZ; }
     }
+    
     return;
 }
 
