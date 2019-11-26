@@ -7,20 +7,21 @@
 //
 
 #include "robot.hpp"
+#include <vector>
 
 void robot::simulate(bool multicore = false, int maxSteps = 1, bool pulse = false) {
-    vector<force> forces;
+    std::vector<force> forces;
     
     while (maxSteps > 0) {
          forces.clear();
          // get the forces
         // this can become parallel later
-        for (vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
+        for (std::vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
             forces.push_back(force(&(*item),pulse));
         }
         int i = 0;
         // this can also become parallel later
-        for (vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
+        for (std::vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
             item->updateDerivitives(forces[i]);
             i++;
         }
@@ -30,10 +31,10 @@ void robot::simulate(bool multicore = false, int maxSteps = 1, bool pulse = fals
     return;
 }
 
-vector<double> robot::centerOfMass() {
-    vector<double> topHalf = {0,0,0};
+std::vector<double> robot::centerOfMass() {
+    std::vector<double> topHalf = {0,0,0};
     double bottomHalf;
-    vector<double> theReturn = {0,0,0};
+    std::vector<double> theReturn = {0,0,0};
     for (mass& item : masses) {
         topHalf[0] += item.m*item.p[0];
         topHalf[1] += item.m*item.p[1];
