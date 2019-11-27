@@ -107,8 +107,8 @@ double robot::generateRandomPercentage(const double range_start, const double ra
 
 void robot::randomizeSprings() {
     for (std::vector<spring>::iterator item = springs.begin(); item != springs.end(); item++) {
-        item->b = generateRandomPercentage(0.8,1.2);
-        item->c *= generateRandom(0,6.28);
+        item->b *= generateRandomPercentage(0.8,1.2);
+        item->c = generateRandom(0,6.28);
         item->k *= generateRandomPercentage();
     }
 }

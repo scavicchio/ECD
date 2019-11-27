@@ -19,23 +19,32 @@ vector<force> forces;
 double t = 0;
 double c = 0;
 
+<<<<<<< HEAD
 const double timestep = 0.00005;
+=======
+<<<<<<< HEAD
+const double timestep = 0.00001;
+const double f = 2; // frequemcy of length function in per/second
+=======
+const double timestep = 0.0001;
+>>>>>>> origin/master
 const double f = 1; // frequemcy of length function in per/second
+>>>>>>> fa51c4b875eeb1a897227e8ad74bc87823438c9c
 double w = 2*3.14*f/2;
 
 const double damping = 0.9;
 const double friction_mu_s=1;// friction coefficient rubber-concrete
 const double friction_mu_k=0.8;// friction coefficient rubber-concrete
 const double k_vertices_soft=2000;// spring constant of the edges
-const double kc = 200000;
+const double kc = 205000;
 const double g[3] = {0,-9.81,0};
 double k = 10000; //Nmss
-const double defaultMassWeight = 0.1;
+const double defaultMassWeight = 100;
 
 int width = 700;
 int height = 700;
 
-Checkerboard checkerboard(2,2);
+Checkerboard checkerboard(10,10);
 Camera camera;
 
 // MORE FUNCTIONS
@@ -79,8 +88,17 @@ void processInput(GLFWwindow *window) {
 int main(int argc, char **argv) {
     // set global vars
     // initialize mass and array
+<<<<<<< HEAD
+    double weight = 100; //kg
+    int fps = 60;
+=======
     double weight = 0.1; //kg
+<<<<<<< HEAD
     int fps = 30;
+=======
+    int fps = 24;
+>>>>>>> fa51c4b875eeb1a897227e8ad74bc87823438c9c
+>>>>>>> origin/master
     double oneSecondOfSim = 1;
     oneSecondOfSim = 1/timestep;
     double simSteps = 1;
