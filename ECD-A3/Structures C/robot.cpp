@@ -138,33 +138,34 @@ void robot::reset() {
 // THIS WILL MOVE MASSES TO EQUALIZE THE SPRING FORCES TO BE VERY SMALL
 // threshold represents the maximum allowed spring force left in the object
 // depth represents the recursion depth needed, max depth is 10.
-void robot::equalize(double threshold, int depth, int maxDepth) {
-    if (depth == maxDepth) {
-        std::cout << "equalize did not meet threshold after 10 loops" << std::endl;
-        return;
+void robot::equalize(double threshold, int maxDepth, int currentDepth) {
+           // for a single mass (the first one) - will move the other masses so that they have no spring force left
+           // then loop through the next ones (but ignoring the ones already hit
+           // this is almost the same algo that links the masses and springs!
+    if (maxDepth == currentDepth) {
+        std::cout << "REACHED MAX EQUALIZER DEPTH. max spring force: " << calcMaxSpringForce() << std::endl;
     }
-    if (calcMaxSpringForce() <= threshold) {
-        std::cout << "equalize met threshold after " << depth << " loops" << std::endl;
-        return;
+    else if (calcMaxSpringForce() < threshold) {
+        std::cout << "threshold met at depth: " << currentDepth << " max spring force: " << calcMaxSpringForce() << std::endl;
     }
-       // for a single mass (the first one) - will move the other masses so that they have no spring force left
-       // then loop through the next ones (but ignoring the ones already hit
-       // this is almost the same algo that links the masses and springs!
-    for(std::vector<mass>::iterator m = masses.begin(); m != masses.end(); m++) {
-        // go through all the springs connected to a single mass
-        for(spring*  s : m->s) {
-            force thisForce(&(*m),this->pulse,false);
-            force thatForce(s->m1);
-            if (s->m1 == &(*m)) { force thatForce(s->m2); }
-            
-            std::vector<double> springForce = thisForce.getSingleSpringForce(s,pulse);
-            for (int i = 0; i < 3; i++) {
-                thisForce.f[i] += springForce[i];
-                thatForce.f[i] -= springForce[i];
+    else {
+        for(std::vector<mass>::iterator m = masses.begin(); m != masses.end(); m++) {
+            // go through all the springs connected to a single mass
+            for(spring*  s : m->s) {
+                force thisForce(&(*m),this->pulse,false);
+                force thatForce(s->m1);
+                if (s->m1 == &(*m)) { force thatForce(s->m2); }
+                
+                std::vector<double> springForce = thisForce.getSingleSpringForce(s,pulse);
+                for (int i = 0; i < 3; i++) {
+                    thisForce.f[i] += springForce[i];
+                    thatForce.f[i] -= springForce[i];
+                }
+                thisForce.body->updateDerivitives(thisForce);
+                thatForce.body->updateDerivitives(thatForce);
             }
-            thisForce.body->updateDerivitives(thisForce);
-            thatForce.body->updateDerivitives(thatForce);
         }
+        equalize(threshold,maxDepth,++currentDepth);
     }
     return;
 };

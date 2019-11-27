@@ -52,7 +52,7 @@ struct robot {
     void draw();
     double generateRandom(const double range_start, const double range_end);
     double generateRandomPercentage(const double range_start = 0.5, const double range_end = 1.5);
-    void equalize(double threshold = 0.01, int depth = 0, int maxDepth = 10); // this is to zero out the forces before a simlation starts
+    void equalize(double threshold = 0.01,int maxDepth = 10, int currentDepth = 0); // this is to zero out the forces before a simlation starts
     void reset();
     double calcMaxSpringForce();
     void setOnGround();

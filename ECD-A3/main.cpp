@@ -19,7 +19,7 @@ vector<force> forces;
 double t = 0;
 double c = 0;
 
-const double timestep = 0.000005;
+const double timestep = 0.00001;
 const double f = 1; // frequemcy of length function in per/second
 double w = 2*3.14*f/2;
 
@@ -157,7 +157,6 @@ int main(int argc, char **argv) {
         theRobot.reset();
         theRobot.randomizeSprings();
         t = 0;
-        cout << i << endl;
     //
     }
     glfwTerminate();
