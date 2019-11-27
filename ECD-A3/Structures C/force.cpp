@@ -31,7 +31,7 @@ force::force(const force& rhs) {
 }
 
 std::vector<double> force::getSingleSpringForce(spring* s, bool pulse) {
-    double di[3];
+   double di[3];
    if (body == s->m1) {
        for (int i = 0; i < 3; i++) {
            di[i] = -(s->m1->p[i]-s->m2->p[i]);

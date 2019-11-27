@@ -149,22 +149,7 @@ void robot::equalize(double threshold, int maxDepth, int currentDepth) {
         std::cout << "threshold met at depth: " << currentDepth << " max spring force: " << calcMaxSpringForce() << std::endl;
     }
     else {
-        for(std::vector<mass>::iterator m = masses.begin(); m != masses.end(); m++) {
-            // go through all the springs connected to a single mass
-            for(spring*  s : m->s) {
-                force thisForce(&(*m),this->pulse,false);
-                force thatForce(s->m1);
-                if (s->m1 == &(*m)) { force thatForce(s->m2); }
-                
-                std::vector<double> springForce = thisForce.getSingleSpringForce(s,pulse);
-                for (int i = 0; i < 3; i++) {
-                    thisForce.f[i] += springForce[i];
-                    thatForce.f[i] -= springForce[i];
-                }
-                thisForce.body->updateDerivitives(thisForce);
-                thatForce.body->updateDerivitives(thatForce);
-            }
-        }
+       // PUT THE CODE HEERE TOO COMPELTE THE EQUALIZER
         equalize(threshold,maxDepth,++currentDepth);
     }
     return;
@@ -188,7 +173,7 @@ double robot::calcMaxSpringForce() {
     double theReturn = 0;
     double aForce = 0;
     for(std::vector<spring>::iterator s = springs.begin(); s != springs.end(); s++) {
-        aForce = s->calcCurrentSpringForce(pulse);
+        aForce = abs(s->calcCurrentSpringForce(pulse));
         if (aForce > theReturn) { theReturn = aForce; }
     }
     return theReturn;
