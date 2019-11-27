@@ -124,7 +124,38 @@ int main(int argc, char **argv) {
     double lastTime = time;
     double deltaTime = time - lastTime;
     
-    for (int i = 0; i < 10; i++) {
+    vector<robot> theRobots;
+    int geneSize = 10;
+    
+    // create the robot vector
+    for(int i = 0; i < geneSize; i++) {
+        theRobots.push_back(theRobot);
+    }
+    // how many iterations to evolve
+    int evoloutionIterations = 5;
+    // how much time for each simulation
+    double simTimeLength = 1;
+    // the result array
+    double movementResults[geneSize][evoloutionIterations] = 0;
+    
+    
+    // for all the evoloution iterations
+    for (int j = 0; j < evoloutionIterations; j++) {
+        // for each robot in the vector
+        for (int i = 0; i < theRobots.size() : i++) {
+            // simulate the timeframe
+            while(theRobots[i].robotTime < simTimeLength) { theRobots[i].simulate(); }
+            // find the current value
+            movementResults[i][j] = theRobots[i].centerOfMass()
+        }
+        // now do whatever evoloution stuff
+        
+    }
+
+
+    
+    
+    
     /* Loop until the user closes the window */
        while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 10)
        {
@@ -156,11 +187,7 @@ int main(int argc, char **argv) {
                cout << "===================" << endl;
            }
        }
-        theRobot.reset();
-        theRobot.randomizeSprings();
-        t = 0;
     //
-    }
     glfwTerminate();
     
     return 0;
