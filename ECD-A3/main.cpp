@@ -136,17 +136,19 @@ int main(int argc, char **argv) {
     // how much time for each simulation
     double simTimeLength = 1;
     // the result array
-    double movementResults[geneSize][evoloutionIterations] = 0;
+    double movementResults[geneSize][evoloutionIterations];
     
     
     // for all the evoloution iterations
     for (int j = 0; j < evoloutionIterations; j++) {
         // for each robot in the vector
-        for (int i = 0; i < theRobots.size() : i++) {
+        for (int i = 0; i < theRobots.size(); i++) {
             // simulate the timeframe
             while(theRobots[i].robotTime < simTimeLength) { theRobots[i].simulate(); }
             // find the current value
-            movementResults[i][j] = theRobots[i].centerOfMass()
+            cout << theRobots[i].centerOfMass()[0] << endl;
+            movementResults[i][j] = theRobots[i].centerOfMass()[0];
+            cout << movementResults[i][j] << endl;
         }
         // now do whatever evoloution stuff
         
