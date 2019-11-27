@@ -211,11 +211,13 @@ robot& robot::operator=(const robot& rhs) {
     if (this != &rhs)  {
         masses.clear();
         for(int i = 0; i < rhs.masses.size(); i++) {
-            masses.push_back(rhs.masses[i]);
+            mass temp = rhs.masses[i];
+            masses.push_back(temp);
         }
         springs.clear();
         for(int i = 0; i < rhs.springs.size(); i++) {
-            springs.push_back(rhs.springs[i]);
+            spring temp = rhs.springs[i];
+            springs.push_back(temp);
         }
         robotTime = rhs.robotTime;
         pulse = rhs.pulse;

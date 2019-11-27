@@ -151,11 +151,7 @@ int main(int argc, char **argv) {
             cout << movementResults[i][j] << endl;
         }
         // now do whatever evoloution stuff
-        
     }
-
-
-    
     
     
     /* Loop until the user closes the window */
