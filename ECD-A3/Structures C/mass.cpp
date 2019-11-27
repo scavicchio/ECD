@@ -28,6 +28,7 @@ mass& mass::operator=(const mass& right) {
             s.push_back(item);
         }
     }
+    parent = right.parent;
     return *this;
 }
 
@@ -43,6 +44,7 @@ mass::mass(const mass& rhs) {
     for (spring* item : rhs.s) {
         s.push_back(item);
     }
+    parent = rhs.parent;
 }
 
 void mass::updateDerivitives(const force& f,const double damping) {
@@ -107,11 +109,12 @@ void mass::linkSpring(spring* aSpring) {
 }
 */
 
-force mass::calcForce(bool print) {
+force mass::calcForce(bool pulse) {
     force theReturn(this);
-    theReturn.addSpringForce(print);
+    theReturn.addSpringForce(pulse);
     theReturn.addGravity();
     theReturn.addResultantForce();
+    theReturn.addFrictionForce();
     return theReturn;
 }
 

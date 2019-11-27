@@ -19,8 +19,13 @@ vector<force> forces;
 double t = 0;
 double c = 0;
 
+<<<<<<< HEAD
 const double timestep = 0.00001;
 const double f = 2; // frequemcy of length function in per/second
+=======
+const double timestep = 0.0001;
+const double f = 1; // frequemcy of length function in per/second
+>>>>>>> fa51c4b875eeb1a897227e8ad74bc87823438c9c
 double w = 2*3.14*f/2;
 
 const double damping = 0.98;
@@ -79,8 +84,13 @@ void processInput(GLFWwindow *window) {
 int main(int argc, char **argv) {
     // set global vars
     // initialize mass and array
+<<<<<<< HEAD
     double weight = 100; //kg
     int fps = 60;
+=======
+    double weight = 0.1; //kg
+    int fps = 24;
+>>>>>>> fa51c4b875eeb1a897227e8ad74bc87823438c9c
     double oneSecondOfSim = 1;
     oneSecondOfSim = 1/timestep;
     double simSteps = 1;
@@ -135,13 +145,13 @@ int main(int argc, char **argv) {
            lastTime = time;
            deltaTime = time - lastTime;
            
-           while (deltaTime <= frameTime) {
-                theRobot.simulate(false,1,true);
-                t += (timestep);
-                if (debug) { break; }
-                time = glfwGetTime();
-                deltaTime = time - lastTime;
-           }
+         //  while (deltaTime <= frameTime) {
+           theRobot.simulate(false,simSteps,true);
+           t = theRobot.robotTime;
+        //        if (!debug) { break; }
+       //         time = glfwGetTime();
+        //        deltaTime = time - lastTime;
+      //     }
          
            /* Poll for and process events */
            glfwPollEvents();

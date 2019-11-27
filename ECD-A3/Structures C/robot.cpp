@@ -11,10 +11,10 @@
 #include <random>
 #include <ctime>
 
-void robot::simulate(bool multicore, int maxSteps, bool pulse) {
+void robot::simulate(bool multicore, int simSteps, bool pulse) {
     std::vector<force> forces;
     
-    while (maxSteps > 0) {
+    while (simSteps > 0) {
          forces.clear();
          // get the forces
         // this can become parallel later
@@ -27,8 +27,8 @@ void robot::simulate(bool multicore, int maxSteps, bool pulse) {
             item->updateDerivitives(forces[i],damping);
             i++;
         }
-        robotTime = robotTime+=timestep;
-        maxSteps--;
+        robotTime +=timestep;
+        simSteps--;
     }
     return;
 }
@@ -49,14 +49,15 @@ std::vector<double> robot::centerOfMass() {
 
 
 std::vector<mass> robot::generateMasses(double weight) {
-    mass m1(weight,0,0,0);
-    mass m2(weight,0,.1,0);
-    mass m3(weight,0,0,.1);
-    mass m4(weight,0,.1,.1);
-    mass m5(weight,.1,0,0);
-    mass m6(weight,.1,.1,0);
-    mass m7(weight,.1,0,.1);
-    mass m8(weight,.1,.1,.1);
+    robot* parent = this;
+    mass m1(weight,0,0,0,parent);
+    mass m2(weight,0,.1,0,parent);
+    mass m3(weight,0,0,.1,parent);
+    mass m4(weight,0,.1,.1,parent);
+    mass m5(weight,.1,0,0,parent);
+    mass m6(weight,.1,.1,0,parent);
+    mass m7(weight,.1,0,.1,parent);
+    mass m8(weight,.1,.1,.1,parent);
     std::vector<mass> theResult = {m1,m2,m3,m4,m5,m6,m7,m8};
     return theResult;
 }
@@ -177,4 +178,34 @@ double robot::calcMaxSpringForce() {
         if (aForce > theReturn) { theReturn = aForce; }
     }
     return theReturn;
+}
+
+robot::robot(const robot& rhs) {
+    masses.clear();
+    for(int i = 0; i < rhs.masses.size(); i++) {
+        masses.push_back(rhs.masses[i]);
+    }
+    springs.clear();
+    for(int i = 0; i < rhs.springs.size(); i++) {
+        springs.push_back(rhs.springs[i]);
+    }
+    robotTime = rhs.robotTime;
+    pulse = rhs.pulse;
+}
+
+
+robot& robot::operator=(const robot& rhs) {
+    if (this != &rhs)  {
+        masses.clear();
+        for(int i = 0; i < rhs.masses.size(); i++) {
+            masses.push_back(rhs.masses[i]);
+        }
+        springs.clear();
+        for(int i = 0; i < rhs.springs.size(); i++) {
+            springs.push_back(rhs.springs[i]);
+        }
+        robotTime = rhs.robotTime;
+        pulse = rhs.pulse;
+        }
+    return *this;
 }
