@@ -31,7 +31,7 @@ struct mass {
     void printSprings();
     void display();
     
-    void updateDerivitives(const force& f,const bool damping = false);
+    void updateDerivitives(const force& f,const double damping = 1);
     void moveMass(const double dx, const double dy, const double dz);
     //void linkSpring(spring* aSpring);
     force calcForce(bool print = false);

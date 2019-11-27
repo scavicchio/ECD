@@ -24,7 +24,7 @@ void robot::simulate(bool multicore, int maxSteps, bool pulse) {
         int i = 0;
         // this can also become parallel later
         for (std::vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
-            item->updateDerivitives(forces[i]);
+            item->updateDerivitives(forces[i],damping);
             i++;
         }
         robotTime = robotTime+=timestep;
@@ -94,15 +94,21 @@ void robot::draw() {
 
 double robot::generateRandom(const double range_start, const double range_end) {
     std::random_device e;
-    std::uniform_real_distribution<> dis(0, 6.283185307);
+    std::uniform_real_distribution<> dis(range_start, range_end);
+    return dis(e);
+}
+
+double robot::generateRandomPercentage(const double range_start, const double range_end) {
+    std::random_device e;
+    std::uniform_real_distribution<> dis(range_start, range_end);
     return dis(e);
 }
 
 void robot::randomizeSprings() {
     for (std::vector<spring>::iterator item = springs.begin(); item != springs.end(); item++) {
-        item->b = generateRandom(0.01,1);
-        item->c = generateRandom(0.01,6.283185307);
-        item->k = generateRandom(10000,100000);
+        item->b = generateRandomPercentage(0.8,1.2);
+        item->c *= generateRandomPercentage();
+        item->k *= generateRandomPercentage();
     }
 }
 
@@ -115,6 +121,8 @@ void robot::reset() {
     masses[5].p[0] = .1; masses[5].p[1] = .1 ;masses[5].p[2] = 0;
     masses[6].p[0] = .1; masses[6].p[1] = 0 ;masses[6].p[2] = .1;
     masses[7].p[0] = .1; masses[7].p[1] = .1 ;masses[7].p[2] = .1;
+    
+    for (mass& m : masses) { m.moveMass(0, .01, 0); }
     
     for (std::vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
         item->v[0] = 0; item->v[1] = 0; item->v[2] = 0;

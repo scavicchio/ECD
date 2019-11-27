@@ -45,14 +45,11 @@ mass::mass(const mass& rhs) {
     }
 }
 
-void mass::updateDerivitives(const force& f,const bool damping) {
+void mass::updateDerivitives(const force& f,const double damping) {
     if (!fixed) {
-        double d = 1;
-        if (damping) { double d = damping; }
         for (int i = 0; i < 3; i++) {
             a[i] = f.f[i]/m;
-            v[i] += (a[i]*timestep);
-            v[i] *= d;
+            v[i] += (a[i]*timestep)*damping;
             p[i] += v[i]*timestep;
         }
     }

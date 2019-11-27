@@ -51,7 +51,8 @@ struct robot {
     
     void draw();
     double generateRandom(const double range_start, const double range_end);
-
+    double generateRandomPercentage(const double range_start = 0.5, const double range_end = 1.5);
+    
     void reset();
     
     // member variables

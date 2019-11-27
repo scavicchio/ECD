@@ -61,36 +61,24 @@ void force::addGravity() {
 }
 
 void force::addFrictionForce() {
-    
-    if (body->p[1] <= 0) {
-        
-        double fN = f[1];
-        
-    }
-    // normal force on mass (with friciton factor
-    double fN = f[1];
-   // horizontal force on mass
-    double fH = 0;
-    if (fH < 0) {
-        double fH = sqrt(pow(f[0],2)+pow(f[2],2));
-        
-        if (fH != 0) {
-         // for break
-            std::cout << "hi" << std::endl;
+    // will only add friction force if the body is on (or below) the ground AND the normal force is < 0
+    if (body->p[1] <= 0 && f[1] < 0) {
+        // a friction component is calculated as f_i = fN*u
+        double fN = f[1]*friction_mu_k;
+    //    double fH = sqrt(pow(f[0],2)+pow(f[2],2));
+        if (f[0] < fN) { // then zero the velocity (ie the friction is slowing the mass)
+            body->v[0] = 0;
         }
-  
-        double frictionForce = fN*friction_mu_s;
+        else if (f[0] > 0) { f[0] -= fN; }
+        else { f[0] += fN; }
         
-        double fAdjX = abs(sqrt(pow(fH,2)-pow(f[2],2))*frictionForce);
-        double fAdjZ = abs(sqrt(pow(fH,2)-pow(f[2],2))*frictionForce);
-        
-        if (f[0] < 0) { f[0] += fAdjX; }
-        else { f[0] -= fAdjX; }
-        
-        if (f[2] < 0) { f[2] += fAdjZ; }
-        else { f[2] -= fAdjZ; }
-    }
+        if (f[2] < fN) { // then zero the velocity (ie the friction is slowing the mass)
+            body->v[2] = 0;
+        }
+        else if (f[2] > 0) { f[2] -= fN; }
+        else { f[2] += fN; }
     
+    }
     return;
 }
 
