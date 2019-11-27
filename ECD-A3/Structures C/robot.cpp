@@ -107,8 +107,8 @@ double robot::generateRandomPercentage(const double range_start, const double ra
 
 void robot::randomizeSprings() {
     for (std::vector<spring>::iterator item = springs.begin(); item != springs.end(); item++) {
-        item->b *= generateRandomPercentage(0.8,1.2);
-        item->c = generateRandom(0,6.28);
+        item->b = generateRandom(0,1);
+       // item->c = generateRandom(0,6.28);
         item->k *= generateRandomPercentage();
     }
 }
@@ -130,10 +130,14 @@ void robot::reset() {
         item->a[0] = 0; item->a[1] = 0; item->a[2] = 0;
     }
     
-    equalize();
+    //equalize();
 
     setOnGround();
-    
+/*
+    for (mass& m : masses) {
+        m.moveMass(0,1,0);
+    }
+    */
     return;
 }
 
@@ -151,15 +155,15 @@ void robot::equalize(double threshold, int maxDepth, int currentDepth) {
         std::cout << calcMaxSpringForce() << std::endl;
         std::cout << "threshold met at depth: " << currentDepth << " max spring force: " << calcMaxSpringForce() << std::endl;
     }
-    else {
+    else {/*
          for(int i = 0; i < masses.size(); i++) {
              for (spring* s : masses[i].s) {
                  force aForce(&masses[1],pulse,false);
                  aForce.getSingleSpringForce(s,pulse);
                  aForce.body->updateDerivitives(aForce);
              }
-         }
-        equalize(threshold,maxDepth,--currentDepth);
+         }*/
+        //equalize(threshold,maxDepth,--currentDepth);
      }
     return;
 };

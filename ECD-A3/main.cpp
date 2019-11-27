@@ -25,13 +25,13 @@ double w = 2*3.14*f/2;
 const double damping = 0.9;
 const double friction_mu_s=1;// friction coefficient rubber-concrete
 const double friction_mu_k=0.8;// friction coefficient rubber-concrete
-const double k_vertices_soft=2000;// spring constant of the edges
-const double kc = 205000;
+const double k_vertices_soft=200000;// spring constant of the edges
+const double kc = 2000;
 const double g[3] = {0,-9.81,0};
 double k = 10000; //Nmss
-const double defaultMassWeight = .5;
+const double defaultMassWeight = .1;
 
-const double timestep = 0.00001;
+const double timestep = 0.00005;
 
 int width = 700;
 int height = 700;

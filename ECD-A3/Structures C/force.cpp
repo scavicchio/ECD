@@ -86,7 +86,6 @@ void force::addFrictionForce() {
         }
         else if (f[2] > 0) { f[2] -= fN; }
         else { f[2] += fN; }
-    
     }
     return;
 }
@@ -94,6 +93,9 @@ void force::addFrictionForce() {
 void force::addResultantForce() {
     if (body->p[1] < 0) {
         // for bouncing on the ground
+  //      body->p[1] = 0;
+    //    body->v[1] = 0;
+      //  body->a[1] = 0;
         f[1] -= kc*(body->p[1]);
     }
     return;
