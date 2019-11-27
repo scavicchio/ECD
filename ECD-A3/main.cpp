@@ -19,11 +19,11 @@ vector<force> forces;
 double t = 0;
 double c = 0;
 
-const double timestep = 0.0001;
+const double timestep = 0.00005;
 const double f = 1; // frequemcy of length function in per/second
 double w = 2*3.14*f/2;
 
-const double damping = 0.98;
+const double damping = 0.9;
 const double friction_mu_s=1;// friction coefficient rubber-concrete
 const double friction_mu_k=0.8;// friction coefficient rubber-concrete
 const double k_vertices_soft=2000;// spring constant of the edges
@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
     // set global vars
     // initialize mass and array
     double weight = 0.1; //kg
-    int fps = 24;
+    int fps = 30;
     double oneSecondOfSim = 1;
     oneSecondOfSim = 1/timestep;
     double simSteps = 1;
@@ -124,7 +124,7 @@ int main(int argc, char **argv) {
     
     for (int i = 0; i < 10; i++) {
     /* Loop until the user closes the window */
-       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 3)
+       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 10)
        {
            processInput(window);
            /* Render here */

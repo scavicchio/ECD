@@ -293,22 +293,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9676B1BF-7BA6-467A-8739-C803B799DE2F"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ECD-A3/Structures C/robot.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
-            landmarkName = "robot::equalize(threshold, maxDepth, currentDepth)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "EF11139F-4AB0-408D-9CE9-A4CB06EA39D5"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -319,6 +303,86 @@
             startingLineNumber = "16"
             endingLineNumber = "16"
             landmarkName = "robot::simulate(multicore, simSteps, pulse)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "55565FF1-ECA1-4BE2-843C-D620627B5BE1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ECD-A3/Structures C/robot.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
+            landmarkName = "robot::equalize(threshold, maxDepth, currentDepth)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "55565FF1-ECA1-4BE2-843C-D620627B5BE1 - e7b3bdf55f98eee4"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "robot::equalize(double, int, int)"
+                  moduleName = "ECD-A3"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/salvycavicchio/Documents/ECD/ECD-A3/ECD-A3/Structures%20C/robot.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "157"
+                  endingLineNumber = "157"
+                  offsetFromSymbolStart = "330">
+               </Location>
+               <Location
+                  uuid = "55565FF1-ECA1-4BE2-843C-D620627B5BE1 - e7b3bdf55f98eee4"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "robot::equalize(double, int, int)"
+                  moduleName = "ECD-A3"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/salvycavicchio/Documents/ECD/ECD-A3/ECD-A3/Structures%20C/robot.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "157"
+                  endingLineNumber = "157"
+                  offsetFromSymbolStart = "403">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "809A1633-E3ED-4936-A65E-20CAE6487549"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ECD-A3/Structures C/robot.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
+            landmarkName = "robot::equalize(threshold, maxDepth, currentDepth)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2BE605C7-31C5-4E35-A27F-9DD4F39CA3E7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ECD-A3/Structures C/robot.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
+            landmarkName = "robot::equalize(threshold, maxDepth, currentDepth)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

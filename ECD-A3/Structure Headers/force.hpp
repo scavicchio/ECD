@@ -27,7 +27,7 @@ struct force {
     force& operator=(const force& right);
     
     std::vector<double> getSingleSpringForce(spring* s, bool pulse);
-    void addSpringForce(bool print = false);
+    void addSpringForce(bool pulse = false);
     void addGravity();
     void addFrictionForce();
     void addResultantForce();

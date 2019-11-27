@@ -108,12 +108,14 @@ double robot::generateRandomPercentage(const double range_start, const double ra
 void robot::randomizeSprings() {
     for (std::vector<spring>::iterator item = springs.begin(); item != springs.end(); item++) {
         item->b = generateRandomPercentage(0.8,1.2);
-        item->c *= generateRandomPercentage();
+        item->c *= generateRandom(0,6.28);
         item->k *= generateRandomPercentage();
     }
 }
 
 void robot::reset() {
+    robotTime = 0;
+    
     masses[0].p[0] = 0; masses[0].p[1] = 0 ;masses[0].p[2] = 0;
     masses[1].p[0] = 0; masses[1].p[1] = .1 ;masses[1].p[2] = 0;
     masses[2].p[0] = 0; masses[2].p[1] = 0 ;masses[2].p[2] = .1;
@@ -123,16 +125,15 @@ void robot::reset() {
     masses[6].p[0] = .1; masses[6].p[1] = 0 ;masses[6].p[2] = .1;
     masses[7].p[0] = .1; masses[7].p[1] = .1 ;masses[7].p[2] = .1;
     
-    equalize();
-    
     for (std::vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
         item->v[0] = 0; item->v[1] = 0; item->v[2] = 0;
         item->a[0] = 0; item->a[1] = 0; item->a[2] = 0;
     }
     
+    equalize();
+
     setOnGround();
     
-    robotTime = 0;
     return;
 }
 
@@ -147,12 +148,19 @@ void robot::equalize(double threshold, int maxDepth, int currentDepth) {
         std::cout << "REACHED MAX EQUALIZER DEPTH. max spring force: " << calcMaxSpringForce() << std::endl;
     }
     else if (calcMaxSpringForce() < threshold) {
+        std::cout << calcMaxSpringForce() << std::endl;
         std::cout << "threshold met at depth: " << currentDepth << " max spring force: " << calcMaxSpringForce() << std::endl;
     }
     else {
-       // PUT THE CODE HEERE TOO COMPELTE THE EQUALIZER
-        equalize(threshold,maxDepth,++currentDepth);
-    }
+         for(int i = 0; i < masses.size(); i++) {
+             for (spring* s : masses[i].s) {
+                 force aForce(&masses[1],pulse,false);
+                 aForce.getSingleSpringForce(s,pulse);
+                 aForce.body->updateDerivitives(aForce);
+             }
+         }
+        equalize(threshold,maxDepth,--currentDepth);
+     }
     return;
 };
 
