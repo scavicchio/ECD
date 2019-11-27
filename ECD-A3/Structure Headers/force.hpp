@@ -13,17 +13,20 @@
 #include "globalVars.h"
 
 struct force {
-    force(mass* b, const bool pulse = false) : body(b) {
+    force(mass* b, const bool pulse = false, const bool addAllForces = true) : body(b) {
         f[0] = 0; f[1] = 0; f[2] = 0;
-        this->addGravity();
-        this->addSpringForce(pulse);
-        this->addFrictionForce();
-        this->addResultantForce();
+        if (addAllForces) {
+            this->addGravity();
+            this->addSpringForce(pulse);
+            this->addFrictionForce();
+            this->addResultantForce();
+        }
     }
     
     force (const force& rhs);
     force& operator=(const force& right);
     
+    std::vector<double> getSingleSpringForce(spring* s, bool pulse);
     void addSpringForce(bool print = false);
     void addGravity();
     void addFrictionForce();

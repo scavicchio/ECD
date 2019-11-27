@@ -122,12 +122,73 @@ void robot::reset() {
     masses[6].p[0] = .1; masses[6].p[1] = 0 ;masses[6].p[2] = .1;
     masses[7].p[0] = .1; masses[7].p[1] = .1 ;masses[7].p[2] = .1;
     
-    for (mass& m : masses) { m.moveMass(0, .01, 0); }
+    equalize();
     
     for (std::vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
         item->v[0] = 0; item->v[1] = 0; item->v[2] = 0;
         item->a[0] = 0; item->a[1] = 0; item->a[2] = 0;
     }
+    
+    setOnGround();
+    
     robotTime = 0;
     return;
+}
+
+// THIS WILL MOVE MASSES TO EQUALIZE THE SPRING FORCES TO BE VERY SMALL
+// threshold represents the maximum allowed spring force left in the object
+// depth represents the recursion depth needed, max depth is 10.
+void robot::equalize(double threshold, int depth, int maxDepth) {
+    if (depth == maxDepth) {
+        std::cout << "equalize did not meet threshold after 10 loops" << std::endl;
+        return;
+    }
+    if (calcMaxSpringForce() <= threshold) {
+        std::cout << "equalize met threshold after " << depth << " loops" << std::endl;
+        return;
+    }
+       // for a single mass (the first one) - will move the other masses so that they have no spring force left
+       // then loop through the next ones (but ignoring the ones already hit
+       // this is almost the same algo that links the masses and springs!
+    for(std::vector<mass>::iterator m = masses.begin(); m != masses.end(); m++) {
+        // go through all the springs connected to a single mass
+        for(spring*  s : m->s) {
+            force thisForce(&(*m),this->pulse,false);
+            force thatForce(s->m1);
+            if (s->m1 == &(*m)) { force thatForce(s->m2); }
+            
+            std::vector<double> springForce = thisForce.getSingleSpringForce(s,pulse);
+            for (int i = 0; i < 3; i++) {
+                thisForce.f[i] += springForce[i];
+                thatForce.f[i] -= springForce[i];
+            }
+            thisForce.body->updateDerivitives(thisForce);
+            thatForce.body->updateDerivitives(thatForce);
+        }
+    }
+    return;
+};
+
+// this will move the robot up in case any of the equalizer put it underground
+void robot::setOnGround() {
+    double yOffset = 0;
+    for(std::vector<mass>::iterator m = masses.begin(); m != masses.end(); m++) {
+        if(m->p[1] < 0 && abs(m->p[1]) > yOffset ) {
+            yOffset = abs(m->p[1]);
+        }
+    }
+    for(std::vector<mass>::iterator m = masses.begin(); m != masses.end(); m++) {
+        m->moveMass(0, yOffset, 0);
+    }
+    return;
+}
+
+double robot::calcMaxSpringForce() {
+    double theReturn = 0;
+    double aForce = 0;
+    for(std::vector<spring>::iterator s = springs.begin(); s != springs.end(); s++) {
+        aForce = s->calcCurrentSpringForce(pulse);
+        if (aForce > theReturn) { theReturn = aForce; }
+    }
+    return theReturn;
 }

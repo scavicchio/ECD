@@ -30,24 +30,33 @@ force::force(const force& rhs) {
     return;
 }
 
+std::vector<double> force::getSingleSpringForce(spring* s, bool pulse) {
+    double di[3];
+   if (body == s->m1) {
+       for (int i = 0; i < 3; i++) {
+           di[i] = -(s->m1->p[i]-s->m2->p[i]);
+       }
+   }
+   else {
+       for (int i = 0; i < 3; i++) {
+           di[i] = (s->m1->p[i]-s->m2->p[i]);
+       }
+   }
+   double totalD = sqrt(pow(di[0],2)+pow(di[1],2)+pow(di[2],2));
+   double springF = s->calcCurrentSpringForce(pulse);
+    std::vector<double> theReturn = {0,0,0};
+    for (int i = 0; i < 3; i++) {
+        theReturn[i] = springF*di[i]/totalD;
+    }
+    return theReturn;
+}
+
+
 void force::addSpringForce(bool pulse) {
     for (std::vector<spring*>::iterator iter = body->s.begin(); iter != body->s.end(); iter++) {
-        double di[3];
-        spring* s = *iter;
-        if (body == s->m1) {
-            for (int i = 0; i < 3; i++) {
-                di[i] = -(s->m1->p[i]-s->m2->p[i]);
-            }
-        }
-        else {
-            for (int i = 0; i < 3; i++) {
-                di[i] = (s->m1->p[i]-s->m2->p[i]);                
-            }
-        }
-        double totalD = sqrt(pow(di[0],2)+pow(di[1],2)+pow(di[2],2));
-        double springF = s->calcCurrentSpringForce(pulse);
+        std::vector<double> singleSpringForce = getSingleSpringForce(*iter,pulse);
         for (int i = 0; i < 3; i++) {
-            f[i] += springF*di[i]/totalD;
+            f[i] += singleSpringForce[i];
         }
     }
     return;

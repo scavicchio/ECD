@@ -17,7 +17,7 @@
 
 struct robot {
     //default will create a simple cube
-    robot() : robotTime(t) {
+    robot(bool p = false) : robotTime(t), pulse(p) {
         masses = generateMasses();
         springs = generateSprings();
         linkMassSpring();
@@ -52,14 +52,18 @@ struct robot {
     void draw();
     double generateRandom(const double range_start, const double range_end);
     double generateRandomPercentage(const double range_start = 0.5, const double range_end = 1.5);
-    
+    void equalize(double threshold = 0.01, int depth = 0, int maxDepth = 10); // this is to zero out the forces before a simlation starts
     void reset();
-    
+    double calcMaxSpringForce();
+    void setOnGround();
+
     // member variables
     // these should probably change to linked lists?
     std::vector<mass> masses;
     std::vector<spring> springs;
     double robotTime;
+    bool pulse;
 };
+
 
 #endif /* robot_hpp */

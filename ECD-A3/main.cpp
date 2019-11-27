@@ -88,7 +88,9 @@ int main(int argc, char **argv) {
     double frameTime = 1;
     frameTime /= fps;
     //int steps = 500000;
-    robot theRobot;
+    bool pulse = true;
+    
+    robot theRobot(pulse);
     
     bool debug = false;
     for (mass& m : theRobot.masses) {
