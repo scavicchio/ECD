@@ -25,12 +25,12 @@ struct robot {
     // given objects
     // --------
     // copy
-    robot (const spring& rhs);
+    robot (const robot& rhs);
     //assignment
     robot& operator=(const robot& right);
     
     // member functions
-    void simulate(bool multicore = false, int maxSteps = 1, bool pulse = false);
+    void simulate(bool multicore = false, int simSteps = 1, bool pulse = false);
     std::vector<double> centerOfMass();
     
     std::vector<mass> generateMasses(double weight = defaultMassWeight);

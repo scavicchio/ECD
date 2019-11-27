@@ -112,6 +112,7 @@ force mass::calcForce(bool print) {
     theReturn.addSpringForce(print);
     theReturn.addGravity();
     theReturn.addResultantForce();
+    theReturn.addFrictionForce();
     return theReturn;
 }
 

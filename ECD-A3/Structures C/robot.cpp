@@ -11,10 +11,10 @@
 #include <random>
 #include <ctime>
 
-void robot::simulate(bool multicore, int maxSteps, bool pulse) {
+void robot::simulate(bool multicore, int simSteps, bool pulse) {
     std::vector<force> forces;
     
-    while (maxSteps > 0) {
+    while (simSteps > 0) {
          forces.clear();
          // get the forces
         // this can become parallel later
@@ -27,8 +27,8 @@ void robot::simulate(bool multicore, int maxSteps, bool pulse) {
             item->updateDerivitives(forces[i],damping);
             i++;
         }
-        robotTime = robotTime+=timestep;
-        maxSteps--;
+        robotTime +=timestep;
+        simSteps--;
     }
     return;
 }
@@ -177,4 +177,34 @@ double robot::calcMaxSpringForce() {
         if (aForce > theReturn) { theReturn = aForce; }
     }
     return theReturn;
+}
+
+robot::robot(const robot& rhs) {
+    masses.clear();
+    for(int i = 0; i < rhs.masses.size(); i++) {
+        masses.push_back(rhs.masses[i]);
+    }
+    springs.clear();
+    for(int i = 0; i < rhs.springs.size(); i++) {
+        springs.push_back(rhs.springs[i]);
+    }
+    robotTime = rhs.robotTime;
+    pulse = rhs.pulse;
+}
+
+
+robot& robot::operator=(const robot& rhs) {
+    if (this != &rhs)  {
+        masses.clear();
+        for(int i = 0; i < rhs.masses.size(); i++) {
+            masses.push_back(rhs.masses[i]);
+        }
+        springs.clear();
+        for(int i = 0; i < rhs.springs.size(); i++) {
+            springs.push_back(rhs.springs[i]);
+        }
+        robotTime = rhs.robotTime;
+        pulse = rhs.pulse;
+        }
+    return *this;
 }
