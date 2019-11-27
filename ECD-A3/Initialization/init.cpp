@@ -7,7 +7,7 @@
 //
 
 #include "init.hpp"
-
+/*
 std::vector<mass> generateMasses(double weight) {
     mass m1(weight,0,0,0);
     mass m2(weight,0,.1,0);
@@ -20,7 +20,7 @@ std::vector<mass> generateMasses(double weight) {
     std::vector<mass> theResult = {m1,m2,m3,m4,m5,m6,m7,m8};
     return theResult;
 }
-
+*/
 std::vector<spring>& generateSprings(double k, std::vector<mass> &masses, std::vector<spring>& theResult) {
     for (size_t i = 0; i < masses.size(); i++) {
         for (size_t j = i; j < masses.size(); j++) { // starts with i to avoid duplicates

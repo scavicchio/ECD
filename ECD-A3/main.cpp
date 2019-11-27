@@ -137,6 +137,7 @@ int main(int argc, char **argv) {
            
          //  while (deltaTime <= frameTime) {
            theRobot.simulate(false,simSteps,true);
+           t = theRobot.robotTime;
         //        if (!debug) { break; }
        //         time = glfwGetTime();
         //        deltaTime = time - lastTime;

@@ -37,7 +37,8 @@ double spring::calcCurrentSpringForce(const bool pulse) {
 }
     
 const double spring::pulseLength() {
-    double theReturn = orinLen+abs((b*sin(w*t+c)))/2;
+    double time = this->m1->parent->robotTime;
+    double theReturn = orinLen+abs((b*sin(w*time+c)))/2;
   //  std::cout << theReturn << std::endl;
     return theReturn;
 }
