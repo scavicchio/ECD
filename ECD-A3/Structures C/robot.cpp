@@ -11,10 +11,10 @@
 #include <random>
 #include <ctime>
 
-void robot::simulate(bool multicore, int simSteps, bool pulse) {
+void robot::simulate(bool multicore, int steps, bool pulse) {
     std::vector<force> forces;
     
-    while (simSteps > 0) {
+    while (steps > 0) {
          forces.clear();
          // get the forces
         // this can become parallel later
@@ -28,7 +28,7 @@ void robot::simulate(bool multicore, int simSteps, bool pulse) {
             i++;
         }
         robotTime +=timestep;
-        simSteps--;
+        steps--;
     }
     return;
 }
@@ -244,6 +244,7 @@ robot::robot(const robot& rhs) {
             m.a[i] = rhs.masses[i].a[j];
         }
         m.fixed = rhs.masses[i].fixed;
+        i++;
     }
     
     i = 0;
@@ -252,6 +253,7 @@ robot::robot(const robot& rhs) {
         s.c = rhs.springs[i].c;
         s.orinLen = rhs.springs[i].orinLen;
         s.b = rhs.springs[i].b;
+        i++;
     }
     
     robotTime = rhs.robotTime;
@@ -307,6 +309,7 @@ robot& robot::operator=(const robot& rhs) {
                m.a[i] = rhs.masses[i].a[j];
            }
            m.fixed = rhs.masses[i].fixed;
+            i++;
         }
 
         i = 0;
@@ -315,6 +318,7 @@ robot& robot::operator=(const robot& rhs) {
            s.c = rhs.springs[i].c;
            s.orinLen = rhs.springs[i].orinLen;
            s.b = rhs.springs[i].b;
+            i++;
         }
         
         robotTime = rhs.robotTime;
@@ -328,4 +332,9 @@ void robot::mutateSprings() {
         item->b += 0.01;
         item->k += 1000;
     }
+}
+
+robot::~robot() {
+    std::cout << "Destructing Robot" << std::endl;
+    return;
 }

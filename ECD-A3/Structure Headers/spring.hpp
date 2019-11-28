@@ -20,6 +20,7 @@ struct spring {
     }
     spring (const spring& rhs);
     spring& operator=(const spring& right);
+    ~spring() {};
     
     friend std::ostream& operator<<(std::ostream& os, const spring& dt);
     

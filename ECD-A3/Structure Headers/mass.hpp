@@ -25,6 +25,7 @@ struct mass {
     
     mass(const mass& rhs);
     mass& operator=(const mass& right);
+    ~mass() {};
     
     const void printP();
     void printV();

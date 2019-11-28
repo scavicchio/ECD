@@ -28,6 +28,8 @@ struct robot {
     robot (const robot& rhs);
     //assignment
     robot& operator=(const robot& right);
+    // destructor
+    ~robot();
     
     // member functions
     void simulate(bool multicore = false, int simSteps = 1, bool pulse = false);
