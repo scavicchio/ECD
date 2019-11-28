@@ -25,4 +25,6 @@
 #include "checkerboard.hpp"
 #include "camera.hpp"
 #include "robot.hpp"
+#include <algorithm>
+#include <numeric>
 #endif /* Header_h */

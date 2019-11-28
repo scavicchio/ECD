@@ -54,10 +54,24 @@ std::vector<double> force::getSingleSpringForce(spring* s, bool pulse) {
 
 void force::addSpringForce(bool pulse) {
     for (std::vector<spring*>::iterator iter = body->s.begin(); iter != body->s.end(); iter++) {
-        std::vector<double> singleSpringForce = getSingleSpringForce(*iter,pulse);
-        for (int i = 0; i < 3; i++) {
-            f[i] += singleSpringForce[i];
+        spring* s = *iter;
+        double di[3];
+        if (body == s->m1) {
+            for (int i = 0; i < 3; i++) {
+                di[i] = -(s->m1->p[i]-s->m2->p[i]);
+            }
         }
+        else {
+            for (int i = 0; i < 3; i++) {
+                di[i] = (s->m1->p[i]-s->m2->p[i]);
+            }
+        }
+        double totalD = sqrt(pow(di[0],2)+pow(di[1],2)+pow(di[2],2));
+        double springF = s->calcCurrentSpringForce(pulse);
+         std::vector<double> theReturn = {0,0,0};
+         for (int i = 0; i < 3; i++) {
+             f[i] = springF*di[i]/totalD;
+         }
     }
     return;
 }

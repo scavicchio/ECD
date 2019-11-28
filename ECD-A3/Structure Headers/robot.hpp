@@ -56,7 +56,7 @@ struct robot {
     void reset();
     double calcMaxSpringForce();
     void setOnGround();
-
+    void mutateSprings();
     // member variables
     // these should probably change to linked lists?
     std::vector<mass> masses;
