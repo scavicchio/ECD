@@ -19,7 +19,7 @@ void robot::simulate(bool multicore, int simSteps, bool pulse) {
          // get the forces
         // this can become parallel later
         for (std::vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {
-            forces.push_back(force(&(*item),pulse));
+            forces.push_back(force(&(*item),pulse,true));
         }
         int i = 0;
         // this can also become parallel later
@@ -194,14 +194,66 @@ double robot::calcMaxSpringForce() {
 }
 
 robot::robot(const robot& rhs) {
+    masses = generateMasses();
+    springs = generateSprings();
+    linkMassSpring();
+    /*
     masses.clear();
-    for(int i = 0; i < rhs.masses.size(); i++) {
-        masses.push_back(rhs.masses[i]);
-    }
     springs.clear();
-    for(int i = 0; i < rhs.springs.size(); i++) {
-        springs.push_back(rhs.springs[i]);
+
+    for(int i = 0; i < rhs.masses.size(); i++) {
+        mass temp = rhs.masses[i];
+        temp.s.clear();
+        masses.push_back(temp);
     }
+    
+    std::vector<int> m1_ids;
+    std::vector<int> m2_ids;
+    for (int j = 0; j < masses.size(); j++) {
+     for (int k = j; k < masses.size(); k++) {
+         if (j != k) {
+         m1_ids.push_back(j);
+         m2_ids.push_back(k);
+         }
+     }}
+    for(int i = 0; i < rhs.springs.size(); i++) {
+        spring temp = rhs.springs[i];
+        temp.m1 = &masses[m1_ids[i]];
+        temp.m2 = &masses[m2_ids[i]];
+        springs.push_back(rhs.springs[i]);
+        
+        bool m1Exist = false;
+        bool m2Exist = false;
+        for (spring* sp : masses[m1_ids[i]].s) {
+            if(sp == &springs[i]) { m1Exist = true; break; }
+        }
+        for (spring* sp : masses[m2_ids[i]].s) {
+            if(sp == &springs[i]) { m2Exist = true; break; }
+        }
+        if(!m1Exist) { masses[m1_ids[i]].s.push_back(&springs[i]); }
+        if(!m2Exist) { masses[m2_ids[i]].s.push_back(&springs[i]); }
+
+    }
+     */
+    int i = 0;
+    for (mass& m : masses) {
+        m.m = rhs.masses[i].m;
+        for (int j = 0; j < 3; j++) {
+            m.p[j] = rhs.masses[i].p[j];
+            m.v[i] = rhs.masses[i].v[j];
+            m.a[i] = rhs.masses[i].a[j];
+        }
+        m.fixed = rhs.masses[i].fixed;
+    }
+    
+    i = 0;
+    for (spring& s : springs) {
+        s.k = rhs.springs[i].k;
+        s.c = rhs.springs[i].c;
+        s.orinLen = rhs.springs[i].orinLen;
+        s.b = rhs.springs[i].b;
+    }
+    
     robotTime = rhs.robotTime;
     pulse = rhs.pulse;
 }
@@ -209,18 +261,71 @@ robot::robot(const robot& rhs) {
 
 robot& robot::operator=(const robot& rhs) {
     if (this != &rhs)  {
+        masses = generateMasses();
+        springs = generateSprings();
+        linkMassSpring();
+        /*
         masses.clear();
         for(int i = 0; i < rhs.masses.size(); i++) {
             mass temp = rhs.masses[i];
+            temp.s.clear();
             masses.push_back(temp);
         }
         springs.clear();
+        std::vector<int> m1_ids;
+        std::vector<int> m2_ids;
+        for (int j = 0; j < masses.size(); j++) {
+         for (int k = j; k < masses.size(); k++) {
+             if (j != k) {
+             m1_ids.push_back(j);
+             m2_ids.push_back(k);
+             }
+         }}
         for(int i = 0; i < rhs.springs.size(); i++) {
             spring temp = rhs.springs[i];
-            springs.push_back(temp);
+            temp.m1 = &masses[m1_ids[i]];
+            temp.m2 = &masses[m2_ids[i]];
+            springs.push_back(rhs.springs[i]);
+            
+            bool m1Exist = false;
+            bool m2Exist = false;
+            for (spring* sp : masses[m1_ids[i]].s) {
+               if(sp == &springs[i]) { m1Exist = true; break; }
+            }
+            for (spring* sp : masses[m2_ids[i]].s) {
+               if(sp == &springs[i]) { m2Exist = true; break; }
+            }
+            if(!m1Exist) { masses[m1_ids[i]].s.push_back(&springs[i]); }
+            if(!m2Exist) { masses[m2_ids[i]].s.push_back(&springs[i]); }
+        }*/
+        int i = 0;
+        for (mass& m : masses) {
+           m.m = rhs.masses[i].m;
+           for (int j = 0; j < 3; j++) {
+               m.p[j] = rhs.masses[i].p[j];
+               m.v[i] = rhs.masses[i].v[j];
+               m.a[i] = rhs.masses[i].a[j];
+           }
+           m.fixed = rhs.masses[i].fixed;
         }
+
+        i = 0;
+        for (spring& s : springs) {
+           s.k = rhs.springs[i].k;
+           s.c = rhs.springs[i].c;
+           s.orinLen = rhs.springs[i].orinLen;
+           s.b = rhs.springs[i].b;
+        }
+        
         robotTime = rhs.robotTime;
         pulse = rhs.pulse;
-        }
+    }
     return *this;
+}
+
+void robot::mutateSprings() {
+    for (std::vector<spring>::iterator item = springs.begin(); item != springs.end(); item++) {
+        item->b += 0.01;
+        item->k += 1000;
+    }
 }

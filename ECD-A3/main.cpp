@@ -31,7 +31,7 @@ const double g[3] = {0,-9.81,0};
 double k = 10000; //Nmss
 const double defaultMassWeight = .1;
 
-const double timestep = 0.00005;
+const double timestep = 0.00001;
 
 int width = 700;
 int height = 700;
@@ -77,9 +77,24 @@ void processInput(GLFWwindow *window) {
     return;
 }
 
+template<typename Type>
+vector<size_t> tag_sort(const vector<Type>& vec)
+{
+    vector<size_t> result(vec.size());
+    iota(begin(result), end(result), 0);
+    sort(begin(result), end(result),
+            [&vec](const auto & lhs, const auto & rhs)
+            {
+                return vec[lhs] > vec[rhs];
+            }
+    );
+    return result;
+}
+
 int main(int argc, char **argv) {
     // set global vars
     // initialize mass and array
+    
     double weight = 0.1; //kg
     int fps = 30;
 
@@ -91,10 +106,12 @@ int main(int argc, char **argv) {
     frameTime /= fps;
     //int steps = 500000;
     bool pulse = true;
+    bool simulate = true;
+    bool debug = false;
+    
     
     robot theRobot(pulse);
-    
-    bool debug = false;
+
     for (mass& m : theRobot.masses) {
         m.moveMass(0,0,0);
     }
@@ -124,42 +141,121 @@ int main(int argc, char **argv) {
     double lastTime = time;
     double deltaTime = time - lastTime;
     
-    vector<robot> theRobots;
     int geneSize = 10;
+
+    vector<robot> parent_bots(geneSize);
+    vector<robot> children_bots(geneSize);
     
     // create the robot vector
     for(int i = 0; i < geneSize; i++) {
-        theRobots.push_back(theRobot);
+        theRobot.randomizeSprings();
+        theRobot.reset();
+        parent_bots[i] = theRobot;
     }
+
     // how many iterations to evolve
-    int evoloutionIterations = 5;
+    int evoloutionIterations = 2;
     // how much time for each simulation
     double simTimeLength = 1;
-    // the result array
+    
+    
+    // the results arrays
     double movementResults[geneSize][evoloutionIterations];
+    vector<double> allBots_results(2*geneSize);
     
     
     // for all the evoloution iterations
     for (int j = 0; j < evoloutionIterations; j++) {
+        // we don't have to loop over all the parents to begin with, let's just get parents and children then loop
         // for each robot in the vector
-        for (int i = 0; i < theRobots.size(); i++) {
-            // simulate the timeframe
-            while(theRobots[i].robotTime < simTimeLength) { theRobots[i].simulate(); }
-            // find the current value
-            cout << theRobots[i].centerOfMass()[0] << endl;
-            movementResults[i][j] = theRobots[i].centerOfMass()[0];
-            cout << movementResults[i][j] << endl;
-        }
+//        for (int i = 0; i < parent_bots.size(); i++) {
+//            // simulate the timeframe
+//            while(parent_bots[i].robotTime < simTimeLength) { parent_bots[i].simulate(); }
+//            // find the current value
+//            cout << parent_bots[i].centerOfMass()[0] << endl;
+//            movementResults[i][j] = parent_bots[i].centerOfMass()[0];
+//            cout << movementResults[i][j] << endl;
+//        }
+//
+        
         // now do whatever evoloution stuff
+        // for each parent robot, let's duplicate it into a new vector of robots called "children_bots"
+//        // create the starting children randomly too
+//        for (int i = 0; i < geneSize; i++) {
+//            theRobot.randomizeSprings();
+//            theRobot.reset();
+//            children_bots[i] = theRobot;
+//        }
+        
+//        children_bots.clear();
+        for (int i = 0; i < children_bots.size(); i++) {
+            robot temp_bot(parent_bots[i]);
+            // make a small change to the springs and reset the cubes
+            temp_bot.mutateSprings();
+            temp_bot.reset();
+            children_bots[i] = temp_bot;
+        }
+
+        //now let's loop through and do 1/2 crossover on the second half by setting child 1 spring = child 2 spring
+        for (int i = 0; (i*2) < children_bots.size(); i++) {
+            
+            robot tmp_crossed_child1 = children_bots[2*i];
+            robot tmp_crossed_child2 = children_bots[2*i+1];
+            
+            // only switch the second half of springs!!
+            for (int kk = 13; kk < tmp_crossed_child1.springs.size(); kk ++ ) {
+                tmp_crossed_child1.springs[k].b = children_bots[2*i+1].springs[kk].b;
+                tmp_crossed_child2.springs[k].b = children_bots[2*i].springs[kk].b;
+                
+                tmp_crossed_child1.springs[k].k = children_bots[2*i+1].springs[kk].k;
+                tmp_crossed_child2.springs[k].k = children_bots[2*i].springs[kk].k;
+            }
+
+            children_bots[2*i] = tmp_crossed_child1;
+            children_bots[2*i+1] = tmp_crossed_child2;
+          }
+        
+        
+        cout << "starting allbots" << endl;
+        
+        //now combine parents and children bots into all bots
+        
+        vector<robot> allBots(parent_bots);
+        allBots.insert(allBots.end(), children_bots.begin(), children_bots.end());
+        
+        for (int i = 0; i < allBots.size(); i++) {
+            // simulate the timeframe
+            while(allBots[i].robotTime < simTimeLength) { allBots[i].simulate(false,1,true); }
+            // find the current value
+            cout << "New Center of Mass: " << allBots[i].centerOfMass()[0] << endl;
+            allBots_results[i] = abs(allBots[i].centerOfMass()[0]);
+        }
+        
+        // get the indexes of for the sorted elements
+        auto idxs = tag_sort(allBots_results);
+        for (auto && elem : idxs) { std::cout << elem << " : " << allBots_results[elem] << std::endl; }
+        
+        // wipe away the current parents and replace with the top half of allBots
+        for (int i = 0; i < parent_bots.size(); i++) {
+            int target_index = idxs[i];
+            parent_bots[i] = allBots[target_index];
+            movementResults[i][j] = allBots_results[target_index];
+            
+        }
+        cout << " " << endl;
     }
+
+
+    
     
     
     /* Loop until the user closes the window */
+    if (simulate) {
        while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 10)
        {
            processInput(window);
            /* Render here */
-           render(theRobot);
+           render(parent_bots[0]);
            /* Swap front and back buffers */
            glfwSwapBuffers(window);
            time = glfwGetTime();
@@ -167,8 +263,8 @@ int main(int argc, char **argv) {
            deltaTime = time - lastTime;
            
          //  while (deltaTime <= frameTime) {
-           theRobot.simulate(false,simSteps,true);
-           t = theRobot.robotTime;
+           parent_bots[0].simulate(false,simSteps,true);
+           t = parent_bots[0].robotTime;
         //        if (!debug) { break; }
        //         time = glfwGetTime();
         //        deltaTime = time - lastTime;
@@ -180,14 +276,30 @@ int main(int argc, char **argv) {
           // reshape(width, height);
            if (debug) {
                cout << "Current Sim Time: " << t << endl;
-               vector<double> center = theRobot.centerOfMass();
+               vector<double> center = parent_bots[9].centerOfMass();
                cout << "Center of Mass: " << center[0] << " " << center[1] << " " << center[2] << endl;
                cout << "===================" << endl;
            }
        }
+    }
+    else {
+        cout << "Not Visualizing..." << endl;
+    }
     //
+    
     glfwTerminate();
     
+    
+    // loop through movementResults
+
+    for (int i = 0; i < evoloutionIterations; ++i)
+     {
+         for (int j = 0; j < geneSize; ++j)
+         {
+             std::cout << movementResults[i][j] << ' ';
+         }
+         std::cout << std::endl;
+     }
+
     return 0;
 }
-
