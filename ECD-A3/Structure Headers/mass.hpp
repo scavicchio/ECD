@@ -10,6 +10,7 @@
 #define mass_hpp
 
 #include <vector>
+#include <iostream>
 /*
 Each mass object needs the following attributes: m(mass, [kg]); p(3D position vector [meter]), v(3D velocityvector, meter/s),a(3D accelerationvector, meters/s2)
 */
@@ -25,7 +26,11 @@ struct mass {
     
     mass(const mass& rhs);
     mass& operator=(const mass& right);
-    ~mass() {};
+    ~mass() {
+        s.clear();
+        parent = nullptr;
+        std::cout << "Destructed Mass" << std::endl;
+    };
     
     const void printP();
     void printV();

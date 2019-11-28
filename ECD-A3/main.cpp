@@ -189,11 +189,8 @@ int main(int argc, char **argv) {
         
 //        children_bots.clear();
         for (int i = 0; i < children_bots.size(); i++) {
-            robot temp_bot(parent_bots[i]);
-            // make a small change to the springs and reset the cubes
-            temp_bot.mutateSprings();
-            temp_bot.reset();
-            children_bots[i] = temp_bot;
+            children_bots[i].randomizeSprings();
+            children_bots[i].reset();
         }
 
         //now let's loop through and do 1/2 crossover on the second half by setting child 1 spring = child 2 spring
@@ -203,7 +200,7 @@ int main(int argc, char **argv) {
             robot tmp_crossed_child2 = children_bots[2*i+1];
             
             // only switch the second half of springs!!
-            for (int kk = 13; kk < tmp_crossed_child1.springs.size(); kk ++ ) {
+            for (int kk = 13; kk < tmp_crossed_child1.springs.size(); kk++ ) {
                 tmp_crossed_child1.springs[k].b = children_bots[2*i+1].springs[kk].b;
                 tmp_crossed_child2.springs[k].b = children_bots[2*i].springs[kk].b;
                 
@@ -213,7 +210,7 @@ int main(int argc, char **argv) {
 
             children_bots[2*i] = tmp_crossed_child1;
             children_bots[2*i+1] = tmp_crossed_child2;
-          }
+      }
         
         
         cout << "starting allbots" << endl;

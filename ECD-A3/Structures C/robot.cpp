@@ -335,6 +335,6 @@ void robot::mutateSprings() {
 }
 
 robot::~robot() {
-    std::cout << "Destructing Robot" << std::endl;
+    std::cout << "Destructed Robot" << std::endl;
     return;
 }

@@ -17,7 +17,7 @@
 
 struct robot {
     //default will create a simple cube
-    robot(bool p = false) : robotTime(t), pulse(p) {
+    robot(bool p = false) : robotTime(0), pulse(p) {
         masses = generateMasses();
         springs = generateSprings();
         linkMassSpring();

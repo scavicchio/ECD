@@ -11,6 +11,7 @@
 
 #include "mass.hpp"
 #include "globalVars.h"
+#include <iostream>
 
 struct force {
     force(mass* b, const bool pulse = false, const bool addAllForces = true) : body(b) {
@@ -25,7 +26,8 @@ struct force {
     
     force (const force& rhs);
     force& operator=(const force& right);
-    ~force() {};
+    ~force() {    std::cout << "Destructed Force" << std::endl;
+};
     
     std::vector<double> getSingleSpringForce(spring* s, bool pulse);
     void addSpringForce(bool pulse = false);

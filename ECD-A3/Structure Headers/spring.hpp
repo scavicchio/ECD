@@ -20,7 +20,8 @@ struct spring {
     }
     spring (const spring& rhs);
     spring& operator=(const spring& right);
-    ~spring() {};
+    ~spring() {     std::cout << "Destructed Spring" << std::endl;
+ };
     
     friend std::ostream& operator<<(std::ostream& os, const spring& dt);
     
