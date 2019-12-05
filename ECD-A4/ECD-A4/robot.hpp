@@ -111,6 +111,8 @@ public:
             // get the 4 types of forces and save them within the mass.
             // DAN YOU CAN DO THIS AND JUST APPLY THE 4 FORCES TO THE F MEMBER OF THE MASS.
             // DO THEM IN 4 SEPERATE FUNCTIONS PLS.
+            // WHEN YOU LOOP THROUHG THE MATRIX COPY THE NESTED FOR FROM THE CONSTRUCTOR
+            // WHERE j = i AND  if (j != i)
         }
         // update derivitives
         // loop thorugh masses
@@ -144,6 +146,9 @@ public:
         }
         return;
     }
+    
+    // robot draw spring functions
+    void drawSpring();
     
     // members
     double robotTime;

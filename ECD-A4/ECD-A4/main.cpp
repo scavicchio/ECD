@@ -21,7 +21,6 @@ const double g[3] = {0,-9.81,0};
 const double kc = 2000;
 const double damping = 0.9;
 
-
 using namespace std;
 
 int main(int argc, const char * argv[]) {

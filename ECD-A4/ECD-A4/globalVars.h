@@ -9,10 +9,12 @@
 #ifndef globalVars_h
 #define globalVars_h
 
-//static const GLfloat WHITE[] = {1, 1, 1};
-//static const GLfloat RED[] = {1, 0, 0};
-//static const GLfloat GREEN[] = {0, 1, 0};
-//static const GLfloat MAGENTA[] = {1, 0, 1};
+#include "GLFW/glfw3.h"
+
+static const GLfloat WHITE[] = {1, 1, 1};
+static const GLfloat RED[] = {1, 0, 0};
+static const GLfloat GREEN[] = {0, 1, 0};
+static const GLfloat MAGENTA[] = {1, 0, 1};
 
 extern const double timestep;
 extern const double defaultWeight;
