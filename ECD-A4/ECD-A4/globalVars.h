@@ -21,5 +21,8 @@ extern const double maxRobotMass;
 extern const double defaultPhi;
 extern const double defaultAmplitde;
 extern const double defaultK;
-
+extern const double g[3];
+extern const double friction_mu_k;
+extern const double kc;
+extern const double damping;
 #endif /* globalVars_h */

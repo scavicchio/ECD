@@ -16,6 +16,11 @@ const double maxRobotMass = 1;
 const double defaultPhi = 0;
 const double defaultAmplitde = 1;
 const double defaultK = 20000;
+const double friction_mu_k=0.8;// friction coefficient rubber-concrete
+const double g[3] = {0,-9.81,0};
+const double kc = 2000;
+const double damping = 0.9;
+
 
 using namespace std;
 
@@ -36,5 +41,9 @@ int main(int argc, const char * argv[]) {
     robot cRobot;
     cRobot = bRobot;
     cRobot.displayConnectionMatrix();
+    
+    
+    
+    
     return 0;
 }

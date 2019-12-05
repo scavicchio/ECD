@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C61DD5582399C60200B5BB1C /* force.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61DD5572399C60200B5BB1C /* force.cpp */; };
 		C69D1F802399A3BB00377E49 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C69D1F7F2399A3BB00377E49 /* main.cpp */; };
 		C69D1F882399A44F00377E49 /* mass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C69D1F862399A44F00377E49 /* mass.cpp */; };
 		C69D1F8B2399ABF500377E49 /* robot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C69D1F892399ABF500377E49 /* robot.cpp */; };
@@ -25,6 +26,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C61DD5562399C5D100B5BB1C /* force.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = force.hpp; sourceTree = "<group>"; };
+		C61DD5572399C60200B5BB1C /* force.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = force.cpp; path = "/Users/salvycavicchio/Documents/ECD/ECD-A3/ECD-A4/ECD-A4/force.cpp"; sourceTree = "<absolute>"; };
 		C69D1F7C2399A3BB00377E49 /* ECD-A4 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "ECD-A4"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C69D1F7F2399A3BB00377E49 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		C69D1F862399A44F00377E49 /* mass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mass.cpp; sourceTree = "<group>"; };
@@ -45,6 +48,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C61DD5592399C73300B5BB1C /* only use for reference */ = {
+			isa = PBXGroup;
+			children = (
+				C61DD5572399C60200B5BB1C /* force.cpp */,
+				C61DD5562399C5D100B5BB1C /* force.hpp */,
+			);
+			path = "only use for reference";
+			sourceTree = "<group>";
+		};
 		C69D1F732399A3BB00377E49 = {
 			isa = PBXGroup;
 			children = (
@@ -65,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				C69D1F7F2399A3BB00377E49 /* main.cpp */,
+				C61DD5592399C73300B5BB1C /* only use for reference */,
 				C69D1F862399A44F00377E49 /* mass.cpp */,
 				C69D1F872399A44F00377E49 /* mass.hpp */,
 				C69D1F892399ABF500377E49 /* robot.cpp */,
@@ -132,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C69D1F8B2399ABF500377E49 /* robot.cpp in Sources */,
+				C61DD5582399C60200B5BB1C /* force.cpp in Sources */,
 				C69D1F802399A3BB00377E49 /* main.cpp in Sources */,
 				C69D1F882399A44F00377E49 /* mass.cpp in Sources */,
 			);

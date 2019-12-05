@@ -14,9 +14,13 @@
 #include "globalVars.h"
 
 struct mass {
-    mass(double m = defaultWeight, double x = 0, double y = 0, double z = 0, bool f = false) : weight(m), fixed(f) {
+    mass(double m = defaultWeight, double x = 0, double y = 0, double z = 0, bool fix = false) : weight(m), fixed(fix) {
         p[0] = x; p[1] = y; p[2] = z;
-        for (int i = 0; i < 3; i++) { v[i] = 0; a[i] = 0; }
+        for (int i = 0; i < 3; i++) {
+            v[i] = 0;
+            a[i] = 0;
+            f[i] = 0;
+        }
     }
     // copy constructor
     mass(const mass& rhs) {
@@ -44,12 +48,29 @@ struct mass {
     };
     // descrutros
     
+    void resetForces() {
+        f[0] = 0; f[1] = 0; f[2] = 0;
+    };
+    
+    void updateDerivitives(const double d = damping) {
+        if (!fixed) {
+            for (int i = 0; i < 3; i++) {
+                a[i] = f[i]/weight;
+                v[i] += (a[i]*timestep)*d;
+                p[i] += v[i]*timestep;
+            }
+        }
+        return;
+    }
+    
     // members
     double weight;
     double p[3];
     double v[3];
     double a[3];
+    double f[3];
     bool fixed;
+
 };
 
 

@@ -104,6 +104,20 @@ public:
     // destructor
     
     // simulate function
+    void simulate(double dt = timestep, int steps = 1) {
+        // calculate the mass forces
+        for (mass& m : masses) {
+            m.resetForces();
+            // get the 4 types of forces and save them within the mass.
+            // DAN YOU CAN DO THIS AND JUST APPLY THE 4 FORCES TO THE F MEMBER OF THE MASS.
+            // DO THEM IN 4 SEPERATE FUNCTIONS PLS.
+        }
+        // update derivitives
+        // loop thorugh masses
+        for (mass& m : masses) {
+            m.updateDerivitives();
+        }
+    }
     
     // add mass
     
