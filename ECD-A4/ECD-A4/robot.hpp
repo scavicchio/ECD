@@ -55,11 +55,6 @@ public:
         robotTime = 0;
     };
     
-    const double massDistance(const mass& a, const mass& b)  {
-        double theReturn = 0;
-        for(int i = 0; i < 3; i++) { theReturn += pow((a.p[i]-b.p[i]),2); }
-        return sqrt(theReturn);
-    }
 
     // copy constructor
     robot(const robot& rhs) {
@@ -118,6 +113,13 @@ public:
     
     // save function
     
+    // distance between two masses
+    const double massDistance(const mass& a, const mass& b)  {
+        double theReturn = 0;
+        for(int i = 0; i < 3; i++) { theReturn += pow((a.p[i]-b.p[i]),2); }
+        return sqrt(theReturn);
+    }
+
     // print connections
     void displayConnectionMatrix() {
         for (int i = 0; i < 8; i++) {
