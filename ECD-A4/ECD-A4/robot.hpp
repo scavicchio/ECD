@@ -129,23 +129,27 @@ public:
     
     // simulate function
     void simulate(double dt = timestep, int steps = 1) {
-        // calculate the mass forces
-        for (int i = 0; i < masses.size(); i++) {
-            masses[i].resetForces();
-            // get the 4 types of forces and save them within the mass.
-            // DAN YOU CAN DO THIS AND JUST APPLY THE 4 FORCES TO THE F MEMBER OF THE MASS.
-            // DO THEM IN 4 SEPERATE FUNCTIONS PLS.
-            // WHEN YOU LOOP THROUHG THE MATRIX COPY THE NESTED FOR FROM THE CONSTRUCTOR
-            // WHERE j = i AND  if (j != i)
-            masses[i].addGravityForce();
-            masses[i].addResultantForce();
-            addSpringForce(masses[i],i);
-            masses[i].addFrictionForce();
-        }
-        // update derivitives
-        // loop thorugh masses
-        for (mass& m : masses) {
-            m.updateDerivitives();
+        while (steps > 0) {
+            // calculate the mass forces
+            for (int i = 0; i < masses.size(); i++) {
+                masses[i].resetForces();
+                // get the 4 types of forces and save them within the mass.
+                // DAN YOU CAN DO THIS AND JUST APPLY THE 4 FORCES TO THE F MEMBER OF THE MASS.
+                // DO THEM IN 4 SEPERATE FUNCTIONS PLS.
+                // WHEN YOU LOOP THROUHG THE MATRIX COPY THE NESTED FOR FROM THE CONSTRUCTOR
+                // WHERE j = i AND  if (j != i)
+                masses[i].addGravityForce();
+                masses[i].addResultantForce();
+                addSpringForce(masses[i],i);
+                masses[i].addFrictionForce();
+            }
+            // update derivitives
+            // loop thorugh masses
+            for (mass& m : masses) {
+                m.updateDerivitives();
+            }
+            robotTime += timestep;
+            steps--;
         }
     }
     
