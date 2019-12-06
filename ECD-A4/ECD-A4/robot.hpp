@@ -44,7 +44,7 @@ public:
         }
         
         for (int i = 0; i < 8; i++) {
-            for (int j = i; j < 8; j++) {
+            for (int j = 0; j < 8; j++) {
                 if (i != j) {
                     double orinLength = massDistance(masses[i],masses[j]);
                     connections[i][j] = std::make_tuple(true,orinLength,defaultK,defaultAmplitde,defaultPhi);
@@ -103,19 +103,44 @@ public:
     
     // destructor
     
+    // spring force calculator
+    void addSpringForce(mass& m, const int i) {
+        for(int j = 0; j < connections.size(); j++) {
+            bool springExists = std::get<0>(connections[i][j]);
+            if (springExists) {
+             // add the spring force
+                double di[3];
+                for (int k = 0; k < 2; k++) { di[k] = m.p[k]-masses[j].p[k]; }
+                double pyDist = massDistance(m, masses[j]);
+                // stuff for the spring force
+                double orinLen = std::get<1>(connections[i][j]);
+                double b = std::get<3>(connections[i][j]);
+                double c = std::get<4>(connections[i][j]);
+                double pulseLen = orinLen+abs((b*sin(w*robotTime+c)))/2;
+                double k = std::get<2>(connections[i][j]);
+                double springForce = k*(pyDist-pulseLen);
+                // appply the force to the mass
+                for(int ii = 0; ii < 2; ii++) {
+                    m.f[ii] += springForce*di[ii]/pyDist;
+                }
+            }
+        }
+    };
+    
     // simulate function
     void simulate(double dt = timestep, int steps = 1) {
         // calculate the mass forces
-        for (mass& m : masses) {
-            m.resetForces();
+        for (int i = 0; i < masses.size(); i++) {
+            masses[i].resetForces();
             // get the 4 types of forces and save them within the mass.
             // DAN YOU CAN DO THIS AND JUST APPLY THE 4 FORCES TO THE F MEMBER OF THE MASS.
             // DO THEM IN 4 SEPERATE FUNCTIONS PLS.
             // WHEN YOU LOOP THROUHG THE MATRIX COPY THE NESTED FOR FROM THE CONSTRUCTOR
             // WHERE j = i AND  if (j != i)
-            m.addGravityForce();
-            m.addResultantForce();
-            m.addFrictionForce();
+            masses[i].addGravityForce();
+            masses[i].addResultantForce();
+            addSpringForce(masses[i],i);
+            masses[i].addFrictionForce();
         }
         // update derivitives
         // loop thorugh masses
