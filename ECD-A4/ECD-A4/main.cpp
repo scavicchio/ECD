@@ -32,6 +32,8 @@ int main(int argc, const char * argv[]) {
     aRobot.displayConnectionMatrix();
     cout << endl;
     aRobot.connections[1][6] = std::make_tuple(false,0,0,0,0);
+    aRobot.connections[6][1] = std::make_tuple(false,0,0,0,0);
+
     aRobot.displayConnectionMatrix();
 
     cout << "COPY TEST" << endl;

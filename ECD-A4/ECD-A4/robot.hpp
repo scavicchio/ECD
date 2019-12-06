@@ -154,10 +154,54 @@ public:
     }
     
     // add mass
+    // takes a mass object to insert
+    // IT DOES NOT CREATE ANY CONNECTIONS FOR THE MASS
+    void addMass(mass m) {
+        masses.push_back(m);
+    }
+    
+    // remove mass
+    // this must remove the row and column of the mass
+    // this requires a lot of overhead so dont do it often
+    // takes in the INDEX of the mass
+    void removeMass(int m) {
+        std::vector<std::vector<std::tuple<bool,double,double,double,double>>>::iterator row = connections.begin();
+        row += m;
+        connections.erase(row);
+        for(int i = 0; i < connections.size(); i++) {
+            std::vector<std::tuple<bool,double,double,double,double>>::iterator col = connections[i].begin();
+            col += m;
+            connections[i].erase(col);
+        }
+        // remove from the mass vector
+        std::vector<mass>::iterator last = masses.begin();
+        last += m;
+        masses.erase(last);
+        return;
+    }
     
     // resize weighted graph
     
-    // add springs
+    // add spring
+    // this must be done between masses that already exist
+    // takes in the index of the two masses and the spring components
+    // it DOES NOT check if the masses already have a spring
+    void addSpring(int m1, int m2, double k = defaultK, double amp = defaultAmplitde, double phi = defaultPhi) {
+        double orinLen = massDistance(masses[m1], masses[m2]);
+        std::tuple<bool,double,double,double,double> temp = std::make_tuple(true,orinLen,k,amp,phi);
+        connections[m1][m2] = temp;
+        connections[m2][m1] = temp;
+        return;
+    }
+    // remove a spring
+    // takes in the index of m1 and m2 in the vector, and removes the spring from the connection graph
+    // must effect both sided of the matrix
+    void removeSpring(int m1, int m2) {
+        std::tuple<bool,double,double,double,double> temp = std::make_tuple(false,0,0,0,0);
+        connections[m1][m2] = temp;
+        connections[m2][m1] = temp;
+        return;
+    }
     
     // save function
     
@@ -180,7 +224,8 @@ public:
     }
     
     // robot draw spring functions
-    void drawSpring();
+    // just write this to draw a single spring between two masses
+    void drawSpring(const mass& m1, const mass& m2);
     
     // members
     double robotTime;

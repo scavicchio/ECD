@@ -37,7 +37,6 @@ struct spring {
     double c;
     mass* m1;
     mass* m2;
-
 };
 
 #endif /* spring_hpp */

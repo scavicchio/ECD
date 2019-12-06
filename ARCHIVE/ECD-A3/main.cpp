@@ -192,9 +192,9 @@ int main(int argc, char **argv) {
             children_bots[i].randomizeSprings();
             children_bots[i].reset();
         }
-
+        /* THIS IS THE ONLY BROKEN PART */
         //now let's loop through and do 1/2 crossover on the second half by setting child 1 spring = child 2 spring
-     /*   for (int i = 0; (i*2) < children_bots.size(); i++) {
+        for (int i = 0; (i*2) < children_bots.size(); i++) {
             
             robot tmp_crossed_child1 = children_bots[2*i];
             robot tmp_crossed_child2 = children_bots[2*i+1];
@@ -210,7 +210,7 @@ int main(int argc, char **argv) {
 
             children_bots[2*i] = tmp_crossed_child1;
             children_bots[2*i+1] = tmp_crossed_child2;
-      }*/
+      }
         
         
         cout << "starting allbots" << endl;
@@ -239,6 +239,7 @@ int main(int argc, char **argv) {
             movementResults[i][j] = allBots_results[target_index];
             
         }
+        /* END BROKEN PART */
         cout << " " << endl;
     }
 
