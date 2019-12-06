@@ -113,6 +113,9 @@ public:
             // DO THEM IN 4 SEPERATE FUNCTIONS PLS.
             // WHEN YOU LOOP THROUHG THE MATRIX COPY THE NESTED FOR FROM THE CONSTRUCTOR
             // WHERE j = i AND  if (j != i)
+            m.addGravityForce();
+            m.addResultantForce();
+            m.addFrictionForce();
         }
         // update derivitives
         // loop thorugh masses
