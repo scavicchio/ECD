@@ -9,6 +9,8 @@
 #include <iostream>
 #include "globalVars.h"
 #include "robot.hpp"
+#include <algorithm>
+#include <numeric>
 
 const double timestep = 0.0001;
 const double defaultWeight = 0.1;
@@ -24,25 +26,49 @@ const double damping = 0.9;
 
 using namespace std;
 
+template<typename Type>
+std::vector<size_t> tag_sort(const std::vector<Type>& vec)
+{
+    std::vector<size_t> result(vec.size());
+    std::iota(begin(result), end(result), 0);
+    sort(begin(result), end(result),
+            [&vec](const auto & lhs, const auto & rhs)
+            {
+                return vec[lhs] > vec[rhs];
+            }
+    );
+    return result;
+}
+
 int main(int argc, const char * argv[]) {
     // insert code here...
-    std::cout << "Hello, World!\n";
     
-    robot aRobot;
-    aRobot.displayConnectionMatrix();
-    cout << endl;
-    aRobot.connections[1][6] = std::make_tuple(false,0,0,0,0);
-    aRobot.connections[6][1] = std::make_tuple(false,0,0,0,0);
-
-    aRobot.displayConnectionMatrix();
-
-    cout << "COPY TEST" << endl;
-    robot bRobot(aRobot);
-    bRobot.displayConnectionMatrix();
-    cout << "ASSIGNMENT TEST" << endl;
-    robot cRobot;
-    cRobot = bRobot;
-    cRobot.displayConnectionMatrix();
+    vector<robot> allMyRobotboys;
+//    robot aRobot;
+//    aRobot.displayConnectionMatrix();
+//    cout << endl;
+//    aRobot.connections[1][6] = std::make_tuple(false,0,0,0,0);
+//    aRobot.connections[6][1] = std::make_tuple(false,0,0,0,0);
+//
+//    aRobot.displayConnectionMatrix();
+//
+//    cout << "COPY TEST" << endl;
+//    robot bRobot(aRobot);
+//    bRobot.displayConnectionMatrix();
+//    cout << "ASSIGNMENT TEST" << endl;
+//    robot cRobot;
+//    cRobot = bRobot;
+//    cRobot.displayConnectionMatrix();
+//
+//    vector<double> com = cRobot.centerOfMass();
+//    cout << com[0] << " " << com[1] << " " << com[2] << endl;
+//
+//    cRobot.simulate(timestep, 10);
+//
+//    vector<double> comEnd = cRobot.centerOfMass();
+//
+//    cout<< comEnd[0] << " " << comEnd[1] << " " << comEnd[2] << endl;
+    
     
     
     
