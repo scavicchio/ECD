@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C61DD5582399C60200B5BB1C /* force.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61DD5572399C60200B5BB1C /* force.cpp */; };
 		C68423B42399CAAE000A8CD4 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C68423B32399CAAE000A8CD4 /* libglfw.3.3.dylib */; };
 		C68423B72399CABE000A8CD4 /* libglfw.3.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = C68423B32399CAAE000A8CD4 /* libglfw.3.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C68423B92399CABF000A8CD4 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C68423AF2399CA9A000A8CD4 /* GLUT.framework */; };
@@ -42,7 +41,6 @@
 
 /* Begin PBXFileReference section */
 		C61DD5562399C5D100B5BB1C /* force.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = force.hpp; sourceTree = "<group>"; };
-		C61DD5572399C60200B5BB1C /* force.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = force.cpp; path = "/Users/salvycavicchio/Documents/ECD/ECD-A3/ECD-A4/ECD-A4/force.cpp"; sourceTree = "<absolute>"; };
 		C68423AF2399CA9A000A8CD4 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		C68423B12399CAA0000A8CD4 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		C68423B32399CAAE000A8CD4 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../../../usr/local/Cellar/glfw/3.3/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
@@ -72,7 +70,6 @@
 		C61DD5592399C73300B5BB1C /* only use for reference */ = {
 			isa = PBXGroup;
 			children = (
-				C61DD5572399C60200B5BB1C /* force.cpp */,
 				C61DD5562399C5D100B5BB1C /* force.hpp */,
 			);
 			path = "only use for reference";
@@ -178,7 +175,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C69D1F8B2399ABF500377E49 /* robot.cpp in Sources */,
-				C61DD5582399C60200B5BB1C /* force.cpp in Sources */,
 				C69D1F802399A3BB00377E49 /* main.cpp in Sources */,
 				C69D1F882399A44F00377E49 /* mass.cpp in Sources */,
 			);

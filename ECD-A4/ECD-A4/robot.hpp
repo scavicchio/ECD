@@ -18,6 +18,7 @@
 #include <iostream>
 
 
+
 class robot {
 public:
     // default constructor should make a cube
@@ -140,7 +141,7 @@ public:
                 // WHERE j = i AND  if (j != i)
                 masses[i].addGravityForce();
                 masses[i].addResultantForce();
-                addSpringForce(masses[i],i);
+//                addSpringForce(masses[i],i);
                 masses[i].addFrictionForce();
             }
             // update derivitives
@@ -234,6 +235,22 @@ public:
     // weighted graph for spring connections
     // double is L0,k,amplitude,phase
     std::vector<std::vector<std::tuple<bool,double,double,double,double>>> connections;
+    
+    
+    
+    std::vector<double> centerOfMass() {
+        std::vector<double> topHalf = {0,0,0};
+        double bottomHalf = 0;
+        std::vector<double> theReturn = {0,0,0};
+        for (mass& item : masses) {
+            topHalf[0] += item.weight*item.p[0];
+            topHalf[1] += item.weight*item.p[1];
+            topHalf[2] += item.weight*item.p[2];
+            bottomHalf += item.weight;
+        }
+        for (int i = 0; i < 3; i++) { theReturn[i] = topHalf[i]/bottomHalf; }
+        return theReturn;
+    }
 };
 
 #endif /* robot_hpp */
