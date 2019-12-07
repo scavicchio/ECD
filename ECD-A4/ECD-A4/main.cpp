@@ -9,6 +9,8 @@
 #include <iostream>
 #include "globalVars.h"
 #include "robot.hpp"
+#include <algorithm>
+#include <numeric>
 
 const double timestep = 0.0001;
 const double defaultWeight = 0.1;
@@ -23,6 +25,21 @@ const double w = 1;
 const double damping = 0.9;
 
 using namespace std;
+
+
+template<typename Type>
+vector<size_t> tag_sort(const vector<Type>& vec)
+{
+    vector<size_t> result(vec.size());
+    iota(begin(result), end(result), 0);
+    sort(begin(result), end(result),
+            [&vec](const auto & lhs, const auto & rhs)
+            {
+                return vec[lhs] > vec[rhs];
+            }
+    );
+    return result;
+}
 
 int main(int argc, const char * argv[]) {
     // insert code here...
@@ -43,6 +60,7 @@ int main(int argc, const char * argv[]) {
     robot cRobot;
     cRobot = bRobot;
     cRobot.displayConnectionMatrix();
+    
     
     
     
