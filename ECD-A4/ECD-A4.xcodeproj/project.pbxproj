@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		42C3575F239C7788000F3B04 /* taraRNG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42C3575E239C7788000F3B04 /* taraRNG.cpp */; };
 		C68423B42399CAAE000A8CD4 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C68423B32399CAAE000A8CD4 /* libglfw.3.3.dylib */; };
 		C68423B72399CABE000A8CD4 /* libglfw.3.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = C68423B32399CAAE000A8CD4 /* libglfw.3.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C68423B92399CABF000A8CD4 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C68423AF2399CA9A000A8CD4 /* GLUT.framework */; };
@@ -41,6 +42,8 @@
 
 /* Begin PBXFileReference section */
 		42C3575D239C7697000F3B04 /* Vizualization */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Vizualization; sourceTree = "<group>"; };
+		42C3575E239C7788000F3B04 /* taraRNG.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = taraRNG.cpp; sourceTree = "<group>"; };
+		42C35760239C778F000F3B04 /* taraRNG.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = taraRNG.hpp; sourceTree = "<group>"; };
 		C61DD5562399C5D100B5BB1C /* force.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = force.hpp; sourceTree = "<group>"; };
 		C68423AF2399CA9A000A8CD4 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		C68423B12399CAA0000A8CD4 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -110,6 +113,8 @@
 				42C3575D239C7697000F3B04 /* Vizualization */,
 				C61DD5592399C73300B5BB1C /* only use for reference */,
 				C69D1F862399A44F00377E49 /* mass.cpp */,
+				42C3575E239C7788000F3B04 /* taraRNG.cpp */,
+				42C35760239C778F000F3B04 /* taraRNG.hpp */,
 				C69D1F872399A44F00377E49 /* mass.hpp */,
 				C69D1F892399ABF500377E49 /* robot.cpp */,
 				C69D1F8A2399ABF500377E49 /* robot.hpp */,
@@ -179,6 +184,7 @@
 				C69D1F8B2399ABF500377E49 /* robot.cpp in Sources */,
 				C69D1F802399A3BB00377E49 /* main.cpp in Sources */,
 				C69D1F882399A44F00377E49 /* mass.cpp in Sources */,
+				42C3575F239C7788000F3B04 /* taraRNG.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
