@@ -40,6 +40,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		42C3575D239C7697000F3B04 /* Vizualization */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Vizualization; sourceTree = "<group>"; };
 		C61DD5562399C5D100B5BB1C /* force.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = force.hpp; sourceTree = "<group>"; };
 		C68423AF2399CA9A000A8CD4 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		C68423B12399CAA0000A8CD4 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -106,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				C69D1F7F2399A3BB00377E49 /* main.cpp */,
+				42C3575D239C7697000F3B04 /* Vizualization */,
 				C61DD5592399C73300B5BB1C /* only use for reference */,
 				C69D1F862399A44F00377E49 /* mass.cpp */,
 				C69D1F872399A44F00377E49 /* mass.hpp */,
