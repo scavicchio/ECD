@@ -8,13 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		42C3575F239C7788000F3B04 /* taraRNG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42C3575E239C7788000F3B04 /* taraRNG.cpp */; };
-<<<<<<< HEAD
 		42C35766239D9F20000F3B04 /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42C35762239D9F20000F3B04 /* camera.cpp */; };
 		42C35767239D9F20000F3B04 /* checkerboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42C35764239D9F20000F3B04 /* checkerboard.cpp */; };
-=======
-		B5EA3C14239C7A0300F1540E /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5EA3C10239C7A0300F1540E /* camera.cpp */; };
-		B5EA3C15239C7A0300F1540E /* checkerboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5EA3C12239C7A0300F1540E /* checkerboard.cpp */; };
->>>>>>> f389434184e6d7f55dcebfc84a3e7f616b3d47a9
 		C68423B42399CAAE000A8CD4 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C68423B32399CAAE000A8CD4 /* libglfw.3.3.dylib */; };
 		C68423B72399CABE000A8CD4 /* libglfw.3.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = C68423B32399CAAE000A8CD4 /* libglfw.3.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C68423B92399CABF000A8CD4 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C68423AF2399CA9A000A8CD4 /* GLUT.framework */; };
@@ -50,17 +45,10 @@
 /* Begin PBXFileReference section */
 		42C3575E239C7788000F3B04 /* taraRNG.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = taraRNG.cpp; sourceTree = "<group>"; };
 		42C35760239C778F000F3B04 /* taraRNG.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = taraRNG.hpp; sourceTree = "<group>"; };
-<<<<<<< HEAD
 		42C35762239D9F20000F3B04 /* camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = camera.cpp; sourceTree = "<group>"; };
 		42C35763239D9F20000F3B04 /* camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = camera.hpp; sourceTree = "<group>"; };
 		42C35764239D9F20000F3B04 /* checkerboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = checkerboard.cpp; sourceTree = "<group>"; };
 		42C35765239D9F20000F3B04 /* checkerboard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = checkerboard.hpp; sourceTree = "<group>"; };
-=======
-		B5EA3C10239C7A0300F1540E /* camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = camera.cpp; path = "ECD-A4/Vizualization/camera.cpp"; sourceTree = SOURCE_ROOT; };
-		B5EA3C11239C7A0300F1540E /* checkerboard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = checkerboard.hpp; path = "ECD-A4/Vizualization/checkerboard.hpp"; sourceTree = SOURCE_ROOT; };
-		B5EA3C12239C7A0300F1540E /* checkerboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = checkerboard.cpp; path = "ECD-A4/Vizualization/checkerboard.cpp"; sourceTree = SOURCE_ROOT; };
-		B5EA3C13239C7A0300F1540E /* camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = camera.hpp; path = "ECD-A4/Vizualization/camera.hpp"; sourceTree = SOURCE_ROOT; };
->>>>>>> f389434184e6d7f55dcebfc84a3e7f616b3d47a9
 		C61DD5562399C5D100B5BB1C /* force.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = force.hpp; sourceTree = "<group>"; };
 		C68423AF2399CA9A000A8CD4 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		C68423B12399CAA0000A8CD4 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -88,7 +76,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-<<<<<<< HEAD
 		42C35769239D9F2D000F3B04 /* Viz */ = {
 			isa = PBXGroup;
 			children = (
@@ -97,17 +84,6 @@
 				42C35764239D9F20000F3B04 /* checkerboard.cpp */,
 			);
 			path = Viz;
-=======
-		B5EA3C0F239C79D500F1540E /* Visualization */ = {
-			isa = PBXGroup;
-			children = (
-				B5EA3C10239C7A0300F1540E /* camera.cpp */,
-				B5EA3C13239C7A0300F1540E /* camera.hpp */,
-				B5EA3C12239C7A0300F1540E /* checkerboard.cpp */,
-				B5EA3C11239C7A0300F1540E /* checkerboard.hpp */,
-			);
-			path = Visualization;
->>>>>>> f389434184e6d7f55dcebfc84a3e7f616b3d47a9
 			sourceTree = "<group>";
 		};
 		C61DD5592399C73300B5BB1C /* only use for reference */ = {
@@ -150,10 +126,6 @@
 			children = (
 				C69D1F7F2399A3BB00377E49 /* main.cpp */,
 				C61DD5592399C73300B5BB1C /* only use for reference */,
-<<<<<<< HEAD
-=======
-				B5EA3C0F239C79D500F1540E /* Visualization */,
->>>>>>> f389434184e6d7f55dcebfc84a3e7f616b3d47a9
 				42C3575E239C7788000F3B04 /* taraRNG.cpp */,
 				42C35760239C778F000F3B04 /* taraRNG.hpp */,
 				C69D1F862399A44F00377E49 /* mass.cpp */,
@@ -227,17 +199,10 @@
 			files = (
 				C69D1F8B2399ABF500377E49 /* robot.cpp in Sources */,
 				C69D1F802399A3BB00377E49 /* main.cpp in Sources */,
-<<<<<<< HEAD
 				42C35767239D9F20000F3B04 /* checkerboard.cpp in Sources */,
 				C69D1F882399A44F00377E49 /* mass.cpp in Sources */,
 				42C3575F239C7788000F3B04 /* taraRNG.cpp in Sources */,
 				42C35766239D9F20000F3B04 /* camera.cpp in Sources */,
-=======
-				B5EA3C15239C7A0300F1540E /* checkerboard.cpp in Sources */,
-				C69D1F882399A44F00377E49 /* mass.cpp in Sources */,
-				42C3575F239C7788000F3B04 /* taraRNG.cpp in Sources */,
-				B5EA3C14239C7A0300F1540E /* camera.cpp in Sources */,
->>>>>>> f389434184e6d7f55dcebfc84a3e7f616b3d47a9
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -140,7 +140,7 @@ public:
                 // WHERE j = i AND  if (j != i)
                 masses[i].addGravityForce();
                 masses[i].addResultantForce();
-//                addSpringForce(masses[i],i);
+                addSpringForce(masses[i],i);
                 masses[i].addFrictionForce();
             }
             // update derivitives
@@ -156,20 +156,8 @@ public:
     // add mass
     // takes a mass object to insert
     // IT DOES NOT CREATE ANY CONNECTIONS FOR THE MASS
-    void addMass(mass& m, vector<int> connectMass) {
+    void addMass(mass m) {
         masses.push_back(m);
-        connections.push_back();
-        j = connections.size()-1;
-        std::tuple<bool,double,double,double,double> nullPair = std::make_tuple(false,0,0,0,0);
-        for(int i = 0; i < connections.size(); i++) {
-            connections[i].push_back(nullPair);
-        }
-        for (int i : connectMass) {
-            double len = massDistance(m,masses[i]);
-            std::tuple<bool,double,double,double,double> aPair = std::make_tuple(true,len,defaultK,defaultAmplitde,defaultPhi);
-            connections[i][j] = aPair;
-            connections[j][i] = aPair;
-        }
     }
     
     // remove mass
@@ -215,14 +203,6 @@ public:
         return;
     }
     
-    // will reset the spring to defaults if no values given
-    void alterSpring(int m1, int m2, double k = defaultK, double amp = defaultAmplitde, double phi = defaultPhi) {
-        double len = get<1>(connections[m1,m2]);
-        std::tuple<bool,double,double,double,double> temp = std::make_tuple(true,len,k,amp,phi);
-        connections[m1][m2] = temp;
-        connections[m2][m1] = temp;
-        return;
-    }
     // save function
     
     // distance between two masses
