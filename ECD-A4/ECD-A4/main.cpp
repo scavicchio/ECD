@@ -43,11 +43,8 @@ vector<size_t> tag_sort(const vector<Type>& vec)
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-    std::cout << "Hello, World!\n";
     
     robot aRobot;
-    aRobot.displayConnectionMatrix();
-    cout << endl;
     aRobot.connections[1][6] = std::make_tuple(false,0,0,0,0);
     aRobot.connections[6][1] = std::make_tuple(false,0,0,0,0);
 
@@ -60,6 +57,34 @@ int main(int argc, const char * argv[]) {
     robot cRobot;
     cRobot = bRobot;
     cRobot.displayConnectionMatrix();
+    cout << endl << endl;
+    
+    int populationSize = 20;
+    int evolutionIterations = 2;
+    int parentSize = populationSize/2;
+    
+    
+    vector<robot> startingParentBots(parentSize);
+    vector<robot> startingChildrenBots(parentSize);
+    robot buildingBot;
+    
+    for(int i = 0; i < startingParentBots.size(); i++) {
+        startingParentBots[i] = buildingBot;
+    }
+    
+    for (int j = 0; j < evoloutionIterations; j++) {
+        
+        // So we start by generating some kids
+        for (int i = 0; i < children_bots.size(); i++) {
+            robot temp_bot(parent_bots[i]);
+            // make a small change to the springs and reset the cubes
+            
+            children_bots[i] = temp_bot;
+        }
+
+    }
+    
+
     
     
     
