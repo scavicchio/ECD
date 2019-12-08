@@ -47,10 +47,10 @@ vector<size_t> tag_sort(const vector<Type>& vec)
 }
 
 
-double random_percentage()
+double random_number(int start=0, int end=1)
 {
     static std::random_device e;
-    static std::uniform_real_distribution<> dis(0, 1);
+    static std::uniform_real_distribution<> dis(start, end);
     return dis(e);
 }
 
@@ -79,22 +79,39 @@ int main(int argc, const char * argv[]) {
     double amplitude_increment = 0.1;
     double phi_increment = 0.01 ;
     
-    vector<robot> startingParentBots(parentSize);
-    vector<robot> startingChildrenBots(parentSize);
-    robot buildingBot;
-    
-    for(int i = 0; i < startingParentBots.size(); i++) {
-        startingParentBots[i] = buildingBot;
+    vector<robot> ParentBots(parentSize);
+    vector<robot> ChildrenBots(parentSize);
+    vector<robot> Population(populationSize);
+        
+    // Make some random population!!
+    for(int i = 0; i < Population.size(); i++) {
+        robot tempBuildingBot;
+        for (int ii = 0;  ii < tempBuildingBot.connections.size(); ii++) {
+            for (int jj = ii; jj < tempBuildingBot.connections.size(); jj++) {
+                if (jj != ii) {
+                    if (bool isConnected = get<0>(tempBuildingBot.connections[ii][jj])){
+                        // This should alter springs with some random values
+                        tempBuildingBot.alterSpring(ii, jj, rand_K(), rand_B(), rand_C());
+                    }
+                }
+            }
+        }
+        Population[i] = tempBuildingBot;
     }
+
     
     for (int j = 0; j < evolutionIterations; j++) {
         
-        // So we start by generating some kids
-        for (int i = 0; i < startingChildrenBots.size(); i++) {
-            // make a small change to the springs and reset the cubes
-            
-        }
+
+        
+        
+        
+        
     }
+    
+    
+    
+    
 }
     
 

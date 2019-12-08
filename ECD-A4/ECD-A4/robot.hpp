@@ -16,6 +16,7 @@
 #include <tuple>
 #include <cmath>
 #include <iostream>
+#include <random>
 
 
 class robot {
@@ -156,14 +157,17 @@ public:
     // add mass
     // takes a mass object to insert
     // IT DOES NOT CREATE ANY CONNECTIONS FOR THE MASS
-    void addMass(mass& m, vector<int> connectMass) {
+    void addMass(mass& m, std::vector<int> connectMass) {
         masses.push_back(m);
-        connections.push_back();
-        j = connections.size()-1;
+        std::vector<std::tuple<bool,double,double,double,double>> temp;
+        int j = connections.size()-1;
         std::tuple<bool,double,double,double,double> nullPair = std::make_tuple(false,0,0,0,0);
         for(int i = 0; i < connections.size(); i++) {
+            temp.push_back(nullPair);
             connections[i].push_back(nullPair);
         }
+        temp.push_back(nullPair);
+        connections.push_back(temp);
         for (int i : connectMass) {
             double len = massDistance(m,masses[i]);
             std::tuple<bool,double,double,double,double> aPair = std::make_tuple(true,len,defaultK,defaultAmplitde,defaultPhi);
@@ -217,7 +221,7 @@ public:
     
     // will reset the spring to defaults if no values given
     void alterSpring(int m1, int m2, double k = defaultK, double amp = defaultAmplitde, double phi = defaultPhi) {
-        double len = get<1>(connections[m1,m2]);
+        double len = std::get<1>(connections[m1][m2]);
         std::tuple<bool,double,double,double,double> temp = std::make_tuple(true,len,k,amp,phi);
         connections[m1][m2] = temp;
         connections[m2][m1] = temp;
