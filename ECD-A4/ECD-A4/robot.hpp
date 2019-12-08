@@ -276,7 +276,6 @@ public:
         return theReturn;
     }
     
-
 };
 
 #endif /* robot_hpp */

@@ -115,8 +115,8 @@ int main(int argc, const char * argv[]) {
     cRobot = bRobot;
     cRobot.displayConnectionMatrix();
     
-    int width;
-    int depth;
+    int width = 600;
+    int depth = 600;
     //adding graphics
     glfwInit();
     GLFWwindow* window; // (In the accompanying source code, this variable is global for simplicity)
