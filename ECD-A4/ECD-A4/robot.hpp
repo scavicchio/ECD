@@ -156,8 +156,20 @@ public:
     // add mass
     // takes a mass object to insert
     // IT DOES NOT CREATE ANY CONNECTIONS FOR THE MASS
-    void addMass(mass m) {
+    void addMass(mass& m, vector<int> connectMass) {
         masses.push_back(m);
+        connections.push_back();
+        j = connections.size()-1;
+        std::tuple<bool,double,double,double,double> nullPair = std::make_tuple(false,0,0,0,0);
+        for(int i = 0; i < connections.size(); i++) {
+            connections[i].push_back(nullPair);
+        }
+        for (int i : connectMass) {
+            double len = massDistance(m,masses[i]);
+            std::tuple<bool,double,double,double,double> aPair = std::make_tuple(true,len,defaultK,defaultAmplitde,defaultPhi);
+            connections[i][j] = aPair;
+            connections[j][i] = aPair;
+        }
     }
     
     // remove mass
