@@ -150,4 +150,8 @@ struct mass {
 
 };
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> f389434184e6d7f55dcebfc84a3e7f616b3d47a9
 #endif /* mass_hpp */

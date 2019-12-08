@@ -11,10 +11,11 @@
 #include "GLFW/glfw3.h"
 #include "globalVars.h"
 #include "robot.hpp"
-#include "checkerboard.hpp"
+//#include "checkerboard.hpp"
 #include "camera.hpp"
 #include <algorithm>
 #include <numeric>
+#include "taraRNG.hpp"
 
 const double timestep = 0.0001;
 const double defaultWeight = 0.1;
@@ -48,6 +49,7 @@ vector<size_t> tag_sort(const vector<Type>& vec)
 }
 
 
+<<<<<<< HEAD
 Checkerboard checkerboard(2,2);
 Camera camera;
 
@@ -86,10 +88,18 @@ void processInput(GLFWwindow *window) {
     else if (glfwGetKey(window,GLFW_KEY_S)) { camera.moveDown(); }
     else if (glfwGetKey(window,GLFW_KEY_D)) { camera.moveRight(); }
     return;
+=======
+double random_percentage()
+{
+    static std::random_device e;
+    static std::uniform_real_distribution<> dis(0, 1);
+    return dis(e);
+>>>>>>> f389434184e6d7f55dcebfc84a3e7f616b3d47a9
 }
 
 int main(int argc, const char * argv[]) {
     // insert code here...
+<<<<<<< HEAD
     std::cout << "Hello, World!\n";
     int fps = 60;
     double oneSecondOfSim = 1;
@@ -98,10 +108,10 @@ int main(int argc, const char * argv[]) {
     simSteps = oneSecondOfSim/fps;
     double frameTime = 1;
     frameTime /= fps;
+=======
+>>>>>>> f389434184e6d7f55dcebfc84a3e7f616b3d47a9
     
     robot aRobot;
-    aRobot.displayConnectionMatrix();
-    cout << endl;
     aRobot.connections[1][6] = std::make_tuple(false,0,0,0,0);
     aRobot.connections[6][1] = std::make_tuple(false,0,0,0,0);
 
@@ -114,7 +124,9 @@ int main(int argc, const char * argv[]) {
     robot cRobot;
     cRobot = bRobot;
     cRobot.displayConnectionMatrix();
+    cout << endl << endl;
     
+<<<<<<< HEAD
     int width;
     int depth;
     //adding graphics
@@ -161,7 +173,34 @@ int main(int argc, const char * argv[]) {
     }
     //
     glfwTerminate();
+=======
+    int populationSize = 20;
+    int evolutionIterations = 2;
+    int parentSize = populationSize/2;
+    double k_increment = 1000;
+    double amplitude_increment = 0.1;
+    double phi_increment = 0.01 ;
     
+    vector<robot> startingParentBots(parentSize);
+    vector<robot> startingChildrenBots(parentSize);
+    robot buildingBot;
     
-    return 0;
+    for(int i = 0; i < startingParentBots.size(); i++) {
+        startingParentBots[i] = buildingBot;
+    }
+    
+    for (int j = 0; j < evolutionIterations; j++) {
+        
+        // So we start by generating some kids
+        for (int i = 0; i < startingChildrenBots.size(); i++) {
+            // make a small change to the springs and reset the cubes
+            
+        }
+    }
 }
+>>>>>>> f389434184e6d7f55dcebfc84a3e7f616b3d47a9
+    
+
+        
+
+    
