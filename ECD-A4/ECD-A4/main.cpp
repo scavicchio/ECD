@@ -8,10 +8,10 @@
 
 #include <iostream>
 #include <GLUT/GLUT.h>
-#include <GLFW/glfw3.h>
+#include "GLFW/glfw3.h"
 #include "globalVars.h"
 #include "robot.hpp"
-#include "checkerboard.hpp"
+//#include "checkerboard.hpp"
 #include "camera.hpp"
 #include <algorithm>
 #include <numeric>
@@ -46,48 +46,48 @@ vector<size_t> tag_sort(const vector<Type>& vec)
 }
 
 
-#tara adding graphics
-Checkerboard checkerboard(2,2);
-Camera camera;
-
-void init_gl() {
-  glEnable(GL_DEPTH_TEST);
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, WHITE);
-  glLightfv(GL_LIGHT0, GL_SPECULAR, WHITE);
-  glMaterialfv(GL_FRONT, GL_SPECULAR, WHITE);
-  glMaterialf(GL_FRONT, GL_SHININESS, 30);
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
-  checkerboard.create();
-}
-
-void render() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    checkerboard.draw();
-    
-    glOrtho(-10.0f,10.0f,-10.0f,10.0f,-10.0f,10.0f);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glRotatef(-25.0f,1.0f,0.0f,0.0f);
-    glRotatef(-45.0f,0.0f,1.0f,0.0f);
-    glRotatef(camera.getY(),0.0f,1.0f,0.0f);
-    glRotatef(camera.getZ(),0.0f,0.0f,1.0f);
-    
-    for (vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {item->draw();
-    }
-    for (vector<spring>::iterator item = springs.begin(); item != springs.end(); item++) {
-            item->draw();
-    }
-    glFlush();
-    };
-
-void processInput(GLFWwindow *window) {
-    if (glfwGetKey(window,GLFW_KEY_W)) { camera.moveUp(); }
-    else if (glfwGetKey(window,GLFW_KEY_A)) { camera.moveLeft(); }
-    else if (glfwGetKey(window,GLFW_KEY_S)) { camera.moveDown(); }
-    else if (glfwGetKey(window,GLFW_KEY_D)) { camera.moveRight(); }
-    return;
-}
+//tara adding graphics
+//Checkerboard checkerboard(2,2);
+//Camera camera;
+//
+//void init_gl() {
+//  glEnable(GL_DEPTH_TEST);
+//  glLightfv(GL_LIGHT0, GL_DIFFUSE, WHITE);
+//  glLightfv(GL_LIGHT0, GL_SPECULAR, WHITE);
+//  glMaterialfv(GL_FRONT, GL_SPECULAR, WHITE);
+//  glMaterialf(GL_FRONT, GL_SHININESS, 30);
+//  glEnable(GL_LIGHTING);
+//  glEnable(GL_LIGHT0);
+//  checkerboard.create();
+//}
+//
+//void render() {
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    checkerboard.draw();
+//
+//    glOrtho(-10.0f,10.0f,-10.0f,10.0f,-10.0f,10.0f);
+//    glMatrixMode(GL_MODELVIEW);
+//    glLoadIdentity();
+//    glRotatef(-25.0f,1.0f,0.0f,0.0f);
+//    glRotatef(-45.0f,0.0f,1.0f,0.0f);
+//    glRotatef(camera.getY(),0.0f,1.0f,0.0f);
+//    glRotatef(camera.getZ(),0.0f,0.0f,1.0f);
+//
+//    for (vector<mass>::iterator item = masses.begin(); item != masses.end(); item++) {item->draw();
+//    }
+//    for (vector<spring>::iterator item = springs.begin(); item != springs.end(); item++) {
+//            item->draw();
+//    }
+//    glFlush();
+//    };
+//
+//void processInput(GLFWwindow *window) {
+//    if (glfwGetKey(window,GLFW_KEY_W)) { camera.moveUp(); }
+//    else if (glfwGetKey(window,GLFW_KEY_A)) { camera.moveLeft(); }
+//    else if (glfwGetKey(window,GLFW_KEY_S)) { camera.moveDown(); }
+//    else if (glfwGetKey(window,GLFW_KEY_D)) { camera.moveRight(); }
+//    return;
+//}
 
 int main(int argc, const char * argv[]) {
     // insert code here...
@@ -120,77 +120,70 @@ int main(int argc, const char * argv[]) {
         startingParentBots[i] = buildingBot;
     }
     
-    for (int j = 0; j < evoloutionIterations; j++) {
+    for (int j = 0; j < evolutionIterations; j++) {
         
         // So we start by generating some kids
-        for (int i = 0; i < children_bots.size(); i++) {
-            robot temp_bot(parent_bots[i]);
+        for (int i = 0; i < startingChildrenBots.size(); i++) {
+
             // make a small change to the springs and reset the cubes
             
-            children_bots[i] = temp_bot;
         }
 
     }
     
-
-    
-    
-    #adding graphics
-        glfwInit();
-            GLFWwindow* window; // (In the accompanying source code, this variable is global for simplicity)
-            window = glfwCreateWindow( width, height, "ROBITS", NULL, NULL);
-            /* Initialize the library*/
-            if (!glfwInit())
-                return -1;
-
-           /* Create a windowed mode window and its OpenGL context*/
-            if (!window) {
-                glfwTerminate();
-                return -1;
-            }
-            /* Make the window's context current */
-            glfwMakeContextCurrent(window);
-            
-            // Ensure we can capture the escape key being pressed below
-            glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-            init_gl();
-            
-            // for framerate limiting
-            double time = glfwGetTime();
-            double lastTime = time;
-            double deltaTime = time - lastTime;
-            
-            /* Loop until the user closes the window */
-               while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 10)
-               {
-                   processInput(window);
-                   /* Render here */
-                   render();
-                   /* Swap front and back buffers */
-                   glfwSwapBuffers(window);
-                   time = glfwGetTime();
-                   lastTime = time;
-                   deltaTime = time - lastTime;
-                   
-                   while (deltaTime <= frameTime) {
-                       simulate(false,1,true);
-                       if (debug) { break; }
-                       time = glfwGetTime();
-                       deltaTime = time - lastTime;
-                   }
-                 
-                   /* Poll for and process events */
-                   glfwPollEvents();
-               }
-            //
-            glfwTerminate();
-        
-        
-        
-        
-        return 0;
-    }
-    
-    
-    return 0;
 }
+    
+//    #adding graphics
+//        glfwInit();
+//            GLFWwindow* window; // (In the accompanying source code, this variable is global for simplicity)
+//            window = glfwCreateWindow( width, height, "ROBITS", NULL, NULL);
+//            /* Initialize the library*/
+//            if (!glfwInit())
+//                return -1;
+//
+//           /* Create a windowed mode window and its OpenGL context*/
+//            if (!window) {
+//                glfwTerminate();
+//                return -1;
+//            }
+//            /* Make the window's context current */
+//            glfwMakeContextCurrent(window);
+//
+//            // Ensure we can capture the escape key being pressed below
+//            glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+//            init_gl();
+//
+//            // for framerate limiting
+//            double time = glfwGetTime();
+//            double lastTime = time;
+//            double deltaTime = time - lastTime;
+//
+//            /* Loop until the user closes the window */
+//               while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 10)
+//               {
+//                   processInput(window);
+//                   /* Render here */
+//                   render();
+//                   /* Swap front and back buffers */
+//                   glfwSwapBuffers(window);
+//                   time = glfwGetTime();
+//                   lastTime = time;
+//                   deltaTime = time - lastTime;
+//
+//                   while (deltaTime <= frameTime) {
+//                       simulate(false,1,true);
+//                       if (debug) { break; }
+//                       time = glfwGetTime();
+//                       deltaTime = time - lastTime;
+//                   }
+//
+//                   /* Poll for and process events */
+//                   glfwPollEvents();
+//               }
+//            //
+//            glfwTerminate();
+//
+//
+        
+
+    
