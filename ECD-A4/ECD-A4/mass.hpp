@@ -150,5 +150,4 @@ struct mass {
 
 };
 
-
 #endif /* mass_hpp */

@@ -141,7 +141,7 @@ public:
                 // WHERE j = i AND  if (j != i)
                 masses[i].addGravityForce();
                 masses[i].addResultantForce();
-//                addSpringForce(masses[i],i);
+                addSpringForce(masses[i],i);
                 masses[i].addFrictionForce();
             }
             // update derivitives
@@ -249,8 +249,35 @@ public:
     
     // robot draw spring functions
     // just write this to draw a single spring between two masses
-    void drawSpring(const mass& m1, const mass& m2);
+    void drawSpring(const mass& m1, const mass& m2) {
+        glLineWidth(5);
+        glBegin(GL_LINES);
+        glVertex3d(m1.p[0],m1.p[1],m1.p[2]);
+        glVertex3d(m2.p[0],m2.p[1],m2.p[2]);
+        glEnd();
+
+    };
     
+    void drawAllSprings() {
+        for (int i = 0; i < connections.size(); i++) {
+            for (int j = i; j < connections.size(); j++) {
+                if (j != i) {
+                    if(std::get<0>(connections[i][j])) { drawSpring(masses[i],masses[j]); }
+                }
+            }
+        }
+    };
+    
+    void drawMasses() {
+        for (mass& m : masses) { m.draw(); }
+        return;
+    }
+    
+    void drawRobot() {
+        drawAllSprings();
+        drawMasses();
+        return;
+    }
     // members
     double robotTime;
     // all the connected masses
@@ -272,7 +299,7 @@ public:
         for (int i = 0; i < 3; i++) { theReturn[i] = topHalf[i]/bottomHalf; }
         return theReturn;
     }
+    
 };
 
 #endif /* robot_hpp */
-

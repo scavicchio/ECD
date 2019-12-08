@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include <GLUT/GLUT.h>
-//#include <GLFW/glfw3.h>
+#include "GLFW/glfw3.h"
 #include "globalVars.h"
 
 // Checkerboard Class
