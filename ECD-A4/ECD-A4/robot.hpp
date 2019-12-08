@@ -215,6 +215,13 @@ public:
         return;
     }
     
+    // will reset the spring to defaults if no values given
+    void alterSpring(int m1, int m2, double len = massDistance(masses[m1], masses[m2]), double k = defaultK, double amp = defaultAmplitde, double phi = defaultPhi) {
+        std::tuple<bool,double,double,double,double> temp = std::make_tuple(true,len,k,amp,phi);
+        connections[m1][m2] = temp;
+        connections[m2][m1] = temp;
+        return;
+    }
     // save function
     
     // distance between two masses
