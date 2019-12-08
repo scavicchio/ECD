@@ -115,52 +115,47 @@ int main(int argc, const char * argv[]) {
     cRobot = bRobot;
     cRobot.displayConnectionMatrix();
     
-    int width = 600;
-    int depth = 600;
-    //adding graphics
-    glfwInit();
-    GLFWwindow* window; // (In the accompanying source code, this variable is global for simplicity)
-    window = glfwCreateWindow(width, depth, "ROBITS", NULL, NULL);
-    /* Initialize the library*/
-    if (!glfwInit())
-        return -1;
-
-    /* Create a windowed mode window and its OpenGL context*/
-    if (!window) {
-        glfwTerminate();
-        return -1;
-    }
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
-            
-    // Ensure we can capture the escape key being pressed below
-    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-    init_gl();
-            
-        // for framerate limiting
-    double time = glfwGetTime();
-    double lastTime = time;
-    double deltaTime = time - lastTime;
-            
-    /* Loop until the user closes the window */
-    while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && time < 10) { processInput(window);
-        /* Render here */
-        render(aRobot);
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
-        time = glfwGetTime();
-        lastTime = time;
-        deltaTime = time - lastTime;
-                   
-        while (deltaTime <= frameTime) {
-            aRobot.simulate();
+    int populationSize = 20;
+    int evolutionIterations = 2;
+    int parentSize = populationSize/2;
+    double k_increment = 1000;
+    double amplitude_increment = 0.1;
+    double phi_increment = 0.01 ;
+    
+    vector<robot> ParentBots(parentSize);
+    vector<robot> ChildrenBots(parentSize);
+    vector<robot> Population(populationSize);
+        
+    // Make some random population!!
+    for(int i = 0; i < Population.size(); i++) {
+        robot tempBuildingBot;
+        for (int ii = 0;  ii < tempBuildingBot.connections.size(); ii++) {
+            for (int jj = ii; jj < tempBuildingBot.connections.size(); jj++) {
+                if (jj != ii) {
+                    if (bool isConnected = get<0>(tempBuildingBot.connections[ii][jj])){
+                        // This should alter springs with some random values
+                        tempBuildingBot.alterSpring(ii, jj, rand_K(), rand_B(), rand_C());
+                    }
+                }
+            }
         }
-                 
-        /* Poll for and process events */
-        glfwPollEvents();
+        Population[i] = tempBuildingBot;
     }
-    //
-    glfwTerminate();
+
+    
+    for (int j = 0; j < evolutionIterations; j++) {
+        
+
+        
+        
+        
+        
+    }
+    
+    
+    
+    
+}
     
     
     return 0;
