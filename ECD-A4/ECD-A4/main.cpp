@@ -30,6 +30,9 @@ const double kc = 2000;
 const double w = 1;
 const double damping = 0.9;
 
+int width = 700;
+int height = 700;
+double t = 0;
 
 using namespace std;
 
@@ -130,7 +133,7 @@ int main(int argc, const char * argv[]) {
     double phi_increment = 0.01 ;
     
     double robotSimulationTime = 10 / timestep;
-    
+    bool simulate = true;
     int evolutionIterations = 2;
     double movementResults[parentSize][evolutionIterations];
     vector<robot> ParentBots(parentSize);
@@ -291,5 +294,53 @@ int main(int argc, const char * argv[]) {
          }
          std::cout << std::endl;
      }
+    
+     // DO VIZ STUFF
+     // for framerate limiting
+     double time = glfwGetTime();
+     double lastTime = time;
+     double deltaTime = time - lastTime;
+     glfwInit();
+     GLFWwindow* window; // (In the accompanying source code, this variable is global for simplicity)
+     window = glfwCreateWindow( width, height, "ROBITS", NULL, NULL);
+     /* Initialize the library*/
+     if (!glfwInit())
+         return -1;
+
+    /* Create a windowed mode window and its OpenGL context*/
+    if (!window) {
+        glfwTerminate();
+        return -1;
+     }
+     /* Make the window's context current */
+    glfwMakeContextCurrent(window);
+     
+     // Ensure we can capture the escape key being pressed below
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    init_gl();
+    robot vizRobot;
+    if (simulate) {
+       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 10)
+       {
+           processInput(window);
+           /* Render here */
+           render(vizRobot);
+           /* Swap front and back buffers */
+           glfwSwapBuffers(window);
+           time = glfwGetTime();
+           lastTime = time;
+           deltaTime = time - lastTime;
+           
+         //  while (deltaTime <= frameTime) {
+           vizRobot.simulate(timestep, 1);
+           cout << vizRobot.robotTime << endl;
+           t = vizRobot.robotTime;
+
+         
+           /* Poll for and process events */
+           glfwPollEvents();
+
+       }
+    }
     
 }

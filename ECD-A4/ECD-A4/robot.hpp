@@ -140,9 +140,9 @@ public:
                 // WHEN YOU LOOP THROUHG THE MATRIX COPY THE NESTED FOR FROM THE CONSTRUCTOR
                 // WHERE j = i AND  if (j != i)
                 masses[i].addGravityForce();
-                masses[i].addResultantForce();
+//                masses[i].addResultantForce();
 //                addSpringForce(masses[i],i);
-                masses[i].addFrictionForce();
+//                masses[i].addFrictionForce();
             }
             // update derivitives
             // loop thorugh masses
