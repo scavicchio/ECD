@@ -141,7 +141,7 @@ public:
                 // WHERE j = i AND  if (j != i)
                 masses[i].addGravityForce();
                 masses[i].addResultantForce();
-                addSpringForce(masses[i],i);
+//                addSpringForce(masses[i],i);
                 masses[i].addFrictionForce();
             }
             // update derivitives
