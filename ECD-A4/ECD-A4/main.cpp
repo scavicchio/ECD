@@ -13,6 +13,7 @@
 #include "robot.hpp"
 #include "checkerboard.hpp"
 #include "camera.hpp"
+#include "taraRNG.hpp"
 #include <algorithm>
 #include <numeric>
 
@@ -142,21 +143,35 @@ int main(int argc, const char * argv[]) {
         Population[i] = tempBuildingBot;
     }
 
-    
-    for (int j = 0; j < evolutionIterations; j++) {
-        
+    //add masses randomly
+    double random_mass;
 
-        
-        
+    for (int kk = 0; kk < Population.size(); kk++){
+        random_mass = floor((rand_nummy()));
+        for (int jj = 0; jj < random_mass; jj++){
+            mass newMass(defaultWeight,rand_pos(),rand_pos(),rand_pos(),false);
+            vector<pair<double,int>> distances;
+            int count = 0;
+            for(mass m: Population[kk].masses){
+                distances.push_back(std::make_pair(Population[kk].massDistance(newMass, m),count));
+                count++;
+            }
+            sort(distances.begin(), distances.end());
+            vector<int> connectMass;
+            for (int i =0; i<3;i++) { connectMass.push_back(distances[i].second); }
+            Population[kk].addMass(newMass,connectMass);
+        }
+
+    }
+    
+    
+
+    for (int j = 0; j < evolutionIterations; j++) {
+       //crossover
         
         
     }
     
+
     
-    
-    
-}
-    
-    
-    return 0;
 }

@@ -15,6 +15,9 @@ double rand_C();
 //double ayy = 0.1;
 double rand_B();
 double rand_K();
+double rand_nummy();
+double rand_pos();
+
 
 
 

@@ -32,3 +32,13 @@ double rand_K() {
     static std::uniform_real_distribution<> dis(1, 100000);
     return dis(e);
 }
+double rand_nummy() {
+    static std::random_device e;
+    static std::uniform_real_distribution<>dis(0,5);
+    return dis(e);
+}
+double rand_pos() {
+    static std::random_device e;
+    static std::uniform_real_distribution<>dis(0,1);
+    return dis(e);
+}
