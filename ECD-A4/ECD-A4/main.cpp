@@ -18,16 +18,16 @@
 #include <numeric>
 #include <cmath>
 
-const double timestep = 0.000025;
-const double defaultWeight = 1;
+const double timestep = 0.00001;
+const double defaultWeight = 1.3;
 const double maxRobotMass = 1;
 const double defaultPhi = 0;
-const double defaultAmplitde = .5;
+const double defaultAmplitde = .2;
 const double defaultK = 7000;
 const double friction_mu_k=0.8;// friction coefficient rubber-concrete
 const double g[3] = {0,-50.81,0};
-const double kc = 50000;
-const double w = .1;
+const double kc = 1000000;
+const double w = .5;
 const double damping = 0.8;
 
 int width = 700;
@@ -51,7 +51,7 @@ vector<size_t> tag_sort(const vector<Type>& vec)
     return result;
 }
 
-Checkerboard checkerboard(2,2);
+Checkerboard checkerboard(3,3);
 Camera camera;
 
 void init_gl() {
@@ -76,7 +76,8 @@ void render(robot& bot) {
     glRotatef(-45.0f,0.0f,1.0f,0.0f);
     glRotatef(camera.getY(),0.0f,1.0f,0.0f);
     glRotatef(camera.getZ(),0.0f,0.0f,1.0f);
-    
+    glScalef(.71f, .71f, .71f);
+
     bot.drawRobot();
         
     glFlush();
@@ -105,10 +106,11 @@ int main(int argc, const char * argv[]) {
     
     double k_increment = 100;
     double amplitude_increment = 0.01;
-    double phi_increment = 0 ;
+    double phi_increment = 0.001 ;
     
-    double robotSimulationTime = 10 / timestep;
-    bool simulate = false;
+    double robotSimulationTime = 5 / timestep;
+    bool simulate = true;
+    bool visualize = false;
     int evolutionIterations = 1;
     
     double movementResults[parentSize][evolutionIterations];
@@ -126,7 +128,7 @@ int main(int argc, const char * argv[]) {
                 if (jj != ii) {
                     if (bool isConnected = get<0>(tempBuildingBot.connections[ii][jj])){
                         // This should alter springs with some random values
-                        tempBuildingBot.alterSpring(ii, jj, rand_K(), rand_B(), 0);
+                        tempBuildingBot.alterSpring(ii, jj, rand_K(), rand_B(), rand_C());
                     }
                 }
             }
@@ -203,7 +205,7 @@ int main(int argc, const char * argv[]) {
 
                             }
                             // now push these new random values to our bot
-                            tempBuildingBot.alterSpring(ii, jj, mutated_stiffness, mutated_amplitude, 0);
+                            tempBuildingBot.alterSpring(ii, jj, mutated_stiffness, mutated_amplitude, mutated_phi/1000);
                         }
                     }
                 }
@@ -269,8 +271,10 @@ int main(int argc, const char * argv[]) {
             auto starting_CoM = Population[i].centerOfMass() ;
             // simulate the timeframe
             t = Population[i].robotTime;
+            if (visualize == true){
             while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 5){
                 Population[i].resetV();
+//                Population[i].resetXYZ();
                    processInput(window);
                    /* Render here */
                    render(Population[i]);
@@ -284,7 +288,7 @@ int main(int argc, const char * argv[]) {
                    auto temp_com = Population[i].centerOfMass();
 //                   cout << temp_com[0] << " " << temp_com[1] << " " << temp_com[2] << endl;;
                    cout << Population[i].robotTime << endl;
-                   Population[i].simulate(timestep, 20);
+                   Population[i].simulate(timestep, 60);
                    
 //                   vizRobot.simulate(timestep, 1);
 //                   cout << vizRobot.robotTime << endl;
@@ -293,8 +297,15 @@ int main(int argc, const char * argv[]) {
                  
                    /* Poll for and process events */
                    glfwPollEvents();
+                }
+            } else {
+                Population[i].resetV();
+                auto temp_com = Population[i].centerOfMass();
+                Population[i].simulate(timestep, robotSimulationTime);
 
-               }
+                
+                
+            }
             
 //            Population[i].simulate(timestep, robotSimulationTime);
             // now we calculate the ending center of mass
@@ -328,11 +339,12 @@ int main(int argc, const char * argv[]) {
      }
     
 
-    robot vizRobot(ParentBots[0]);
+    robot vizRobot = ParentBots[0];
+    vizRobot.resetV();
     vizRobot.resetXYZ();
     
     if (simulate) {
-       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 30)
+       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 10)
        {
            processInput(window);
            /* Render here */
@@ -345,7 +357,6 @@ int main(int argc, const char * argv[]) {
            
          //  while (deltaTime <= frameTime) {
            auto temp_com = vizRobot.centerOfMass();
-           cout << temp_com[0] << temp_com[1] << temp_com[2] << endl;;
            
            vizRobot.simulate(timestep, 1);
            cout << vizRobot.robotTime << endl;

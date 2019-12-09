@@ -88,7 +88,7 @@ struct mass {
       //      body->p[1] = 0;
         //    body->v[1] = 0;
           //  body->a[1] = 0;
-            f[1] -= kc*(p[1]);
+            f[1] -= kc*(p[1])*0.5;
 //            f[1] = -f[1];
         }
         return;
@@ -99,7 +99,7 @@ struct mass {
             for (int i = 0; i < 3; i++) {
                 a[i] = f[i]/weight*d;
                 v[i] += (a[i]*timestep)*d;
-                p[i] += v[i]*timestep;
+                p[i] += v[i]*timestep*d;
             }
         }
         return;

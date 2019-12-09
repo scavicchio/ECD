@@ -17,13 +17,13 @@ double A = 0.1;
 double rand_C()
 {
     static std::random_device e;
-    static std::uniform_real_distribution<> dis(0, 0);
+    static std::uniform_real_distribution<> dis(0, 0.1);
     return dis(e);
 }
 
 double rand_B() {
     static std::random_device e;
-    static std::uniform_real_distribution<> dis(0, 1);
+    static std::uniform_real_distribution<> dis(0, .2);
     return dis(e);
 }
 
