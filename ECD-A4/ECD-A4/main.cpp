@@ -15,6 +15,8 @@
 #include <algorithm>
 #include <numeric>
 #include <cmath>
+#include <fstream>
+#include <string>
 
 const double timestep = 0.0000075;
 const double defaultWeight = 1.3;
@@ -74,7 +76,7 @@ void render(robot& bot) {
     glRotatef(-45.0f,0.0f,1.0f,0.0f);
     glRotatef(camera.getY(),0.0f,1.0f,0.0f);
     glRotatef(camera.getZ(),0.0f,0.0f,1.0f);
-    glScalef(.71f, .71f, .71f);
+    glScalef(.51f, .51f, .51f);
 
     bot.drawRobot();
         
@@ -106,13 +108,13 @@ int main(int argc, const char * argv[]) {
     double amplitude_increment = 0.01;
     double phi_increment = 0.1 ;
 
-    double robotSimulationTime = 5 / timestep;
-    bool simulate = false;
-    bool visualize = true;
-    int evolutionIterations = 1;
+    double robotSimulationTime = 2.5 / timestep;
+    bool simulate = true;
+    bool visualize = false;
+    int evolutionIterations = 10;
 
-    double movementResults[parentSize][evolutionIterations];
-
+    double movementResults [parentSize][evolutionIterations];
+    
     vector<robot> ParentBots(parentSize);
     vector<robot> ChildrenBots(parentSize);
 
@@ -130,6 +132,20 @@ int main(int argc, const char * argv[]) {
                     }
                 }
             }
+        }
+        double randomm_mass = floor((rand_nummy()));
+        for (int jj = 0; jj < randomm_mass; jj++){
+            mass newwMass(defaultWeight,rand_pos(),rand_pos(),rand_pos(),false);
+            vector<pair<double,int>> distances;
+            int count = 0;
+            for(mass m: tempBuildingBot.masses){
+                distances.push_back(std::make_pair(tempBuildingBot.massDistance(newwMass, m),count));
+                count++;
+            }
+            sort(distances.begin(), distances.end());
+            vector<int> connectMass;
+            for (int i =0; i<3;i++) { connectMass.push_back(distances[i].second); }
+            tempBuildingBot.addMass(newwMass,connectMass);
         }
         ParentBots[i] = tempBuildingBot;
 
@@ -158,6 +174,10 @@ int main(int argc, const char * argv[]) {
      // Ensure we can capture the escape key being pressed below
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     init_gl();
+    
+    
+    const char *fit_path="/Users/danielklass/Columbia/fitneese.csv";
+    std::ofstream fit_file(fit_path); //open in constructor
 
     for (int j = 0; j < evolutionIterations; j++) {
 
@@ -231,31 +251,31 @@ int main(int argc, const char * argv[]) {
         }
 
         cout << "Crossing Over..." << endl;
-        for (int i = 0; i < ChildrenBots.size(); i+=2){
-            int loopSize;
-            if (ChildrenBots[i].masses.size() > ChildrenBots[i+1].masses.size()){
-                loopSize = ChildrenBots[i+1].masses.size();
-            }
-            else {
-                loopSize = ChildrenBots[i].masses.size();
-            }
-            for (int k=0; k< loopSize/2; k++) {
-
-                std::tuple<bool, double, double, double, double> temp = ChildrenBots[i].connections[j][k];
-                std::tuple<bool, double, double, double, double> tempB = ChildrenBots[i].connections[k][j];
-
-                ChildrenBots[i].connections[j][k] = ChildrenBots[i+1].connections[j][k];
-                ChildrenBots[i].connections[j][k] = ChildrenBots[i+1].connections[k][j];
-
-                ChildrenBots[i+1].connections[j][k] = temp;
-                ChildrenBots[i+1].connections[k][j] = tempB;
-
-                mass tempM = ChildrenBots[i].masses[j];
-                ChildrenBots[i].masses[j] = ChildrenBots[i+1].masses[j];
-                ChildrenBots[i+1].masses[j] = tempM;
-
-            }
-        }
+//        for (int i = 0; i < ChildrenBots.size(); i+=2){
+//            int loopSize;
+//            if (ChildrenBots[i].masses.size() > ChildrenBots[i+1].masses.size()){
+//                loopSize = ChildrenBots[i+1].masses.size();
+//            }
+//            else {
+//                loopSize = ChildrenBots[i].masses.size();
+//            }
+//            for (int k=0; k< loopSize/2; k++) {
+//
+//                std::tuple<bool, double, double, double, double> temp = ChildrenBots[i].connections[j][k];
+//                std::tuple<bool, double, double, double, double> tempB = ChildrenBots[i].connections[k][j];
+//
+//                ChildrenBots[i].connections[j][k] = ChildrenBots[i+1].connections[j][k];
+//                ChildrenBots[i].connections[j][k] = ChildrenBots[i+1].connections[k][j];
+//
+//                ChildrenBots[i+1].connections[j][k] = temp;
+//                ChildrenBots[i+1].connections[k][j] = tempB;
+//
+//                mass tempM = ChildrenBots[i].masses[j];
+//                ChildrenBots[i].masses[j] = ChildrenBots[i+1].masses[j];
+//                ChildrenBots[i+1].masses[j] = tempM;
+//
+//            }
+//        }
         // now we put all the children and parents together into one big array of vector
         cout << "Combining and Simulating..." << endl;
         vector<robot> Population(ParentBots);
@@ -270,7 +290,7 @@ int main(int argc, const char * argv[]) {
             // simulate the timeframe
             t = Population[i].robotTime;
             if (visualize == true){
-            while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 2.5){
+            while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 1){
                 Population[i].resetV();
 //                Population[i].resetXYZ();
                    processInput(window);
@@ -297,11 +317,11 @@ int main(int argc, const char * argv[]) {
                    glfwPollEvents();
                 }
             } else {
+                
+                
                 Population[i].resetV();
                 auto temp_com = Population[i].centerOfMass();
                 Population[i].simulate(timestep, robotSimulationTime);
-
-
 
             }
 
@@ -312,60 +332,89 @@ int main(int argc, const char * argv[]) {
             double fitness = sqrt(pow(ending_CoM[0] - starting_CoM[0], 2.0) + pow(ending_CoM[1] - starting_CoM[1], 2.0) + pow( ending_CoM[2] - starting_CoM[2], 2.0));
             // Put the fitness into a vector of fitneese
             fitneese[i] = fitness;
+            string fit_string = to_string(fitness);
+            fit_file << fit_string << endl;
 
         }
-
         // Once we have all the fitneese, we have to sort and get the best ones - rank based
         cout << "Ranking..." << endl;
         auto idxs = tag_sort(fitneese);
-        for (int i = 0; i < ParentBots.size(); i++) {
+        vector<robot> tempBots;
+        for (int i = 0; i < parentSize; i++) {
             int target_index = idxs[i];
-            ParentBots[i] = Population[target_index];
-            movementResults[i][j] = fitneese[target_index];
+            
+            if (target_index > parentSize){
+                ParentBots[i] = ChildrenBots[target_index - parentSize];
+                
+            }else {
+                ParentBots[i] = ParentBots[i];
+            }
+//            ParentBots[i] = Population[target_index];
+            
+            ParentBots[i].resetV();
+            ParentBots[i].resetXYZ();
+            
+            double temp_val = fitneese[target_index];
+            movementResults[i][j] = temp_val;
+            
         }
+
         // Now we have a new set of ParentBots which are our top 10 robots
         // and can re-do the loop with the new ParentBots
+    
     }
+    
+    fit_file.close();
 
+    
+    const char *path="/Users/danielklass/Columbia/movementResults.csv";
+    std::ofstream file(path); //open in constructor
+//    file << "This is a test \n";
+//    std::string data("data to write to file");
+//    file << data;
     for (int i = 0; i < evolutionIterations; ++i)
      {
          for (int j = 0; j < populationSize; ++j)
          {
+            
              std::cout << movementResults[i][j] << ' ';
+             string s = to_string(movementResults[i][j]);
+             file<< s << endl;
          }
          std::cout << std::endl;
      }
-
-
-    robot vizRobot;
+    file.close();
+        
+    
+    robot vizRobot(ParentBots[0]);
 //    double random_mass = floor((rand_nummy()));
-    double random_mass = 25;
-    for (int jj = 0; jj < random_mass; jj++){
-        mass newMass(defaultWeight,rand_pos(),rand_pos(),rand_pos(),false);
-        vector<pair<double,int>> distances;
-        int count = 0;
-        for(mass m: vizRobot.masses){
-            distances.push_back(std::make_pair(vizRobot.massDistance(newMass, m),count));
-            count++;
-        }
-        sort(distances.begin(), distances.end());
-        vector<int> connectMass;
-        for (int i =0; i<3;i++) { connectMass.push_back(distances[i].second); }
-        vizRobot.addMass(newMass,connectMass);
-    }
-    for (int ii = 0;  ii < vizRobot.connections.size(); ii++) {
-         for (int jj = ii; jj < vizRobot.connections.size(); jj++) {
-             if (jj != ii) {
-                 if (bool isConnected = get<0>(vizRobot.connections[ii][jj])){
-                     // This should alter springs with some random values
-                     vizRobot.alterSpring(ii, jj, rand_K(), rand_B(), rand_C());
-                 }
-             }
-         }
-     }
+//    double random_mass = 25;
+//    for (int jj = 0; jj < random_mass; jj++){
+//      mass newMass(defaultWeight,rand_pos(),rand_pos(),rand_pos(),false);
+//        vector<pair<double,int>> distances;
+//        int count = 0;
+//        for(mass m: vizRobot.masses){
+//            distances.push_back(std::make_pair(vizRobot.massDistance(newMass, m),count));
+//            count++;
+//        }
+//        sort(distances.begin(), distances.end());
+//        vector<int> connectMass;
+//        for (int i =0; i<3;i++) { connectMass.push_back(distances[i].second); }
+//        vizRobot.addMass(newMass,connectMass);
+//    }
+//    for (int ii = 0;  ii < vizRobot.connections.size(); ii++) {
+//         for (int jj = ii; jj < vizRobot.connections.size(); jj++) {
+//             if (jj != ii) {
+//                 if (bool isConnected = get<0>(vizRobot.connections[ii][jj])){
+//                     // This should alter springs with some random values
+//                     vizRobot.alterSpring(ii, jj, rand_K(), rand_B(), rand_C());
+//                 }
+//             }
+//         }
+//     }
     vizRobot.resetV();
     vizRobot.resetXYZ();
-    
+    vizRobot.robotTime = 0;
     if (simulate) {
        while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 10)
        {

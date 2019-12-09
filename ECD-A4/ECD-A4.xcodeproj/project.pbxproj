@@ -125,7 +125,6 @@
 			isa = PBXGroup;
 			children = (
 				C69D1F7F2399A3BB00377E49 /* main.cpp */,
-				C61DD5592399C73300B5BB1C /* only use for reference */,
 				42C3575E239C7788000F3B04 /* taraRNG.cpp */,
 				42C35760239C778F000F3B04 /* taraRNG.hpp */,
 				C69D1F862399A44F00377E49 /* mass.cpp */,
@@ -134,6 +133,7 @@
 				C69D1F8A2399ABF500377E49 /* robot.hpp */,
 				C69D1F8C2399B59E00377E49 /* globalVars.h */,
 				42C35765239D9F20000F3B04 /* checkerboard.hpp */,
+				C61DD5592399C73300B5BB1C /* only use for reference */,
 				42C35769239D9F2D000F3B04 /* Viz */,
 			);
 			path = "ECD-A4";
