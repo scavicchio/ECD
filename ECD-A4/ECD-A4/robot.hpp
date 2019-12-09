@@ -24,8 +24,8 @@ public:
     // default constructor should make a cube
     robot() {
         
-        for (int i = 0; i < 8; i ++) { masses.push_back(mass(defaultWeight,0,0,0,false));}
-        
+      //  for (int i = 0; i < 8; i ++) { }
+    /*
         masses[0] = mass(defaultWeight,0,0,0,false);
         masses[1] = mass(defaultWeight,0,0.1,0,false);
         masses[2] = mass(defaultWeight,0,0,0.1,false);
@@ -34,6 +34,17 @@ public:
         masses[5] = mass(defaultWeight,0.1,0.1,0,false);
         masses[6] = mass(defaultWeight,0.1,0,0.1,false);
         masses[7] = mass(defaultWeight,0.1,0.1,0.1,false);
+      */
+        double z = 0;
+        double a = 0.1;
+        masses.push_back(mass(defaultWeight,z,z,z,false));
+        masses.push_back(mass(defaultWeight,z,a,z,false));
+        masses.push_back(mass(defaultWeight,z,z,a,false));
+        masses.push_back(mass(defaultWeight,z,a,a,false));
+        masses.push_back(mass(defaultWeight,a,z,z,false));
+        masses.push_back(mass(defaultWeight,a,a,z,false));
+        masses.push_back(mass(defaultWeight,a,z,a,false));
+        masses.push_back(mass(defaultWeight,a,a,a,false));
         
         for (int i = 0; i < 8; i++) {
             std::vector<std::tuple<bool,double,double,double,double>> row;
@@ -111,7 +122,7 @@ public:
             if (springExists) {
              // add the spring force
                 double di[3];
-                for (int k = 0; k < 2; k++) { di[k] = m.p[k]-masses[j].p[k]; }
+                for (int k = 0; k < 3; k++) { di[k] = -(m.p[k]-masses[j].p[k]); }
                 double pyDist = massDistance(m, masses[j]);
                 // stuff for the spring force
                 double orinLen = std::get<1>(connections[i][j]);
@@ -121,7 +132,7 @@ public:
                 double k = std::get<2>(connections[i][j]);
                 double springForce = k*(pyDist-pulseLen);
                 // appply the force to the mass
-                for(int ii = 0; ii < 2; ii++) {
+                for(int ii = 0; ii < 3; ii++) {
                     m.f[ii] += springForce*di[ii]/pyDist;
                 }
             }
@@ -140,9 +151,9 @@ public:
                 // WHEN YOU LOOP THROUHG THE MATRIX COPY THE NESTED FOR FROM THE CONSTRUCTOR
                 // WHERE j = i AND  if (j != i)
                 masses[i].addGravityForce();
-//                masses[i].addResultantForce();
-//                addSpringForce(masses[i],i);
-//                masses[i].addFrictionForce();
+                masses[i].addResultantForce();
+                addSpringForce(masses[i],i);
+                masses[i].addFrictionForce();
             }
             // update derivitives
             // loop thorugh masses
@@ -195,9 +206,37 @@ public:
         masses.erase(last);
         return;
     }
-    
+    void resetV() {
+        for (mass m : masses) {
+        for (int i = 0; i < 3; i++) {
+            m.v[i] = 0;
+            m.a[i] = 0;
+            m.f[i] = 0;
+        }}
+    }
     // resize weighted graph
-    
+    void resetXYZ() {
+        std::vector<double> end_CoM = centerOfMass();
+        
+        for (mass m : masses) {
+            for (int i = 0 ; i < 3; i++) {
+                m.p[i] -= end_CoM[i];
+            }
+        }
+        double deepestUnder = 0;
+        for (mass m : masses) {
+            if (m.p[2] < 0 && m.p[2] < deepestUnder) {
+                deepestUnder = m.p[2];
+            }
+        }
+        
+        if (deepestUnder < 0) {
+            for (mass m : masses) {
+                m.p[2] -= deepestUnder;
+            }
+        }
+        return;
+    }
     // add spring
     // this must be done between masses that already exist
     // takes in the index of the two masses and the spring components
@@ -232,7 +271,7 @@ public:
     // distance between two masses
     const double massDistance(const mass& a, const mass& b)  {
         double theReturn = 0;
-        for(int i = 0; i < 3; i++) { theReturn += pow((a.p[i]-b.p[i]),2); }
+        for(int i = 0; i < 3; i++) { theReturn += pow((a.p[i]-b.p[i]),2.0); }
         return sqrt(theReturn);
     }
 

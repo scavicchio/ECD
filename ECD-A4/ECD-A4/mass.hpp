@@ -16,7 +16,7 @@
 #include <cmath>
 
 struct mass {
-    mass(double m = defaultWeight, double x = 0, double y = 0, double z = 0, bool fix = false) : weight(m), fixed(fix) {
+    mass(double m, double x, double y, double z, bool fix) : weight(m), fixed(fix) {
         p[0] = x; p[1] = y; p[2] = z;
         for (int i = 0; i < 3; i++) {
             v[i] = 0;
@@ -28,7 +28,7 @@ struct mass {
     mass(const mass& rhs) {
         weight = rhs.weight;
         fixed = rhs.fixed;
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             p[i] = rhs.p[i];
             v[i] = rhs.v[i];
             a[i] = rhs.a[i];
@@ -40,7 +40,7 @@ struct mass {
         if (this != &rhs) {
             weight = rhs.weight;
             fixed = rhs.fixed;
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 3; i++) {
                 p[i] = rhs.p[i];
                 v[i] = rhs.v[i];
                 a[i] = rhs.a[i];

@@ -18,7 +18,7 @@
 #include <numeric>
 #include <cmath>
 
-const double timestep = 0.0001;
+const double timestep = 0.00001;
 const double defaultWeight = 0.1;
 const double maxRobotMass = 1;
 const double defaultPhi = 0;
@@ -133,9 +133,11 @@ int main(int argc, const char * argv[]) {
     double phi_increment = 0.01 ;
     
     double robotSimulationTime = 10 / timestep;
-    bool simulate = true;
-    int evolutionIterations = 2;
+    bool simulate = false;
+    int evolutionIterations = 1;
+    
     double movementResults[parentSize][evolutionIterations];
+    
     vector<robot> ParentBots(parentSize);
     vector<robot> ChildrenBots(parentSize);
         
@@ -157,14 +159,36 @@ int main(int argc, const char * argv[]) {
         
     }
 
+     // DO VIZ STUFF
+     // for framerate limiting
+     double time = glfwGetTime();
+     double lastTime = time;
+     double deltaTime = time - lastTime;
+     glfwInit();
+     GLFWwindow* window; // (In the accompanying source code, this variable is global for simplicity)
+     window = glfwCreateWindow( width, height, "ROBITS", NULL, NULL);
+     /* Initialize the library*/
+     if (!glfwInit())
+         return -1;
 
+    /* Create a windowed mode window and its OpenGL context*/
+    if (!window) {
+        glfwTerminate();
+        return -1;
+     }
+     /* Make the window's context current */
+    glfwMakeContextCurrent(window);
+     
+     // Ensure we can capture the escape key being pressed below
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    init_gl();
     
     for (int j = 0; j < evolutionIterations; j++) {
-        
+
         // start by generating children from parents
-        
+
         vector<robot> ChildrenBots(ParentBots.size());
-        
+
         // loop through and MUTATE each parent's spring values into a single child
         cout << "Mutating..." << endl;
         for(int i = 0; i < ParentBots.size(); i++) {
@@ -175,30 +199,32 @@ int main(int argc, const char * argv[]) {
                         if (tempBuildingBot.masses.size() > 8) {
                             double kill_mass = random_number(0,1);
                             if (kill_mass > 0.5){
-                                double mass_to_kill = floor(random_number(0, tempBuildingBot.masses.size()));
+                                int mass_to_kill = floor(random_number(0, tempBuildingBot.masses.size()));
                                 tempBuildingBot.removeMass(mass_to_kill);
                             }
                         }
-                        
+
                         if (bool isConnected = get<0>(tempBuildingBot.connections[ii][jj])){
                             // This should alter springs with some random values
                             // but first we have to see if we are incrementing or decrementing
                             double starting_stiffness = get<2>(tempBuildingBot.connections[ii][jj]);
                             double starting_amplitude = get<3>(tempBuildingBot.connections[ii][jj]);
                             double starting_phi       = get<4>(tempBuildingBot.connections[ii][jj]);
-                      
+
                             double randy_boi = random_number();
+                            
                             double mutated_stiffness ; double mutated_amplitude ; double mutated_phi ;
+                            
                             if (randy_boi >= 0.5) {
                                 mutated_stiffness = starting_stiffness + k_increment;
                                 mutated_amplitude = starting_amplitude + amplitude_increment;
                                 mutated_phi       = starting_phi + phi_increment;
-                            
+
                             } else {
                                 mutated_stiffness = starting_stiffness - k_increment;
                                 mutated_amplitude = starting_amplitude - amplitude_increment;
                                 mutated_phi       = starting_phi - phi_increment;
-                                
+
                             }
                             // now push these new random values to our bot
                             tempBuildingBot.alterSpring(ii, jj, mutated_stiffness, mutated_amplitude, mutated_phi);
@@ -227,7 +253,7 @@ int main(int argc, const char * argv[]) {
                 ChildrenBots[kk].addMass(newMass,connectMass);
             }
         }
-        
+
         cout << "Crossing Over..." << endl;
         for (int i = 0; i < ChildrenBots.size(); i+=2){
             int loopSize;
@@ -238,16 +264,16 @@ int main(int argc, const char * argv[]) {
                 loopSize = ChildrenBots[i].masses.size();
             }
             for (int k=0; k< loopSize/2; k++) {
-                
+
                 std::tuple<bool, double, double, double, double> temp = ChildrenBots[i].connections[j][k];
                 std::tuple<bool, double, double, double, double> tempB = ChildrenBots[i].connections[k][j];
-                
+
                 ChildrenBots[i].connections[j][k] = ChildrenBots[i+1].connections[j][k];
                 ChildrenBots[i].connections[j][k] = ChildrenBots[i+1].connections[k][j];
-                
+
                 ChildrenBots[i+1].connections[j][k] = temp;
                 ChildrenBots[i+1].connections[k][j] = tempB;
-                
+
                 mass tempM = ChildrenBots[i].masses[j];
                 ChildrenBots[i].masses[j] = ChildrenBots[i+1].masses[j];
                 ChildrenBots[i+1].masses[j] = tempM;
@@ -255,25 +281,55 @@ int main(int argc, const char * argv[]) {
             }
         }
         // now we put all the children and parents together into one big array of vector
-        cout << "Combining..." << endl;
+        cout << "Combining and Simulating..." << endl;
         vector<robot> Population(ParentBots);
         Population.insert(Population.end(), ChildrenBots.begin(), ChildrenBots.end());
-      
+
         // Now we loop through the population and get the fitness
         vector<double> fitneese(Population.size());
+        
         for (int i = 0; i < Population.size(); i++) {
             // for the given robot, get the current center of mass
             auto starting_CoM = Population[i].centerOfMass() ;
             // simulate the timeframe
-            Population[i].simulate(timestep, robotSimulationTime);
+            t = Population[i].robotTime;
+            while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < .1){
+                Population[i].resetV();
+                   processInput(window);
+                   /* Render here */
+                   render(Population[i]);
+                   /* Swap front and back buffers */
+                   glfwSwapBuffers(window);
+                   time = glfwGetTime();
+                   lastTime = time;
+                   deltaTime = time - lastTime;
+                   
+                 //  while (deltaTime <= frameTime) {
+                   auto temp_com = Population[i].centerOfMass();
+//                   cout << temp_com[0] << " " << temp_com[1] << " " << temp_com[2] << endl;;
+                cout << Population[i].robotTime << endl;
+                   Population[i].simulate(timestep, 1);
+                   
+//                   vizRobot.simulate(timestep, 1);
+//                   cout << vizRobot.robotTime << endl;
+                   t = Population[i].robotTime;
+
+                 
+                   /* Poll for and process events */
+                   glfwPollEvents();
+
+               }
+            
+//            Population[i].simulate(timestep, robotSimulationTime);
             // now we calculate the ending center of mass
             auto ending_CoM = Population[i].centerOfMass();
             // Fitness is the magnitude of the change in center of mass
             double fitness = sqrt(pow(2.0, ending_CoM[0] - starting_CoM[0]) + pow(2.0, ending_CoM[1] - starting_CoM[1]) + pow(2.0, ending_CoM[2] - starting_CoM[2]));
             // Put the fitness into a vector of fitneese
             fitneese[i] = fitness;
-        }
         
+        }
+
         // Once we have all the fitneese, we have to sort and get the best ones - rank based
         cout << "Ranking..." << endl;
         auto idxs = tag_sort(fitneese);
@@ -295,32 +351,12 @@ int main(int argc, const char * argv[]) {
          std::cout << std::endl;
      }
     
-     // DO VIZ STUFF
-     // for framerate limiting
-     double time = glfwGetTime();
-     double lastTime = time;
-     double deltaTime = time - lastTime;
-     glfwInit();
-     GLFWwindow* window; // (In the accompanying source code, this variable is global for simplicity)
-     window = glfwCreateWindow( width, height, "ROBITS", NULL, NULL);
-     /* Initialize the library*/
-     if (!glfwInit())
-         return -1;
 
-    /* Create a windowed mode window and its OpenGL context*/
-    if (!window) {
-        glfwTerminate();
-        return -1;
-     }
-     /* Make the window's context current */
-    glfwMakeContextCurrent(window);
-     
-     // Ensure we can capture the escape key being pressed below
-    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-    init_gl();
-    robot vizRobot;
+    robot vizRobot(ParentBots[0]);
+    vizRobot.resetXYZ();
+    
     if (simulate) {
-       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 10)
+       while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 30)
        {
            processInput(window);
            /* Render here */
@@ -332,6 +368,9 @@ int main(int argc, const char * argv[]) {
            deltaTime = time - lastTime;
            
          //  while (deltaTime <= frameTime) {
+           auto temp_com = vizRobot.centerOfMass();
+           cout << temp_com[0] << temp_com[1] << temp_com[2] << endl;;
+           
            vizRobot.simulate(timestep, 1);
            cout << vizRobot.robotTime << endl;
            t = vizRobot.robotTime;

@@ -17,7 +17,7 @@ double A = 0.1;
 double rand_C()
 {
     static std::random_device e;
-    static std::uniform_real_distribution<> dis(0, 6.283185307);
+    static std::uniform_real_distribution<> dis(0, 1);
     return dis(e);
 }
 
@@ -29,7 +29,7 @@ double rand_B() {
 
 double rand_K() {
     static std::random_device e;
-    static std::uniform_real_distribution<> dis(1, 100000);
+    static std::uniform_real_distribution<> dis(10000, 100000);
     return dis(e);
 }
 double rand_nummy() {
