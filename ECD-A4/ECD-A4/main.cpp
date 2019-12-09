@@ -33,7 +33,6 @@ const double damping = 0.9;
 
 using namespace std;
 
-
 template<typename Type>
 
 vector<size_t> tag_sort(const vector<Type>& vec)
@@ -48,7 +47,6 @@ vector<size_t> tag_sort(const vector<Type>& vec)
     );
     return result;
 }
-
 
 Checkerboard checkerboard(2,2);
 Camera camera;
@@ -90,6 +88,13 @@ void processInput(GLFWwindow *window) {
     return;
 }
 
+double random_number(double start = 0 , double end = 1)
+{
+    static std::random_device e;
+    static std::uniform_real_distribution<> dis(start, end);
+    return dis(e);
+}
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n";
@@ -100,8 +105,6 @@ int main(int argc, const char * argv[]) {
     simSteps = oneSecondOfSim/fps;
     double frameTime = 1;
     frameTime /= fps;
-    
-    
     
     robot aRobot;
     aRobot.displayConnectionMatrix();
@@ -129,12 +132,12 @@ int main(int argc, const char * argv[]) {
     double robotSimulationTime = 10 / timestep;
     
     int evolutionIterations = 2;
-    
+    double movementResults[parentSize][evolutionIterations];
     vector<robot> ParentBots(parentSize);
     vector<robot> ChildrenBots(parentSize);
-    vector<robot> Population(populationSize);
         
     // Make some random population!!
+    cout << "Making Starting Parents" << endl;
     for(int i = 0; i < ParentBots.size(); i++) {
         robot tempBuildingBot;
         for (int ii = 0;  ii < tempBuildingBot.connections.size(); ii++) {
@@ -151,31 +154,8 @@ int main(int argc, const char * argv[]) {
         
     }
 
-    //add masses randomly
-    double random_mass;
 
-    for (int kk = 0; kk < Population.size(); kk++){
-        random_mass = floor((rand_nummy()));
-        for (int jj = 0; jj < random_mass; jj++){
-            mass newMass(defaultWeight,rand_pos(),rand_pos(),rand_pos(),false);
-            vector<pair<double,int>> distances;
-            int count = 0;
-            for(mass m: Population[kk].masses){
-                distances.push_back(std::make_pair(Population[kk].massDistance(newMass, m),count));
-                count++;
-            }
-            sort(distances.begin(), distances.end());
-            vector<int> connectMass;
-            for (int i =0; i<3;i++) { connectMass.push_back(distances[i].second); }
-            Population[kk].addMass(newMass,connectMass);
-        }
-
-    }
     
-    
-
-    for (int j = 0; j < evolutionIterations; j++) {
-       //crossover
     for (int j = 0; j < evolutionIterations; j++) {
         
         // start by generating children from parents
@@ -183,12 +163,20 @@ int main(int argc, const char * argv[]) {
         vector<robot> ChildrenBots(ParentBots.size());
         
         // loop through and MUTATE each parent's spring values into a single child
-        
+        cout << "Mutating..." << endl;
         for(int i = 0; i < ParentBots.size(); i++) {
             robot tempBuildingBot(ParentBots[i]);
             for (int ii = 0;  ii < tempBuildingBot.connections.size(); ii++) {
                 for (int jj = ii; jj < tempBuildingBot.connections.size(); jj++) {
                     if (jj != ii) {
+                        if (tempBuildingBot.masses.size() > 8) {
+                            double kill_mass = random_number(0,1);
+                            if (kill_mass > 0.5){
+                                double mass_to_kill = floor(random_number(0, tempBuildingBot.masses.size()));
+                                tempBuildingBot.removeMass(mass_to_kill);
+                            }
+                        }
+                        
                         if (bool isConnected = get<0>(tempBuildingBot.connections[ii][jj])){
                             // This should alter springs with some random values
                             // but first we have to see if we are incrementing or decrementing
@@ -211,16 +199,60 @@ int main(int argc, const char * argv[]) {
                             }
                             // now push these new random values to our bot
                             tempBuildingBot.alterSpring(ii, jj, mutated_stiffness, mutated_amplitude, mutated_phi);
-                            
                         }
                     }
                 }
             }
             ChildrenBots[i] = tempBuildingBot;
         }
+        //add masses randomly
+        double random_mass;
+        cout << "Adding Masses..." << endl;
+        for (int kk = 0; kk < ChildrenBots.size(); kk++){
+            random_mass = floor((rand_nummy()));
+            for (int jj = 0; jj < random_mass; jj++){
+                mass newMass(defaultWeight,rand_pos(),rand_pos(),rand_pos(),false);
+                vector<pair<double,int>> distances;
+                int count = 0;
+                for(mass m: ChildrenBots[kk].masses){
+                    distances.push_back(std::make_pair(ChildrenBots[kk].massDistance(newMass, m),count));
+                    count++;
+                }
+                sort(distances.begin(), distances.end());
+                vector<int> connectMass;
+                for (int i =0; i<3;i++) { connectMass.push_back(distances[i].second); }
+                ChildrenBots[kk].addMass(newMass,connectMass);
+            }
+        }
         
+        cout << "Crossing Over..." << endl;
+        for (int i = 0; i < ChildrenBots.size(); i+=2){
+            int loopSize;
+            if (ChildrenBots[i].masses.size() > ChildrenBots[i+1].masses.size()){
+                loopSize = ChildrenBots[i+1].masses.size();
+            }
+            else {
+                loopSize = ChildrenBots[i].masses.size();
+            }
+            for (int k=0; k< loopSize/2; k++) {
+                
+                std::tuple<bool, double, double, double, double> temp = ChildrenBots[i].connections[j][k];
+                std::tuple<bool, double, double, double, double> tempB = ChildrenBots[i].connections[k][j];
+                
+                ChildrenBots[i].connections[j][k] = ChildrenBots[i+1].connections[j][k];
+                ChildrenBots[i].connections[j][k] = ChildrenBots[i+1].connections[k][j];
+                
+                ChildrenBots[i+1].connections[j][k] = temp;
+                ChildrenBots[i+1].connections[k][j] = tempB;
+                
+                mass tempM = ChildrenBots[i].masses[j];
+                ChildrenBots[i].masses[j] = ChildrenBots[i+1].masses[j];
+                ChildrenBots[i+1].masses[j] = tempM;
+
+            }
+        }
         // now we put all the children and parents together into one big array of vector
-        
+        cout << "Combining..." << endl;
         vector<robot> Population(ParentBots);
         Population.insert(Population.end(), ChildrenBots.begin(), ChildrenBots.end());
       
@@ -240,6 +272,7 @@ int main(int argc, const char * argv[]) {
         }
         
         // Once we have all the fitneese, we have to sort and get the best ones - rank based
+        cout << "Ranking..." << endl;
         auto idxs = tag_sort(fitneese);
         for (int i = 0; i < ParentBots.size(); i++) {
             int target_index = idxs[i];
@@ -250,8 +283,6 @@ int main(int argc, const char * argv[]) {
         // and can re-do the loop with the new ParentBots
     }
     
-
-    
     for (int i = 0; i < evolutionIterations; ++i)
      {
          for (int j = 0; j < populationSize; ++j)
@@ -260,8 +291,5 @@ int main(int argc, const char * argv[]) {
          }
          std::cout << std::endl;
      }
-}
     
-    
-    return 0;
 }
