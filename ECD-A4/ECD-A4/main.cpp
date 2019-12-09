@@ -111,7 +111,7 @@ int main(int argc, const char * argv[]) {
     double robotSimulationTime = 2.5 / timestep;
     bool simulate = true;
     bool visualize = false;
-    int evolutionIterations = 10;
+    int evolutionIterations = 2; 
 
     double movementResults [parentSize][evolutionIterations];
     
@@ -133,7 +133,8 @@ int main(int argc, const char * argv[]) {
                 }
             }
         }
-        double randomm_mass = floor((rand_nummy()));
+        double randomm_mass = floor(random_number(4,10));
+        
         for (int jj = 0; jj < randomm_mass; jj++){
             mass newwMass(defaultWeight,rand_pos(),rand_pos(),rand_pos(),false);
             vector<pair<double,int>> distances;
