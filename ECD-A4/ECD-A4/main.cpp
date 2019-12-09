@@ -18,17 +18,17 @@
 #include <numeric>
 #include <cmath>
 
-const double timestep = 0.00001;
-const double defaultWeight = 0.1;
+const double timestep = 0.000025;
+const double defaultWeight = 1;
 const double maxRobotMass = 1;
 const double defaultPhi = 0;
-const double defaultAmplitde = 1;
-const double defaultK = 20000;
+const double defaultAmplitde = .5;
+const double defaultK = 7000;
 const double friction_mu_k=0.8;// friction coefficient rubber-concrete
-const double g[3] = {0,-9.81,0};
-const double kc = 2000;
-const double w = 1;
-const double damping = 0.9;
+const double g[3] = {0,-50.81,0};
+const double kc = 50000;
+const double w = .1;
+const double damping = 0.8;
 
 int width = 700;
 int height = 700;
@@ -99,38 +99,13 @@ double random_number(double start = 0 , double end = 1)
 }
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
-    int fps = 60;
-    double oneSecondOfSim = 1;
-    oneSecondOfSim = 1/timestep;
-    double simSteps = 1;
-    simSteps = oneSecondOfSim/fps;
-    double frameTime = 1;
-    frameTime /= fps;
     
-    robot aRobot;
-    aRobot.displayConnectionMatrix();
-    cout << endl;
-    aRobot.connections[1][6] = std::make_tuple(false,0,0,0,0);
-    aRobot.connections[6][1] = std::make_tuple(false,0,0,0,0);
-
-    aRobot.displayConnectionMatrix();
-
-    cout << "COPY TEST" << endl;
-    robot bRobot(aRobot);
-    bRobot.displayConnectionMatrix();
-    cout << "ASSIGNMENT TEST" << endl;
-    robot cRobot;
-    cRobot = bRobot;
-    cRobot.displayConnectionMatrix();
-    
-    int populationSize = 20;
+    int populationSize = 4;
     int parentSize = populationSize/2;
     
-    double k_increment = 1000;
-    double amplitude_increment = 0.1;
-    double phi_increment = 0.01 ;
+    double k_increment = 100;
+    double amplitude_increment = 0.01;
+    double phi_increment = 0 ;
     
     double robotSimulationTime = 10 / timestep;
     bool simulate = false;
@@ -143,6 +118,7 @@ int main(int argc, const char * argv[]) {
         
     // Make some random population!!
     cout << "Making Starting Parents" << endl;
+    
     for(int i = 0; i < ParentBots.size(); i++) {
         robot tempBuildingBot;
         for (int ii = 0;  ii < tempBuildingBot.connections.size(); ii++) {
@@ -150,7 +126,7 @@ int main(int argc, const char * argv[]) {
                 if (jj != ii) {
                     if (bool isConnected = get<0>(tempBuildingBot.connections[ii][jj])){
                         // This should alter springs with some random values
-                        tempBuildingBot.alterSpring(ii, jj, rand_K(), rand_B(), rand_C());
+                        tempBuildingBot.alterSpring(ii, jj, rand_K(), rand_B(), 0);
                     }
                 }
             }
@@ -227,14 +203,14 @@ int main(int argc, const char * argv[]) {
 
                             }
                             // now push these new random values to our bot
-                            tempBuildingBot.alterSpring(ii, jj, mutated_stiffness, mutated_amplitude, mutated_phi);
+                            tempBuildingBot.alterSpring(ii, jj, mutated_stiffness, mutated_amplitude, 0);
                         }
                     }
                 }
             }
             ChildrenBots[i] = tempBuildingBot;
         }
-        //add masses randomly
+//        add masses randomly
         double random_mass;
         cout << "Adding Masses..." << endl;
         for (int kk = 0; kk < ChildrenBots.size(); kk++){
@@ -293,7 +269,7 @@ int main(int argc, const char * argv[]) {
             auto starting_CoM = Population[i].centerOfMass() ;
             // simulate the timeframe
             t = Population[i].robotTime;
-            while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < .1){
+            while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 && t < 5){
                 Population[i].resetV();
                    processInput(window);
                    /* Render here */
@@ -307,8 +283,8 @@ int main(int argc, const char * argv[]) {
                  //  while (deltaTime <= frameTime) {
                    auto temp_com = Population[i].centerOfMass();
 //                   cout << temp_com[0] << " " << temp_com[1] << " " << temp_com[2] << endl;;
-                cout << Population[i].robotTime << endl;
-                   Population[i].simulate(timestep, 1);
+                   cout << Population[i].robotTime << endl;
+                   Population[i].simulate(timestep, 20);
                    
 //                   vizRobot.simulate(timestep, 1);
 //                   cout << vizRobot.robotTime << endl;
@@ -324,7 +300,7 @@ int main(int argc, const char * argv[]) {
             // now we calculate the ending center of mass
             auto ending_CoM = Population[i].centerOfMass();
             // Fitness is the magnitude of the change in center of mass
-            double fitness = sqrt(pow(2.0, ending_CoM[0] - starting_CoM[0]) + pow(2.0, ending_CoM[1] - starting_CoM[1]) + pow(2.0, ending_CoM[2] - starting_CoM[2]));
+            double fitness = sqrt(pow(ending_CoM[0] - starting_CoM[0], 2.0) + pow(ending_CoM[1] - starting_CoM[1], 2.0) + pow( ending_CoM[2] - starting_CoM[2], 2.0));
             // Put the fitness into a vector of fitneese
             fitneese[i] = fitness;
         

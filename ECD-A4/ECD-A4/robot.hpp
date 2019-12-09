@@ -122,15 +122,15 @@ public:
             if (springExists) {
              // add the spring force
                 double di[3];
-                for (int k = 0; k < 3; k++) { di[k] = -(m.p[k]-masses[j].p[k]); }
+                for (int k = 0; k < 3; k++) { di[k] = (m.p[k] - masses[j].p[k]); }
                 double pyDist = massDistance(m, masses[j]);
                 // stuff for the spring force
                 double orinLen = std::get<1>(connections[i][j]);
                 double b = std::get<3>(connections[i][j]);
                 double c = std::get<4>(connections[i][j]);
-                double pulseLen = orinLen+abs((b*sin(w*robotTime+c)))/2;
+                double pulseLen = orinLen + (b*sin(w*robotTime+c))/2;
                 double k = std::get<2>(connections[i][j]);
-                double springForce = k*(pyDist-pulseLen);
+                double springForce = -k*(pyDist-pulseLen);
                 // appply the force to the mass
                 for(int ii = 0; ii < 3; ii++) {
                     m.f[ii] += springForce*di[ii]/pyDist;
@@ -171,7 +171,7 @@ public:
     void addMass(mass& m, std::vector<int> connectMass) {
         masses.push_back(m);
         std::vector<std::tuple<bool,double,double,double,double>> temp;
-        int j = connections.size()-1;
+        int j = connections.size();
         std::tuple<bool,double,double,double,double> nullPair = std::make_tuple(false,0,0,0,0);
         for(int i = 0; i < connections.size(); i++) {
             temp.push_back(nullPair);
@@ -291,6 +291,7 @@ public:
     void drawSpring(const mass& m1, const mass& m2) {
         glLineWidth(5);
         glBegin(GL_LINES);
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, RED);
         glVertex3d(m1.p[0],m1.p[1],m1.p[2]);
         glVertex3d(m2.p[0],m2.p[1],m2.p[2]);
         glEnd();
