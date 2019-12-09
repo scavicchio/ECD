@@ -16,19 +16,19 @@ double A = 0.1;
 double rand_C()
 {
     static std::random_device e;
-    static std::uniform_real_distribution<> dis(0, 0.1);
+    static std::uniform_real_distribution<> dis(0, 0.2);
     return dis(e);
 }
 
 double rand_B() {
     static std::random_device e;
-    static std::uniform_real_distribution<> dis(0, .2);
+    static std::uniform_real_distribution<> dis(0, .7);
     return dis(e);
 }
 
 double rand_K() {
     static std::random_device e;
-    static std::uniform_real_distribution<> dis(5000, 20000);
+    static std::uniform_real_distribution<> dis(1000, 20000);
     return dis(e);
 }
 double rand_nummy() {

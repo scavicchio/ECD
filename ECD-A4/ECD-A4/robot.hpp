@@ -125,7 +125,7 @@ public:
                 double orinLen = std::get<1>(connections[i][j]);
                 double b = std::get<3>(connections[i][j]);
                 double c = std::get<4>(connections[i][j]);
-                double pulseLen = orinLen + (b*sin(w*robotTime+c))/2;
+                double pulseLen = orinLen + ((b*sin(w*robotTime+c))/8);
                 double k = std::get<2>(connections[i][j]);
                 double springForce = -k*(pyDist-pulseLen);
                 // appply the force to the mass
