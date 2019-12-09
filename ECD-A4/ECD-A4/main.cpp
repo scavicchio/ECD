@@ -11,7 +11,6 @@
 #include "GLFW/glfw3.h"
 #include "globalVars.h"
 #include "robot.hpp"
-#include "taraRNG.hpp"
 #include "checkerboard.hpp"
 #include "camera.hpp"
 #include <algorithm>
@@ -50,53 +49,45 @@ vector<size_t> tag_sort(const vector<Type>& vec)
 }
 
 
-//Checkerboard checkerboard(2,2);
-//Camera camera;
-//
-//void init_gl() {
-//    glEnable(GL_DEPTH_TEST);
-//    glLightfv(GL_LIGHT0, GL_DIFFUSE, WHITE);
-//    glLightfv(GL_LIGHT0, GL_SPECULAR, WHITE);
-//    glMaterialfv(GL_FRONT, GL_SPECULAR, WHITE);
-//    glMaterialf(GL_FRONT, GL_SHININESS, 30);
-//    glEnable(GL_LIGHTING);
-//    glEnable(GL_LIGHT0);
-//    checkerboard.create();
-//}
-//
-//void render(robot& bot) {
-//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//    checkerboard.draw();
-//
-//    glOrtho(-10.0f,10.0f,-10.0f,10.0f,-10.0f,10.0f);
-//    glMatrixMode(GL_MODELVIEW);
-//    glLoadIdentity();
-//    glRotatef(-25.0f,1.0f,0.0f,0.0f);
-//    glRotatef(-45.0f,0.0f,1.0f,0.0f);
-//    glRotatef(camera.getY(),0.0f,1.0f,0.0f);
-//    glRotatef(camera.getZ(),0.0f,0.0f,1.0f);
-//
-//    bot.drawRobot();
-//
-//    glFlush();
-//
-//};
-//
-//void processInput(GLFWwindow *window) {
-//    if (glfwGetKey(window,GLFW_KEY_W)) { camera.moveUp(); }
-//    else if (glfwGetKey(window,GLFW_KEY_A)) { camera.moveLeft(); }
-//    else if (glfwGetKey(window,GLFW_KEY_S)) { camera.moveDown(); }
-//    else if (glfwGetKey(window,GLFW_KEY_D)) { camera.moveRight(); }
-//    return;
-//}
+Checkerboard checkerboard(2,2);
+Camera camera;
 
-double random_number(int start = 0, int end = 1)
-{
-    static std::random_device e;
-    static std::uniform_real_distribution<> dis(start, end);
-    return dis(e);
+void init_gl() {
+    glEnable(GL_DEPTH_TEST);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, WHITE);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, WHITE);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, WHITE);
+    glMaterialf(GL_FRONT, GL_SHININESS, 30);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    checkerboard.create();
 }
 
+void render(robot& bot) {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    checkerboard.draw();
+    
+    glOrtho(-10.0f,10.0f,-10.0f,10.0f,-10.0f,10.0f);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRotatef(-25.0f,1.0f,0.0f,0.0f);
+    glRotatef(-45.0f,0.0f,1.0f,0.0f);
+    glRotatef(camera.getY(),0.0f,1.0f,0.0f);
+    glRotatef(camera.getZ(),0.0f,0.0f,1.0f);
+    
+    bot.drawRobot();
+        
+    glFlush();
+    
+};
+
+void processInput(GLFWwindow *window) {
+    if (glfwGetKey(window,GLFW_KEY_W)) { camera.moveUp(); }
+    else if (glfwGetKey(window,GLFW_KEY_A)) { camera.moveLeft(); }
+    else if (glfwGetKey(window,GLFW_KEY_S)) { camera.moveDown(); }
+    else if (glfwGetKey(window,GLFW_KEY_D)) { camera.moveRight(); }
+    return;
+}
 
 int main(int argc, const char * argv[]) {
     // insert code here...
@@ -139,9 +130,9 @@ int main(int argc, const char * argv[]) {
     int evolutionIterations = 2;
     
     vector<robot> ParentBots(parentSize);
-    
-    double movementResults[parentSize][evolutionIterations];
-
+    vector<robot> ChildrenBots(parentSize);
+    vector<robot> Population(populationSize);
+        
     // Make some random population!!
     for(int i = 0; i < ParentBots.size(); i++) {
         robot tempBuildingBot;
@@ -239,4 +230,8 @@ int main(int argc, const char * argv[]) {
          }
          std::cout << std::endl;
      }
+}
+    
+    
+    return 0;
 }
