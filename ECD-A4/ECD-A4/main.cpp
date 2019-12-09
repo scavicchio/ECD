@@ -109,9 +109,9 @@ int main(int argc, const char * argv[]) {
     double phi_increment = 0.1 ;
 
     double robotSimulationTime = 2.5 / timestep;
-    bool simulate = true;
-    bool visualize = false;
-    int evolutionIterations = 2; 
+    bool simulate = true; // SET THIS TO TRUE TO SEE THE BEST ONE
+    bool visualize = false; // SET THIS TO TRUE TO SEE EVERY ONE
+    int evolutionIterations = 2;
 
     double movementResults [parentSize][evolutionIterations];
     
@@ -177,7 +177,7 @@ int main(int argc, const char * argv[]) {
     init_gl();
     
     
-    const char *fit_path="/Users/danielklass/Columbia/fitneese.csv";
+    const char *fit_path="/Users/danielklass/Columbia/fitneese.csv"; // MAKE SURE TO CHANGE PATH
     std::ofstream fit_file(fit_path); //open in constructor
 
     for (int j = 0; j < evolutionIterations; j++) {
@@ -368,7 +368,7 @@ int main(int argc, const char * argv[]) {
     fit_file.close();
 
     
-    const char *path="/Users/danielklass/Columbia/movementResults.csv";
+    const char *path="/Users/danielklass/Columbia/movementResults.csv"; // MAKE SURE TO CHANGE PATH
     std::ofstream file(path); //open in constructor
 //    file << "This is a test \n";
 //    std::string data("data to write to file");

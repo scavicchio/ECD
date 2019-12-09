@@ -126,6 +126,7 @@ public:
                 double b = std::get<3>(connections[i][j]);
                 double c = std::get<4>(connections[i][j]);
                 double pulseLen = orinLen + ((b*sin(w*robotTime+c))/8);
+//                double pulseLen = orinLen ; // TARA TO MAKE THE BOUNCING ROBOT JUST UNCOMMENT THIS AND COMMENT THE ONE ABOVE
                 double k = std::get<2>(connections[i][j]);
                 double springForce = -k*(pyDist-pulseLen);
                 // appply the force to the mass

@@ -46,8 +46,8 @@
             filePath = "ECD-A4/robot.hpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "273"
-            endingLineNumber = "273"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
             landmarkName = "massDistance(a, b)"
             landmarkType = "7">
          </BreakpointContent>
