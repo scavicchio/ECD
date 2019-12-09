@@ -1,10 +1,7 @@
 //
 //  checkerboard.hpp
 //  ECD-A4
-//
-//  Created by Tara Atkinson on 12/6/19.
-//  Copyright © 2019 Salvy. All rights reserved.
-//
+
 
 #ifndef checkerboard_hpp
 #define checkerboard_hpp

@@ -2,9 +2,6 @@
 //  force.hpp
 //  ECD-A3
 //
-//  Created by Salvy Cavicchio on 11/7/19.
-//  Copyright © 2019 Salvy. All rights reserved.
-//
 
 #ifndef force_hpp
 #define force_hpp

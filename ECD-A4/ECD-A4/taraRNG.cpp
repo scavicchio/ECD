@@ -2,8 +2,7 @@
 //  taraRNG.cpp
 //  ECD-A3
 //
-//  Created by Tara Atkinson on 11/26/19.
-//  Copyright © 2019 Salvy. All rights reserved.
+
 //
 #include <iostream>
 #include <cstdlib>
